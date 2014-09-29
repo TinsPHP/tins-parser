@@ -13,7 +13,6 @@
 grammar TinsPHP;
 
 options {
-    memoize = true;
     output = AST;
     ASTLabelType = ITSPHPAst;
     tokenVocab = TSPHP;
@@ -134,7 +133,65 @@ tokens{
     Void = 'void';
     While = 'while';
 
-    // Imaginary tokens defined in tokenVocab - in TSPHP.g   
+    // Imaginary tokens
+    ACTUAL_PARAMETERS;
+    ARRAY_ACCESS;
+    BLOCK;
+    BLOCK_CONDITIONAL;
+    CAST;
+    CAST_ASSIGN;
+    
+    CLASS_BODY;
+    CLASS_MODIFIER;
+    
+    FIELD;
+    FIELD_MODIFIER;
+    FIELD_ACCESS;
+    CLASS_STATIC_ACCESS;
+    CLASS_STATIC_ACCESS_VARIABLE_ID;
+    
+    CONSTANT;
+    CONSTANT_DECLARATION;
+    CONSTANT_DECLARATION_LIST;
+    
+    DEFAULT_NAMESPACE;
+    
+    EXPRESSION;
+    EXPRESSION_LIST;
+    
+    FUNCTION_CALL;
+    FUNCTION_MODIFIER;
+    
+    INTERFACE_BODY;
+    
+    METHOD_CALL;
+    METHOD_CALL_POSTFIX;
+    METHOD_CALL_STATIC;
+    METHOD_DECLARATION;
+    METHOD_MODIFIER;
+    
+    NAMESPACE_BODY;
+    
+    PARAMETER_DECLARATION;
+    PARAMETER_LIST;
+    PARAMETER_TYPE;
+    
+    POST_INCREMENT;
+    POST_DECREMENT;
+    PRE_INCREMENT;
+    PRE_DECREMENT;
+    SWITCH_CASES;
+    
+    TYPE;
+    TYPE_MODIFIER;
+    TYPE_NAME;
+    
+    UNARY_MINUS;
+    UNARY_PLUS;
+    USE_DECLARATION;
+    
+    VARIABLE_DECLARATION;
+    VARIABLE_DECLARATION_LIST;    
 }
 
 @header{
@@ -243,8 +300,15 @@ definition
     ;
 
 constDefinitionList
-    :    begin='const' constantAssignment (',' constantAssignment)* ';'
+    :    begin='const' constAssign=constantAssignment (',' constantAssignment)* ';'
          -> ^(CONSTANT_DECLARATION_LIST[$begin, "consts"] 
+             ^(TYPE[$constAssign.start,"type"] 
+                 ^(TYPE_MODIFIER[$constAssign.start,"tMod"] 
+                     Public[$constAssign.start,"public"]
+                     Static[$constAssign.start,"static"] 
+                     Final[$constAssign.start,"final"] 
+                 ) 
+             )
              constantAssignment+
          )
     ;
@@ -289,10 +353,13 @@ paramList
     
 paramDeclaration
     :    VariableId ('=' unaryPrimitiveAtom)?
-         -> ^(PARAMETER_DECLARATION[$paramDeclaration.start,"pDecl"] TYPE_NAME[$VariableId, "mixed"] ^(VariableId unaryPrimitiveAtom?))
+         -> ^(PARAMETER_DECLARATION[$paramDeclaration.start,"pDecl"] ^(VariableId unaryPrimitiveAtom?))
          
-    |    classInterfaceTypeWithoutMixed VariableId  ('=' unaryPrimitiveAtom)?
-         -> ^(PARAMETER_DECLARATION[$paramDeclaration.start,"pDecl"] classInterfaceTypeWithoutMixed ^(VariableId unaryPrimitiveAtom?))
+    |    TypeArray VariableId  ('=' unaryPrimitiveAtom)?
+         -> ^(PARAMETER_DECLARATION[$paramDeclaration.start,"pDecl"] 
+             ^(TYPE[$TypeArray, "type"] TYPE_MODIFIER[$TypeArray, "tMod"] TypeArray)
+             ^(VariableId unaryPrimitiveAtom?)
+         )
     ;   
 
 VariableId    
@@ -301,12 +368,14 @@ VariableId
 
 instruction
     :    variableDeclaration ';'!
+    |    expression ';' -> ^(EXPRESSION[$expression.start,"expr"] expression)
+    |    expr=';' -> EXPRESSION[$expr,"expr"]
     |    block='{''}' -> EXPRESSION[$block,"expr"]
     |    '{'! instruction+ '}'!
     ;
 
 variableDeclaration
-    :   VariableId (expr='=' expression)? -> ^(VARIABLE_DECLARATION_LIST[$variableDeclaration.start,"vars"] ^(VariableId expression?))
+    :   VariableId expr='=' expression -> ^(VARIABLE_DECLARATION_LIST[$variableDeclaration.start,"vars"] ^(VariableId expression))
     ;
 
 expression
@@ -315,7 +384,7 @@ expression
     
 atom    
     :    '(' expression ')' -> expression
-    |    primitiveAtomWithConstant
+    |    unaryPrimitiveAtom
     ;   
 
 primitiveAtomWithConstant
@@ -326,6 +395,7 @@ primitiveAtomWithConstant
     |    'null'
     |    array
     |    globalConstant
+    |    VariableId
     ;
 
 globalConstant

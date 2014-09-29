@@ -20,6 +20,8 @@ public class ExpressionHelper
 
     public static List<String[]> getAstExpressions() {
         return Arrays.asList(new String[][]{
+                //TODO rstoll TINS-108 - class, TINS-109 - interface
+                /*
                 {"$a or $b", "(or $a $b)"},
                 {"$a xor $b", "(xor $a $b)"},
                 {"$a and $b", "(and $a $b)"},
@@ -209,11 +211,15 @@ public class ExpressionHelper
                 {"Bar::$a", "(sMemAccess Bar $a)"},
                 {"self::a", "(sMemAccess self a#)"},
                 {"parent::a", "(sMemAccess parent a#)"},
-                {"Foo::a", "(sMemAccess Foo a#)"},
+                {"A::a", "(sMemAccess A a#)"},
+                {"\\A::a", "(sMemAccess \\A a#)"},
+                {"a\\A::a", "(sMemAccess a\\A a#)"},
+                */
+                {"a", "a#"},
+                {"a\\b", "a\\b#"},
                 {"true", "true"},
                 {"false", "false"},
                 {"null", "null"},
-                {"a\\b", "a\\b#"},
                 {"1", "1"},
                 {"2.123", "2.123"},
                 {"'a'", "'a'"},
@@ -226,6 +232,8 @@ public class ExpressionHelper
 
     public static String[] getParserExpressions() {
         return new String[]{
+                //TODO rstoll TINS-108 - class, TINS-109 - interface
+                /*
                 "true or false",
                 "true xor false",
                 "true and false",
@@ -327,16 +335,15 @@ public class ExpressionHelper
                 "self::$a->foo()",
                 "parent::foo()",
                 "parent::$a->foo()",
-                "a",
-                "a\\a",
                 "A::a",
                 "\\A::a",
                 "a\\A::a",
-                "($a)",
+                */
+                "a",
+                "a\\a",
                 "true",
                 "false",
                 "null",
-                "a\\b",
                 "1",
                 "2.123",
                 "'a'",

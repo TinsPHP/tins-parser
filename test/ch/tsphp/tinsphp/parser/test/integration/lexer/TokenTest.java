@@ -40,126 +40,128 @@ public class TokenTest extends ALexerTest
 
     @Parameterized.Parameters
     public static Collection<Object[]> testStrings() {
-        List<Object[]> collection = new ArrayList<>();
+        List<Object[]> collection = new ArrayList<>(1700);
         collection.addAll(Arrays.asList(new Object[][]{
-                    {"mAbstract", "abstract", TinsPHPLexer.Abstract},
-                    {"mArrow", "=>", TinsPHPLexer.Arrow},
-                    {"mAs", "as", TinsPHPLexer.As},
-                    {"mAssign", "=", TinsPHPLexer.Assign},
-                    {"mAt", "@", TinsPHPLexer.At},
-                    {"mBackslash", "\\", TinsPHPLexer.Backslash},
-                    {"mBitwiseAnd", "&", TinsPHPLexer.BitwiseAnd},
-                    {"mBitwiseAndAssign", "&=", TinsPHPLexer.BitwiseAndAssign},
-                    {"mBitwiseNot", "~", TinsPHPLexer.BitwiseNot},
-                    {"mBitwiseOr", "|", TinsPHPLexer.BitwiseOr},
-                    {"mBitwiseOrAssign", "|=", TinsPHPLexer.BitwiseOrAssign},
-                    {"mBitwiseXor", "^", TinsPHPLexer.BitwiseXor},
-                    {"mBitwiseXorAssign", "^=", TinsPHPLexer.BitwiseXorAssign},
-                    {"mBool", "true", TinsPHPLexer.Bool},
-                    {"mBool", "false", TinsPHPLexer.Bool},
-                    {"mBreak", "break", TinsPHPLexer.Break},
-                    {"mCase", "case", TinsPHPLexer.Case},
-                    {"mCast", "cast", TinsPHPLexer.Cast},
-                    {"mCatch", "catch", TinsPHPLexer.Catch},
-                    {"mClass", "class", TinsPHPLexer.Class},
-                    {"mClone", "clone", TinsPHPLexer.Clone},
-                    {"mColon", ":", TinsPHPLexer.Colon},
-                    {"mComma", ",", TinsPHPLexer.Comma},
-                    {"mConst", "const", TinsPHPLexer.Const},
-                    {"mConstruct", "__construct", TinsPHPLexer.Construct},
-                    {"mContinue", "continue", TinsPHPLexer.Continue},
-                    {"mDefault", "default", TinsPHPLexer.Default},
-                    {"mDestruct", "__destruct", TinsPHPLexer.Destruct},
-                    {"mDivide", "/", TinsPHPLexer.Divide},
-                    {"mDivideAssign", "/=", TinsPHPLexer.DivideAssign},
-                    {"mDo", "do", TinsPHPLexer.Do},
-                    {"mDollar", "$", TinsPHPLexer.Dollar},
-                    {"mDotAssign", ".=", TinsPHPLexer.DotAssign},
-                    {"mDoubleColon", "::", TinsPHPLexer.DoubleColon},
-                    {"mEcho", "echo", TinsPHPLexer.Echo},
-                    {"mElse", "else", TinsPHPLexer.Else},
-                    {"mEqual", "==", TinsPHPLexer.Equal},
-                    {"mExtends", "extends", TinsPHPLexer.Extends},
-                    {"mExit", "exit", TinsPHPLexer.Exit},
-                    {"mFinal", "final", TinsPHPLexer.Final},
-                    {"mFunction", "function", TinsPHPLexer.Function},
-                    {"mFor", "for", TinsPHPLexer.For},
-                    {"mForeach", "foreach", TinsPHPLexer.Foreach},
-                    {"mGreaterThan", ">", TinsPHPLexer.GreaterThan},
-                    {"mGreaterEqualThan", ">=", TinsPHPLexer.GreaterEqualThan},
-                    {"mIdentical", "===", TinsPHPLexer.Identical},
-                    {"mIf", "if", TinsPHPLexer.If},
-                    {"mImplements", "implements", TinsPHPLexer.Implements},
-                    {"mInstanceof", "instanceof", TinsPHPLexer.Instanceof},
-                    {"mInterface", "interface", TinsPHPLexer.Interface},
-                    {"mLeftCurlyBrace", "{", TinsPHPLexer.LeftCurlyBrace},
-                    {"mLeftParenthesis", "(", TinsPHPLexer.LeftParenthesis},
-                    {"mLeftSquareBrace", "[", TinsPHPLexer.LeftSquareBrace},
-                    {"mLessThan", "<", TinsPHPLexer.LessThan},
-                    {"mLessEqualThan", "<=", TinsPHPLexer.LessEqualThan},
-                    {"mLogicAnd", "&&", TinsPHPLexer.LogicAnd},
-                    {"mLogicAndWeak", "and", TinsPHPLexer.LogicAndWeak},
-                    {"mLogicNot", "!", TinsPHPLexer.LogicNot},
-                    {"mLogicOr", "||", TinsPHPLexer.LogicOr},
-                    {"mLogicOrWeak", "or", TinsPHPLexer.LogicOrWeak},
-                    {"mLogicXorWeak", "xor", TinsPHPLexer.LogicXorWeak},
-                    {"mMinus", "-", TinsPHPLexer.Minus},
-                    {"mMinusAssign", "-=", TinsPHPLexer.MinusAssign},
-                    {"mMinusMinus", "--", TinsPHPLexer.MinusMinus},
-                    {"mModulo", "%", TinsPHPLexer.Modulo},
-                    {"mModuloAssign", "%=", TinsPHPLexer.ModuloAssign},
-                    {"mMultiply", "*", TinsPHPLexer.Multiply},
-                    {"mMultiplyAssign", "*=", TinsPHPLexer.MultiplyAssign},
-                    {"mNamespace", "namespace", TinsPHPLexer.Namespace},
-                    {"mNew", "new", TinsPHPLexer.New},
-                    {"mNotEqual", "!=", TinsPHPLexer.NotEqual},
-                    {"mNotIdentical", "!==", TinsPHPLexer.NotIdentical},
-                    {"mNull","null",TinsPHPLexer.Null},
-                    {"mObjectOperator", "->", TinsPHPLexer.ObjectOperator},
-                    {"mParent", "parent", TinsPHPLexer.Parent},
-                    {"mParentColonColon", "parent::", TinsPHPLexer.ParentColonColon},
-                    {"mPlus", "+", TinsPHPLexer.Plus},
-                    {"mPlusAssign", "+=", TinsPHPLexer.PlusAssign},
-                    {"mPlusPlus", "++", TinsPHPLexer.PlusPlus},
-                    {"mPrivate", "private", TinsPHPLexer.Private},
-                    {"mProtected", "protected", TinsPHPLexer.Protected},
-                    {"mProtectThis", "this", TinsPHPLexer.ProtectThis},
-                    {"mPublic", "public", TinsPHPLexer.Public},
-                    {"mQuestionMark", "?", TinsPHPLexer.QuestionMark},
-                    {"mReturn", "return", TinsPHPLexer.Return},
-                    {"mRightCurlyBrace", "}", TinsPHPLexer.RightCurlyBrace},
-                    {"mRightParenthesis", ")", TinsPHPLexer.RightParenthesis},
-                    {"mRightSquareBrace", "]", TinsPHPLexer.RightSquareBrace},
-                    {"mSelf", "self", TinsPHPLexer.Self},
-                    {"mSelfColonColon", "self::", TinsPHPLexer.SelfColonColon},
-                    {"mSemicolon", ";", TinsPHPLexer.Semicolon},
-                    {"mShiftLeft", "<<", TinsPHPLexer.ShiftLeft},
-                    {"mShiftLeftAssign", "<<=", TinsPHPLexer.ShiftLeftAssign},
-                    {"mShiftRight", ">>", TinsPHPLexer.ShiftRight},
-                    {"mShiftRightAssign", ">>=", TinsPHPLexer.ShiftRightAssign},
-                    {"mStatic", "static", TinsPHPLexer.Static},
-                    {"mSwitch", "switch", TinsPHPLexer.Switch},
-                    {"mThis", "$this", TinsPHPLexer.This},
-                    {"mThrow", "throw", TinsPHPLexer.Throw},
-                    {"mTry", "try", TinsPHPLexer.Try},
-                    {"mTypeArray", "array", TinsPHPLexer.TypeArray},
-                    {"mTypeBool", "bool", TinsPHPLexer.TypeBool},
-                    {"mTypeAliasBool", "boolean", TinsPHPLexer.TypeAliasBool},
-                    {"mTypeAliasFloat", "double", TinsPHPLexer.TypeAliasFloat},
-                    {"mTypeFloat", "float", TinsPHPLexer.TypeFloat},
-                    {"mTypeInt", "int", TinsPHPLexer.TypeInt},
-                    {"mTypeAliasInt", "integer", TinsPHPLexer.TypeAliasInt},
-                    {"mTypeMixed", "mixed", TinsPHPLexer.TypeMixed},
-                    {"mTypeResource", "resource", TinsPHPLexer.TypeResource},
-                    {"mTypeString", "string", TinsPHPLexer.TypeString},
-                    {"mUse", "use", TinsPHPLexer.Use},
-                    {"mVoid", "void", TinsPHPLexer.Void},
-                    {"mWhile", "while", TinsPHPLexer.While}
-                }));
+                {"mAbstract", "abstract", TinsPHPLexer.Abstract},
+                {"mArrow", "=>", TinsPHPLexer.Arrow},
+                {"mAs", "as", TinsPHPLexer.As},
+                {"mAssign", "=", TinsPHPLexer.Assign},
+                {"mAt", "@", TinsPHPLexer.At},
+                {"mBackslash", "\\", TinsPHPLexer.Backslash},
+                {"mBitwiseAnd", "&", TinsPHPLexer.BitwiseAnd},
+                {"mBitwiseAndAssign", "&=", TinsPHPLexer.BitwiseAndAssign},
+                {"mBitwiseNot", "~", TinsPHPLexer.BitwiseNot},
+                {"mBitwiseOr", "|", TinsPHPLexer.BitwiseOr},
+                {"mBitwiseOrAssign", "|=", TinsPHPLexer.BitwiseOrAssign},
+                {"mBitwiseXor", "^", TinsPHPLexer.BitwiseXor},
+                {"mBitwiseXorAssign", "^=", TinsPHPLexer.BitwiseXorAssign},
+                {"mBool", "true", TinsPHPLexer.Bool},
+                {"mBool", "false", TinsPHPLexer.Bool},
+                {"mBreak", "break", TinsPHPLexer.Break},
+                {"mCase", "case", TinsPHPLexer.Case},
+                {"mCast", "cast", TinsPHPLexer.Cast},
+                {"mCatch", "catch", TinsPHPLexer.Catch},
+                {"mClass", "class", TinsPHPLexer.Class},
+                {"mClone", "clone", TinsPHPLexer.Clone},
+                {"mColon", ":", TinsPHPLexer.Colon},
+                {"mComma", ",", TinsPHPLexer.Comma},
+                {"mConst", "const", TinsPHPLexer.Const},
+                {"mConstruct", "__construct", TinsPHPLexer.Construct},
+                {"mContinue", "continue", TinsPHPLexer.Continue},
+                {"mDefault", "default", TinsPHPLexer.Default},
+                {"mDestruct", "__destruct", TinsPHPLexer.Destruct},
+                {"mDivide", "/", TinsPHPLexer.Divide},
+                {"mDivideAssign", "/=", TinsPHPLexer.DivideAssign},
+                {"mDo", "do", TinsPHPLexer.Do},
+                {"mDollar", "$", TinsPHPLexer.Dollar},
+                {"mDot", ".", TinsPHPLexer.Dot},
+                {"mDotAssign", ".=", TinsPHPLexer.DotAssign},
+                {"mDoubleColon", "::", TinsPHPLexer.DoubleColon},
+                {"mEcho", "echo", TinsPHPLexer.Echo},
+                {"mElse", "else", TinsPHPLexer.Else},
+                {"mEqual", "==", TinsPHPLexer.Equal},
+                {"mExtends", "extends", TinsPHPLexer.Extends},
+                {"mExit", "exit", TinsPHPLexer.Exit},
+                {"mFinal", "final", TinsPHPLexer.Final},
+                {"mFunction", "function", TinsPHPLexer.Function},
+                {"mFor", "for", TinsPHPLexer.For},
+                {"mForeach", "foreach", TinsPHPLexer.Foreach},
+                {"mGreaterThan", ">", TinsPHPLexer.GreaterThan},
+                {"mGreaterEqualThan", ">=", TinsPHPLexer.GreaterEqualThan},
+                {"mIdentical", "===", TinsPHPLexer.Identical},
+                {"mIf", "if", TinsPHPLexer.If},
+                {"mImplements", "implements", TinsPHPLexer.Implements},
+                {"mInstanceof", "instanceof", TinsPHPLexer.Instanceof},
+                {"mInterface", "interface", TinsPHPLexer.Interface},
+                {"mLeftCurlyBrace", "{", TinsPHPLexer.LeftCurlyBrace},
+                {"mLeftParenthesis", "(", TinsPHPLexer.LeftParenthesis},
+                {"mLeftSquareBrace", "[", TinsPHPLexer.LeftSquareBrace},
+                {"mLessThan", "<", TinsPHPLexer.LessThan},
+                {"mLessEqualThan", "<=", TinsPHPLexer.LessEqualThan},
+                {"mLogicAnd", "&&", TinsPHPLexer.LogicAnd},
+                {"mLogicAndWeak", "and", TinsPHPLexer.LogicAndWeak},
+                {"mLogicNot", "!", TinsPHPLexer.LogicNot},
+                {"mLogicOr", "||", TinsPHPLexer.LogicOr},
+                {"mLogicOrWeak", "or", TinsPHPLexer.LogicOrWeak},
+                {"mLogicXorWeak", "xor", TinsPHPLexer.LogicXorWeak},
+                {"mMinus", "-", TinsPHPLexer.Minus},
+                {"mMinusAssign", "-=", TinsPHPLexer.MinusAssign},
+                {"mMinusMinus", "--", TinsPHPLexer.MinusMinus},
+                {"mModulo", "%", TinsPHPLexer.Modulo},
+                {"mModuloAssign", "%=", TinsPHPLexer.ModuloAssign},
+                {"mMultiply", "*", TinsPHPLexer.Multiply},
+                {"mMultiplyAssign", "*=", TinsPHPLexer.MultiplyAssign},
+                {"mNamespace", "namespace", TinsPHPLexer.Namespace},
+                {"mNew", "new", TinsPHPLexer.New},
+                {"mNotEqual", "!=", TinsPHPLexer.NotEqual},
+                {"mNotIdentical", "!==", TinsPHPLexer.NotIdentical},
+                {"mNull", "null", TinsPHPLexer.Null},
+                {"mObjectOperator", "->", TinsPHPLexer.ObjectOperator},
+                {"mParent", "parent", TinsPHPLexer.Parent},
+                {"mParentColonColon", "parent::", TinsPHPLexer.ParentColonColon},
+                {"mPlus", "+", TinsPHPLexer.Plus},
+                {"mPlusAssign", "+=", TinsPHPLexer.PlusAssign},
+                {"mPlusPlus", "++", TinsPHPLexer.PlusPlus},
+                {"mPrivate", "private", TinsPHPLexer.Private},
+                {"mProtected", "protected", TinsPHPLexer.Protected},
+                {"mProtectThis", "this", TinsPHPLexer.ProtectThis},
+                {"mPublic", "public", TinsPHPLexer.Public},
+                {"mQuestionMark", "?", TinsPHPLexer.QuestionMark},
+                {"mReturn", "return", TinsPHPLexer.Return},
+                {"mRightCurlyBrace", "}", TinsPHPLexer.RightCurlyBrace},
+                {"mRightParenthesis", ")", TinsPHPLexer.RightParenthesis},
+                {"mRightSquareBrace", "]", TinsPHPLexer.RightSquareBrace},
+                {"mSelf", "self", TinsPHPLexer.Self},
+                {"mSelfColonColon", "self::", TinsPHPLexer.SelfColonColon},
+                {"mSemicolon", ";", TinsPHPLexer.Semicolon},
+                {"mShiftLeft", "<<", TinsPHPLexer.ShiftLeft},
+                {"mShiftLeftAssign", "<<=", TinsPHPLexer.ShiftLeftAssign},
+                {"mShiftRight", ">>", TinsPHPLexer.ShiftRight},
+                {"mShiftRightAssign", ">>=", TinsPHPLexer.ShiftRightAssign},
+                {"mStatic", "static", TinsPHPLexer.Static},
+                {"mSwitch", "switch", TinsPHPLexer.Switch},
+                {"mThis", "$this", TinsPHPLexer.This},
+                {"mThrow", "throw", TinsPHPLexer.Throw},
+                {"mTry", "try", TinsPHPLexer.Try},
+                {"mTypeArray", "array", TinsPHPLexer.TypeArray},
+                {"mTypeBool", "bool", TinsPHPLexer.TypeBool},
+                {"mTypeAliasBool", "boolean", TinsPHPLexer.TypeAliasBool},
+                {"mTypeAliasFloat", "double", TinsPHPLexer.TypeAliasFloat},
+                {"mTypeFloat", "float", TinsPHPLexer.TypeFloat},
+                {"mTypeInt", "int", TinsPHPLexer.TypeInt},
+                {"mTypeAliasInt", "integer", TinsPHPLexer.TypeAliasInt},
+                {"mTypeMixed", "mixed", TinsPHPLexer.TypeMixed},
+                {"mTypeResource", "resource", TinsPHPLexer.TypeResource},
+                {"mTypeString", "string", TinsPHPLexer.TypeString},
+                {"mUse", "use", TinsPHPLexer.Use},
+                {"mVoid", "void", TinsPHPLexer.Void},
+                {"mWhile", "while", TinsPHPLexer.While}
+        }));
 
         String[] floatStrings = getFloatTestStrings();
         for (String floatString : floatStrings) {
             collection.add(new Object[]{"mFloat", floatString, TinsPHPLexer.Float});
+            collection.add(new Object[]{"mTokens", floatString, TinsPHPLexer.Float});
         }
 
         Collection<Object[]> intCollection = FragmentsTest.getIntFragments();
@@ -173,32 +175,46 @@ public class TokenTest extends ALexerTest
         }
 
         Collection<Object[]> ids = getIDTestStrings();
-        
+
         for (Object[] obj : ids) {
             collection.add(new Object[]{"mVariableId", "$" + obj[1], TinsPHPLexer.VariableId});
-            collection.add(new Object[]{obj[0], obj[1]+""+obj[1], TinsPHPLexer.Identifier});
-            collection.add(new Object[]{obj[0], obj[1]+""+obj[1]+""+obj[1], TinsPHPLexer.Identifier});
+            collection.add(new Object[]{obj[0], obj[1] + "" + obj[1], TinsPHPLexer.Identifier});
+            collection.add(new Object[]{obj[0], obj[1] + "" + obj[1] + "" + obj[1], TinsPHPLexer.Identifier});
         }
         collection.addAll(Arrays.asList(new Object[][]{
-                    {"mIdentifier", IdentifierHelper.getAllLowerCaseCharacters() + IdentifierHelper.getAllUpperCaseCharacters() + IdentifierHelper.getAllDigits() + IdentifierHelper.getAllSpecialCharacters() + "_", TinsPHPLexer.Identifier},
-                    {"mIdentifier", IdentifierHelper.getAllUpperCaseCharacters() + IdentifierHelper.getAllLowerCaseCharacters() + IdentifierHelper.getAllDigits() + IdentifierHelper.getAllSpecialCharacters() + "_", TinsPHPLexer.Identifier},
-                    {"mIdentifier", IdentifierHelper.getAllSpecialCharacters() + IdentifierHelper.getAllUpperCaseCharacters() + IdentifierHelper.getAllLowerCaseCharacters() + IdentifierHelper.getAllDigits() + "_", TinsPHPLexer.Identifier},
-                    {"mIdentifier", "_" + IdentifierHelper.getAllSpecialCharacters() + IdentifierHelper.getAllUpperCaseCharacters() + IdentifierHelper.getAllLowerCaseCharacters() + IdentifierHelper.getAllDigits(), TinsPHPLexer.Identifier}
-                }));
-        
+                {"mIdentifier", IdentifierHelper.getAllLowerCaseCharacters()
+                        + IdentifierHelper.getAllUpperCaseCharacters() + IdentifierHelper.getAllDigits()
+                        + IdentifierHelper.getAllSpecialCharacters() + "_", TinsPHPLexer.Identifier},
+                {"mIdentifier", IdentifierHelper.getAllUpperCaseCharacters()
+                        + IdentifierHelper.getAllLowerCaseCharacters() + IdentifierHelper.getAllDigits()
+                        + IdentifierHelper.getAllSpecialCharacters() + "_", TinsPHPLexer.Identifier},
+                {"mIdentifier", IdentifierHelper.getAllSpecialCharacters() + IdentifierHelper
+                        .getAllUpperCaseCharacters() + IdentifierHelper.getAllLowerCaseCharacters() +
+                        IdentifierHelper.getAllDigits() + "_", TinsPHPLexer.Identifier},
+                {"mIdentifier", "_" + IdentifierHelper.getAllSpecialCharacters() + IdentifierHelper
+                        .getAllUpperCaseCharacters() + IdentifierHelper.getAllLowerCaseCharacters() +
+                        IdentifierHelper.getAllDigits(), TinsPHPLexer.Identifier}
+        }));
+
         String[] nullCombinations = VariationHelper.getUppercaseCombinations("null");
         for (String combination : nullCombinations) {
             collection.add(new Object[]{"mNull", combination, TinsPHPLexer.Null});
         }
-        
+
         String[] trueCombinations = VariationHelper.getUppercaseCombinations("true");
         for (String combination : trueCombinations) {
             collection.add(new Object[]{"mBool", combination, TinsPHPLexer.Bool});
         }
-        
+
         String[] falseCombinations = VariationHelper.getUppercaseCombinations("false");
         for (String combination : falseCombinations) {
             collection.add(new Object[]{"mBool", combination, TinsPHPLexer.Bool});
+        }
+
+        //add all tokens again this time with mTokens as method
+        List<Object[]> argumentsArray = new ArrayList<>(collection);
+        for (Object[] arguments : argumentsArray) {
+            collection.add(new Object[]{"mTokens", arguments[1], arguments[2]});
         }
 
         return collection;
@@ -206,23 +222,23 @@ public class TokenTest extends ALexerTest
 
     public static String[] getFloatTestStrings() {
         return new String[]{
-                    "5867491023e7845120963",
-                    "5867491023e+7538964120",
-                    "5867491023e-9510236478",
-                    "1234567890.19876543201",
-                    "1234567890.19876543201e7845120963",
-                    "1234567890.19876543201e+7538964120",
-                    "1234567890.19876543201e-9510236478",
-                    ".4567891203",
-                    ".4567891203e7418520963",
-                    ".4567891203e+0147258369",
-                    ".4567891203e-1024578963",
-                    ".0",
-                    "0.0",
-                    "0.0e0",
-                    "0.0e+0",
-                    "0.0e-0"
-                };
+                "5867491023e7845120963",
+                "5867491023e+7538964120",
+                "5867491023e-9510236478",
+                "1234567890.19876543201",
+                "1234567890.19876543201e7845120963",
+                "1234567890.19876543201e+7538964120",
+                "1234567890.19876543201e-9510236478",
+                ".4567891203",
+                ".4567891203e7418520963",
+                ".4567891203e+0147258369",
+                ".4567891203e-1024578963",
+                ".0",
+                "0.0",
+                "0.0e0",
+                "0.0e+0",
+                "0.0e-0"
+        };
     }
 
     public static Collection<Object[]> getIDTestStrings() {

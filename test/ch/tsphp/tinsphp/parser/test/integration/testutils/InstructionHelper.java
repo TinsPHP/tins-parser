@@ -23,15 +23,17 @@ public class InstructionHelper
 
     public static List<Object[]> getInstructions(String prefix, String appendix) {
         List<Object[]> collection = new ArrayList<>();
-        collection.addAll(getControlStructures(prefix, "int $a;", appendix));
+        //TODO rstoll TINS-68 parser procedural - control structures
+//        collection.addAll(getControlStructures(prefix, "int $a;", appendix));
         collection.addAll(Arrays.asList(new Object[][]{
-                {prefix + "int $a;" + appendix},
+                {prefix + "$a;" + appendix},
                 {prefix + ";" + appendix},
-                {prefix + "return;" + appendix},
-                {prefix + "throw new Exception();" + appendix},
-                {prefix + "break;" + appendix},
-                {prefix + "continue;" + appendix},
-                {prefix + "echo 'hello';" + appendix}
+                //TODO rstoll TINS-68 parser procedural - control structures
+//                {prefix + "return;" + appendix},
+//                {prefix + "throw new Exception();" + appendix},
+//                {prefix + "break;" + appendix},
+//                {prefix + "continue;" + appendix},
+//                {prefix + "echo 'hello';" + appendix}
         }));
         String[] expressions = ExpressionHelper.getParserExpressions();
         for (String expression : expressions) {
