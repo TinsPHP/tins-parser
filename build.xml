@@ -1,0 +1,43 @@
+<!--
+  This file is part of the TSPHP project published under the Apache License 2.0
+  For the full copyright and license information, please have a look at LICENSE in the
+  root folder or visit the project's website http://tsphp.ch/wiki/display/TSPHP/License
+  -->
+
+<project name="parser" default="common.build" basedir="." >
+
+    <property environment="env" />
+    <import file="${basedir}/ant/build-common.xml" as="common"/>
+    <import file="${basedir}/ant/copyCommon.xml" as="cp"/>
+    <import file="${basedir}/ant/copyAntlr.xml" as="cp"/>
+
+    <property file="${basedir}/ant/antlr.properties"/>
+
+    <!-- ================================================================== -->
+    <!-- Specialised Target: dist -->
+    <!-- ================================================================== -->
+    <target name="dist"
+            depends="antlr, common.dist"
+            description="create distributions">
+    </target>
+
+    <target name="antlr">
+        <copy todir="${antlr.copyLocation}" overwrite="true">
+            <fileset dir="${src.antlr}" includes="TSPHP.tokens"/>
+        </copy>
+        <java classname="org.antlr.Tool" fork="true" failonerror="true">
+            <arg value="-verbose"/>
+            <arg value="-o"/>
+            <arg path="${antlr.copyLocation}"/>
+            <arg path="${src.antlr}/TinsPHP.g"/>
+            <classpath>
+                <fileset dir="${lib}">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="cp.all" depends="cp.common"/>
+
+</project>
