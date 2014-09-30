@@ -495,8 +495,17 @@ cloneOrNew
     :    'clone'^ unary
 //TODO rstoll TINS-108 - class, TINS-109 - interface
 //    |    newObject
-    |    atom
+    |    primary
     ;
+
+primary
+    :    'exit'^ ('('! expression ')'!)?
+//
+//    |    postFixCall
+//    |    postIncrementDecrement
+//    |    postFixVariableInclCallAtTheEnd
+    |    atom
+    ;	
 
 scalarTypesInclArrayWithModifier
     :    (    t='bool'

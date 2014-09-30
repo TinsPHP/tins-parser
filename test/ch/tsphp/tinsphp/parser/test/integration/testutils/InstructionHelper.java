@@ -44,9 +44,14 @@ public class InstructionHelper
 
     public static List<Object[]> getControlStructuresInNamespaceFunctionAndMethod(String instruction) {
         List<Object[]> collection = new ArrayList<>();
-        collection.addAll(getControlStructures("", instruction, ""));
-        collection.addAll(getControlStructures("function void foo(){", instruction, "}"));
-        collection.addAll(getControlStructures("class a{function void foo(){", instruction, "}}"));
+        //TODO rstoll TINS-68 parser procedural - control structures
+//        collection.addAll(getControlStructures("", instruction, ""));
+//        collection.addAll(getControlStructures("function foo(){", instruction, "}"));
+        //TODO rstoll delete as soon as above is supported
+        collection.add(new Object[]{"function foo(){" + instruction + "}"});
+        //TODO rstoll TINS-108 - class
+//        collection.addAll(getControlStructures("class a{function void foo(){", instruction, "}}"));
+
         return collection;
     }
 

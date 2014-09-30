@@ -90,6 +90,7 @@ public class NotCorrectStartTokenTest extends AParserParserExceptionTest
                 {"namespaceSemicolon", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
                 {"paramDeclaration", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"paramList", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
+                {"primary", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"primitiveAtomWithConstant", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"scalarTypesInclArrayWithModifier", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"statement", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
