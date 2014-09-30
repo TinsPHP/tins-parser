@@ -37,26 +37,29 @@ public class ArrayDeclarationTest extends AAstTest
 
     @Parameterized.Parameters
     public static Collection<Object[]> testStrings() {
+        //Variable declaration as they are known in TSPHP do not exist in PHP.
+        //Therefore the following code creates an expr AST and not a vars AST as one might expect.
+
         List<Object[]> collection = new ArrayList<>();
-        collection.add(new Object[]{"$a = [];", "(vars ($a array))"});
-        collection.add(new Object[]{"$a = array();", "(vars ($a array))"});
+        collection.add(new Object[]{"$a = [];", "(expr (= $a array))"});
+        collection.add(new Object[]{"$a = array();", "(expr (= $a array))"});
         List<String[]> expressions = ExpressionHelper.getAstExpressions();
         for (Object[] expression : expressions) {
             collection.add(new Object[]{
                     "$a = [" + expression[0] + "];",
-                    "(vars ($a (array " + expression[1] + ")))"
+                    "(expr (= $a (array " + expression[1] + ")))"
             });
             collection.add(new Object[]{
                     "$a = [" + expression[0] + "," + expression[0] + "];",
-                    "(vars ($a (array " + expression[1] + " " + expression[1] + ")))"
+                    "(expr (= $a (array " + expression[1] + " " + expression[1] + ")))"
             });
             collection.add(new Object[]{
                     "$a = [1 => " + expression[0] + ", $a=>" + expression[0] + "];",
-                    "(vars ($a (array (=> 1 " + expression[1] + ") (=> $a " + expression[1] + "))))"
+                    "(expr (= $a (array (=> 1 " + expression[1] + ") (=> $a " + expression[1] + "))))"
             });
             collection.add(new Object[]{
                     "$a = array( 'a' => array(" + expression[0] + "), " + expression[0] + "=> 1, 2,3 );",
-                    "(vars ($a (array (=> 'a' (array " + expression[1] + ")) (=> " + expression[1] + " 1) 2 3)))"
+                    "(expr (= $a (array (=> 'a' (array " + expression[1] + ")) (=> " + expression[1] + " 1) 2 3)))"
             });
         }
 

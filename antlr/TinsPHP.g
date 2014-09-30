@@ -381,15 +381,10 @@ VariableId
     ;
 
 instruction
-    :    variableDeclaration ';'!
-    |    expression ';' -> ^(EXPRESSION[$expression.start,"expr"] expression)
+    :    expression ';' -> ^(EXPRESSION[$expression.start,"expr"] expression)
     |    expr=';' -> EXPRESSION[$expr,"expr"]
     |    block='{''}' -> EXPRESSION[$block,"expr"]
     |    '{'! instruction+ '}'!
-    ;
-
-variableDeclaration
-    :   VariableId expr='=' expression -> ^(VARIABLE_DECLARATION_LIST[$variableDeclaration.start,"vars"] ^(VariableId expression))
     ;
 
 expression
@@ -405,12 +400,34 @@ logicXorWeak
     ; 
 	
 logicAndWeak
-    :    atom ('and'^ atom)*
+    :    assignment ('and'^ assignment)*
+    ;
+   
+assignment
+    :    (atom -> atom)
+         (
+             (    op='=' 
+             |    op='+='
+             |    op='-='
+             |    op='*='
+             |    op='/='
+             |    op='&='
+             |    op='|='
+             |    op='^='
+             |    op='%='
+             |    op='.='
+             |    op='<<='
+             |    op='>>='
+             )
+             assignment
+             -> ^($op atom assignment)
+         )?
     ;
     
 atom    
-    :    '(' expression ')' -> expression
+    :    VariableId
     |    unaryPrimitiveAtom
+    |    '(' expression ')' -> expression
     ;   
 
 primitiveAtomWithConstant
@@ -421,7 +438,6 @@ primitiveAtomWithConstant
     |    'null'
     |    array
     |    globalConstant
-    |    VariableId
     ;
 
 globalConstant

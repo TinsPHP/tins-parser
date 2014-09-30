@@ -5,7 +5,7 @@
  */
 
 /*
- * This class is based on the class ConstantAccessTest from the TSPHP project.
+ * This class is based on the class ExpressionTest from the TSPHP project.
  * TSPHP is also published under the Apache License 2.0
  * For more information see http://tsphp.ch/wiki/display/TSPHP/License
  */
@@ -13,21 +13,20 @@
 package ch.tsphp.tinsphp.parser.test.integration.ast;
 
 import ch.tsphp.tinsphp.parser.test.integration.testutils.AAstTest;
-import ch.tsphp.tinsphp.parser.test.integration.testutils.TypeHelper;
+import ch.tsphp.tinsphp.parser.test.integration.testutils.ExpressionHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 @RunWith(Parameterized.class)
-public class ConstantAccessTest extends AAstTest
+public class ExpressionTest extends AAstTest
 {
 
-    public ConstantAccessTest(String testString, String expectedResult) {
+    public ExpressionTest(String testString, String expectedResult) {
         super(testString, expectedResult);
     }
 
@@ -39,21 +38,11 @@ public class ConstantAccessTest extends AAstTest
     @Parameterized.Parameters
     public static Collection<Object[]> testStrings() {
         List<Object[]> collection = new ArrayList<>();
+        List<String[]> expressions = ExpressionHelper.getAstExpressions();
 
-        String[] types = TypeHelper.getClassInterfaceTypes();
-        //TODO rstoll TINS-108 - class, TINS-109 - interface
-        /*for(String type: types){
-            collection.add(new Object[]{
-                "int $a = "+type+"::a;", 
-                "(vars (type tMod int) ($a (sMemAccess "+type+" a#)))"
-            });
-        }*/
-        collection.addAll(Arrays.asList(new Object[][]{
-                {"$a = a;", "(expr (= $a a#))"},
-                //TODO rstoll TINS-108 - class, TINS-109 - interface
-//                    {"int $a = self::a;", "(vars (type tMod int) ($a (sMemAccess self a#)))"},
-//                    {"int $a = parent::a;", "(vars (type tMod int) ($a (sMemAccess parent a#)))"},
-        }));
+        for (Object[] expression : expressions) {
+            collection.add(new Object[]{expression[0] + ";", "(expr " + expression[1] + ")"});
+        }
         return collection;
     }
 }

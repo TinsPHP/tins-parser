@@ -12,14 +12,15 @@
 
 package ch.tsphp.tinsphp.parser.test.integration.testutils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ExpressionHelper
 {
-
     public static List<String[]> getAstExpressions() {
-        return Arrays.asList(new String[][]{
+        List<String[]> collection = new ArrayList<>();
+        collection.addAll(Arrays.asList(new String[][]{
                 {"$a or $b", "(or $a $b)"},
                 {"$a xor $b", "(xor $a $b)"},
                 {"$a and $b", "(and $a $b)"},
@@ -28,36 +29,46 @@ public class ExpressionHelper
                 {"$a and $b or $c xor $d", "(or (and $a $b) (xor $c $d))"},
                 //($a or (($b and $c) xor $d)
                 {"$a or $b and $c xor $d", "(or $a (xor (and $b $c) $d))"},
-                //TODO rstoll TINS-108 - class, TINS-109 - interface
-                /*
-                {"$a = $b", "(= $a $b)"},
-                {"$a += $b", "(= $a (+ $a $b))"},
-                {"$a -= $b", "(= $a (- $a $b))"},
-                {"$a *= $b", "(= $a (* $a $b))"},
-                {"$a /= $b", "(= $a (/ $a $b))"},
-                {"$a &= $b", "(= $a (& $a $b))"},
-                {"$a |= $b", "(= $a (| $a $b))"},
-                {"$a ^= $b", "(= $a (^ $a $b))"},
-                {"$a %= $b", "(= $a (% $a $b))"},
-                {"$a .= $b", "(= $a (. $a $b))"},
-                {"$a <<= $b", "(= $a (<< $a $b))"},
-                {"$a >>= $b", "(= $a (>> $a $b))"},
-                {"$a =() $b", "(cAssign $a $b)"},
-                //check that all have the same precedence
-                {"$a = $b += $c -= $d *= $e", "(= $a (= $b (+ $b (= $c (- $c (= $d (* $d $e)))))))"},
-                {"$e /= $f &= $g |= $h ^= $i", "(= $e (/ $e (= $f (& $f (= $g (| $g (= $h (^ $h $i))))))))"},
-                {
-                        "$i %= $j .= $k <<= $l >>= $m =() $n",
-                        "(= $i (% $i (= $j (. $j (= $k (<< $k (= $l (>> $l (cAssign $m $n)))))))))"
-                },
+
                 //precedence tests
                 //($a = $b) or $c
                 {"$a = $b or $c", "(or (= $a $b) $c)"},
                 //(($a += $b) and ($c -= $d)) xor $e
-                {"$a += $b and $c -= $d xor $e", "(xor (and (= $a (+ $a $b)) (= $c (- $c $d))) $e)"},
-                //($a =() $b) or (($c =() $d) and $e)
-                {"$a =() $b or $c =() $d and $e", "(or (cAssign $a $b) (and (cAssign $c $d) $e))"},
+                {"$a += $b and $c -= $d xor $e", "(xor (and (+= $a $b) (-= $c $d)) $e)"},
+                //($a -= $b) or (($c = $d) and $e)
+                {"$a -= $b or $c = $d and $e", "(or (-= $a $b) (and (= $c $d) $e))"},
+        }));
+        collection.addAll(getAstExpressionWithoutWeakOperators());
 
+        return collection;
+    }
+
+    public static List<String[]> getAstExpressionWithoutWeakOperators() {
+        return Arrays.asList(new String[][]{
+                {"$a = $b", "(= $a $b)"},
+                {"$a += $b", "(+= $a $b)"},
+                {"$a -= $b", "(-= $a $b)"},
+                {"$a *= $b", "(*= $a $b)"},
+                {"$a /= $b", "(/= $a $b)"},
+                {"$a &= $b", "(&= $a $b)"},
+                {"$a |= $b", "(|= $a $b)"},
+                {"$a ^= $b", "(^= $a $b)"},
+                {"$a %= $b", "(%= $a $b)"},
+                {"$a .= $b", "(.= $a $b)"},
+                {"$a <<= $b", "(<<= $a $b)"},
+                {"$a >>= $b", "(>>= $a $b)"},
+                //check that all have the same precedence
+                {"$a = $b += $c -= $d *= $e", "(= $a (+= $b (-= $c (*= $d $e))))"},
+                {"$e /= $f &= $g |= $h ^= $i", "(/= $e (&= $f (|= $g (^= $h $i))))"},
+                {
+                        "$i %= $j .= $k <<= $l >>= $m = $n",
+                        "(%= $i (.= $j (<<= $k (>>= $l (= $m $n)))))"
+                },
+
+                //precedence test not possible since it would include weak operators.
+
+                //TODO rstoll TINS-108 - class, TINS-109 - interface
+                /*
                 {"true ? $a : $b", "(? true $a $b)"},
                 //precedence tests
                 //($a and ($b = (false ? 1 or 2 : 3)) or 4
@@ -235,8 +246,6 @@ public class ExpressionHelper
                 "true xor false",
                 "true and false",
                 "true or false xor true and false",
-                //TODO rstoll TINS-108 - class, TINS-109 - interface
-                /*
                 "$b = 1",
                 "$b += 1",
                 "$b -= 1",
@@ -250,7 +259,8 @@ public class ExpressionHelper
                 "$b <<= 1",
                 "$b >>= 1",
                 "$b >>= 1",
-                "$b =() 1",
+                //TODO rstoll TINS-108 - class, TINS-109 - interface
+                /*
                 "true ? 1:2",
                 "true ? $a<$b ? 1:2:2",
                 "true ? $a<$b ? 1:2:2+3-4",

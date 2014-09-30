@@ -37,12 +37,15 @@ public class VariableDeclarationTest extends AAstTest
 
     @Parameterized.Parameters
     public static Collection<Object[]> testStrings() {
+        //Variable declaration as they are known in TSPHP do not exist in PHP.
+        //Therefore the following code creates an expr AST and not a vars AST as one might expect.
+
         Collection<Object[]> collection = new ArrayList<>();
-        List<String[]> expressions = ExpressionHelper.getAstExpressions();
+        List<String[]> expressions = ExpressionHelper.getAstExpressionWithoutWeakOperators();
         for (Object[] expression : expressions) {
             collection.add(new Object[]{
                     "$a = " + expression[0] + ";",
-                    "(vars ($a " + expression[1] + "))"
+                    "(expr (= $a " + expression[1] + "))"
             });
         }
         return collection;
