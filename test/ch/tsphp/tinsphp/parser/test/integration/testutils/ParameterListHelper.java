@@ -34,7 +34,7 @@ public class ParameterListHelper
         //normal
         collection.addAll(getVariations(
                 prefix, "$a", appendix,
-                prefixExpect, "$a", appendixExpect));
+                prefixExpect, "(type tMod ?) $a", appendixExpect));
 
         collection.addAll(getVariationsForOptional(prefix, appendix, prefixExpect, appendixExpect));
 
@@ -71,62 +71,63 @@ public class ParameterListHelper
     private static Collection<Object[]> getVariationsForOptional(String prefix, String appendix,
             String prefixExpect, String appendixExpect) {
         List<Object[]> collection = new ArrayList<>();
+        String typeAst = "(type tMod ?)";
         collection.addAll(Arrays.asList(new Object[][]{
                 //optional parameter
                 {
                         prefix + "$a, $b='hallo'" + appendix,
                         prefixExpect + "(params "
-                                + "(pDecl $a) "
-                                + "(pDecl ($b 'hallo'))"
+                                + "(pDecl " + typeAst + " $a) "
+                                + "(pDecl " + typeAst + " ($b 'hallo'))"
                                 + ")" + appendixExpect
                 },
                 {
                         prefix + "$a, $i, $b=+1" + appendix,
                         prefixExpect + "(params "
-                                + "(pDecl $a) "
-                                + "(pDecl $i) "
-                                + "(pDecl ($b (uPlus 1)))"
+                                + "(pDecl " + typeAst + " $a) "
+                                + "(pDecl " + typeAst + " $i) "
+                                + "(pDecl " + typeAst + " ($b (uPlus 1)))"
                                 + ")" + appendixExpect
                 },
                 {
                         prefix + "$a, $i, $b=-10, $d=2.0" + appendix,
                         prefixExpect + "(params "
-                                + "(pDecl $a) "
-                                + "(pDecl $i) "
-                                + "(pDecl ($b (uMinus 10))) "
-                                + "(pDecl ($d 2.0))"
+                                + "(pDecl " + typeAst + " $a) "
+                                + "(pDecl " + typeAst + " $i) "
+                                + "(pDecl " + typeAst + " ($b (uMinus 10))) "
+                                + "(pDecl " + typeAst + " ($d 2.0))"
                                 + ")" + appendixExpect
                 },
                 {
                         prefix + "$a=null, $b=true, $c=E_ALL" + appendix,
                         prefixExpect + "(params "
-                                + "(pDecl ($a null)) "
-                                + "(pDecl ($b true)) "
-                                + "(pDecl ($c E_ALL#))"
+                                + "(pDecl " + typeAst + " ($a null)) "
+                                + "(pDecl " + typeAst + " ($b true)) "
+                                + "(pDecl " + typeAst + " ($c E_ALL#))"
                                 + ")" + appendixExpect
                 },
                 {
                         prefix + "$a, $b=false, $d=null" + appendix,
                         prefixExpect + "(params "
-                                + "(pDecl $a) "
-                                + "(pDecl ($b false)) "
-                                + "(pDecl ($d null))"
+                                + "(pDecl " + typeAst + " $a) "
+                                + "(pDecl " + typeAst + " ($b false)) "
+                                + "(pDecl " + typeAst + " ($d null))"
                                 + ")" + appendixExpect
                 },
                 {
                         prefix + "$a=1, $b, $d=true" + appendix,
                         prefixExpect + "(params "
-                                + "(pDecl ($a 1)) "
-                                + "(pDecl $b) "
-                                + "(pDecl ($d true))"
+                                + "(pDecl " + typeAst + " ($a 1)) "
+                                + "(pDecl " + typeAst + " $b) "
+                                + "(pDecl " + typeAst + " ($d true))"
                                 + ")" + appendixExpect
                 },
                 {
                         prefix + "$a=1, $b=2, $d" + appendix,
                         prefixExpect + "(params "
-                                + "(pDecl ($a 1)) "
-                                + "(pDecl ($b 2)) "
-                                + "(pDecl $d)"
+                                + "(pDecl " + typeAst + " ($a 1)) "
+                                + "(pDecl " + typeAst + " ($b 2)) "
+                                + "(pDecl " + typeAst + " $d)"
                                 + ")" + appendixExpect
                 },
                 //See TSPHP-418
@@ -144,9 +145,9 @@ public class ParameterListHelper
 
         for (String type : types) {
             collection.add(new Object[]{
-                    prefix + "int $a=" + type + "::a" + appendix,
+                    prefix + "$a=" + type + "::a" + appendix,
                     prefixExpect
-                            + "(params (pDecl (type tMod int) ($a (sMemAccess " + type + " a#))))"
+                            + "(params (pDecl " + typeAst + " ($a (sMemAccess " + type + " a#))))"
                             + appendixExpect
             });
         }

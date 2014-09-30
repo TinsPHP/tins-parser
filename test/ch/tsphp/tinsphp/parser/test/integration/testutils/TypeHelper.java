@@ -62,7 +62,7 @@ public class TypeHelper
         List<Object[]> collection = new ArrayList<>();
         String tMod = cmMod.isEmpty() ? "tMod" : "(tMod " + cmMod + ")";
         collection.addAll(Arrays.asList(new String[][]{
-                {prefix + " " + appendix, prefixExpect + " " + appendixExpect},
+                {prefix + " " + appendix, prefixExpect + " (type " + tMod + " ?) " + appendixExpect},
                 {prefix + " array " + appendix, prefixExpect + " (type " + tMod + " array) " + appendixExpect},
         }));
         String[] types = getClassInterfaceTypes();

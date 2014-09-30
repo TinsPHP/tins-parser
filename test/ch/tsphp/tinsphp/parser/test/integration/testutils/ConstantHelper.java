@@ -27,7 +27,7 @@ public class ConstantHelper
             String prefixExpected, String appendixExpected) {
         List<Object[]> collection = new ArrayList<>();
 
-        final String typeAst = "(type (tMod public static final))";
+        final String typeAst = "(type (tMod public static final) ?)";
         String[] types = TypeHelper.getClassInterfaceTypes();
         for (String type : types) {
             collection.add(new Object[]{

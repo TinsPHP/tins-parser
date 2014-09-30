@@ -42,11 +42,11 @@ public class FunctionTest extends AAstTest
 
         collection.addAll(ParameterListHelper.getTestStrings(
                 "function set(", "){}",
-                "(function fMod set() ", " block)"));
+                "(function fMod (type tMod ?) set() ", " block)"));
 
         collection.addAll(Arrays.asList(new Object[][]{
-                {"function foo(){}", "(function fMod foo() params block)"},
-                {"function foo(){ ; }", "(function fMod foo() params (block expr))"},
+                {"function foo(){}", "(function fMod (type tMod ?) foo() params block)"},
+                {"function foo(){ ; }", "(function fMod (type tMod ?) foo() params (block expr))"},
         }));
 
         return collection;

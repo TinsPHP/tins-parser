@@ -282,8 +282,11 @@ useDefinitionList
     ;
     
 useDefinition
-    :    usingType 'as' Identifier -> usingType Identifier
-    |    type=Identifier 'as' alias=Identifier -> TYPE_NAME[$type, $type.text] $alias
+    :    usingType 'as' Identifier 
+         -> usingType Identifier
+    
+    |    type=Identifier 'as' alias=Identifier 
+         -> TYPE_NAME[$type, $type.text] $alias
 
     |    usingType
          -> usingType Identifier[$usingType.start, $usingType.text.substring($usingType.text.lastIndexOf(BACKSLASH)+1)]
@@ -307,7 +310,8 @@ constDefinitionList
                      Public[$constAssign.start,"public"]
                      Static[$constAssign.start,"static"] 
                      Final[$constAssign.start,"final"] 
-                 ) 
+                 )
+               	 QuestionMark[$constAssign.start, "?"]
              )
              constantAssignment+
          )
@@ -320,16 +324,18 @@ constantAssignment
 
 
 unaryPrimitiveAtom
-    :    uplus = '+' primitiveAtomWithConstant -> ^(UNARY_PLUS[$uplus, "uPlus"] primitiveAtomWithConstant)
+    :    uplus = '+' primitiveAtomWithConstant  -> ^(UNARY_PLUS[$uplus, "uPlus"] primitiveAtomWithConstant)
     |    uminus = '-' primitiveAtomWithConstant -> ^(UNARY_MINUS[$uminus,"uMinus"] primitiveAtomWithConstant)
     |    primitiveAtomWithConstant
     ;
 
 functionDefinition    
-    :    func='function' methodIdentifier formalParameters block='{' instruction* '}' 
+    :    func='function' id=methodIdentifier formalParameters block='{' instruction* '}' 
          -> ^($func 
              FUNCTION_MODIFIER[$func,"fMod"] 
-             methodIdentifier formalParameters
+             ^(TYPE[$id.start,"type"] TYPE_MODIFIER[$id.start,"tMod"] QuestionMark[$id.start, "?"])
+             methodIdentifier 
+             formalParameters
              ^(BLOCK[$block,"block"] instruction*)
          )
     ;
@@ -340,7 +346,7 @@ methodIdentifier
     
 classInterfaceTypeWithoutMixed
     :    root='\\' namespaceId -> TYPE_NAME[$root, BACKSLASH + $namespaceId.text]
-    |    namespaceId -> TYPE_NAME[$namespaceId.start, $namespaceId.text]
+    |    namespaceId           -> TYPE_NAME[$namespaceId.start, $namespaceId.text]
     ;
 
 formalParameters
@@ -352,13 +358,21 @@ paramList
     ;
     
 paramDeclaration
-    :    VariableId ('=' unaryPrimitiveAtom)?
-         -> ^(PARAMETER_DECLARATION[$paramDeclaration.start,"pDecl"] ^(VariableId unaryPrimitiveAtom?))
-         
-    |    TypeArray VariableId  ('=' unaryPrimitiveAtom)?
-         -> ^(PARAMETER_DECLARATION[$paramDeclaration.start,"pDecl"] 
-             ^(TYPE[$TypeArray, "type"] TYPE_MODIFIER[$TypeArray, "tMod"] TypeArray)
-             ^(VariableId unaryPrimitiveAtom?)
+    :    parameterType VariableId ('=' unaryPrimitiveAtom)?
+         -> ^(PARAMETER_DECLARATION[$paramDeclaration.start,"pDecl"] parameterType ^(VariableId unaryPrimitiveAtom?))
+    ;
+    
+parameterType
+    :    a=TypeArray
+         -> ^(TYPE[$a, "type"] TYPE_MODIFIER[$a, "tMod"] $a)
+
+    |    t=classInterfaceTypeWithoutMixed
+         -> ^(TYPE[$t.start, "type"] TYPE_MODIFIER[$t.start, "tMod"] $t)
+
+    |    /* empty */
+         -> ^(TYPE[$parameterType.start, "type"] 
+             TYPE_MODIFIER[$parameterType.start, "tMod"] 
+             QuestionMark[$parameterType.start, "?"]
          )
     ;   
 
@@ -399,7 +413,7 @@ primitiveAtomWithConstant
     ;
 
 globalConstant
-    :    identifier=classInterfaceTypeWithoutMixed -> CONSTANT[$identifier.start,$identifier.text+"#"]    
+    :    identifier=classInterfaceTypeWithoutMixed -> CONSTANT[$identifier.start, $identifier.text+"#"]    
     ;     
     
 array    
