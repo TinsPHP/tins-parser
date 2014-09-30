@@ -404,23 +404,22 @@ logicAndWeak
     ;
    
 assignment
-    :    (ternary -> ternary)
+    :    ternary
          (
-             (    op='=' 
-             |    op='+='
-             |    op='-='
-             |    op='*='
-             |    op='/='
-             |    op='&='
-             |    op='|='
-             |    op='^='
-             |    op='%='
-             |    op='.='
-             |    op='<<='
-             |    op='>>='
-             )
+             (    '=' 
+             |    '+='
+             |    '-='
+             |    '*='
+             |    '/='
+             |    '&='
+             |    '|='
+             |    '^='
+             |    '%='
+             |    '.='
+             |    '<<='
+             |    '>>='
+             )^
              assignment
-             -> ^($op ternary assignment)
          )?
     ;
 
@@ -445,9 +444,17 @@ bitwiseXor
     ;
 
 bitwiseAnd
-    :    atom ('&'^ atom)*
+    :    equality ('&'^ equality)*
     ;
-   
+    
+equality
+    :    comparison ( ('=='|'==='|'!='|'!==')^ comparison)?
+    ;
+    
+comparison
+    :    atom ( ('<'|'<='|'>'|'>=')^ atom)?
+    ;
+
 atom    
     :    VariableId
     |    unaryPrimitiveAtom

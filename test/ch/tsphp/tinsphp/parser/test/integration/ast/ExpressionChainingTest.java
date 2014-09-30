@@ -103,6 +103,8 @@ public class ExpressionChainingTest extends AAstTest
                 {"$a ^ $b ^ $c ^ $d", "(^ (^ (^ $a $b) $c) $d)"},
                 {"$a & $b & $c & $d", "(& (& (& $a $b) $c) $d)"},
 
+                //cannot chain equality and comparison operators, hence there are missing here
+
                 //TODO rstoll TINS-108 - class, TINS-109 - interface
                 /*
                 {"1 << 2 << 3", "(<< (<< 1 2) 3)"},
