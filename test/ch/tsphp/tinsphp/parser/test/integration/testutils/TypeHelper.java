@@ -19,13 +19,6 @@ import java.util.List;
 public class TypeHelper
 {
 
-    public static List<String> getAllTypes() {
-        List<String> types = new ArrayList<>();
-        types.addAll(getPrimitiveTypes());
-        types.addAll(Arrays.asList(getClassInterfaceTypes()));
-        return types;
-    }
-
     public static String[] getClassInterfaceTypes() {
 
         return new String[]{
@@ -39,21 +32,16 @@ public class TypeHelper
         };
     }
 
-    public static List<String> getPrimitiveTypes() {
-        List<String> collection = new ArrayList<>(7);
-        collection.addAll(Arrays.asList(getScalarTypes()));
-        collection.add("array");
-        collection.add("resource");
-        collection.add("mixed");
-        return collection;
-    }
-
-    public static String[] getScalarTypes() {
+    public static String[] getScalarTypesInclArray() {
         return new String[]{
                 "bool",
+                "boolean",
                 "int",
+                "integer",
                 "float",
-                "string"
+                "double",
+                "string",
+                "array"
         };
     }
 

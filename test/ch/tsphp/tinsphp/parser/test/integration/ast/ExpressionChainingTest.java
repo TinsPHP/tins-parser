@@ -124,14 +124,13 @@ public class ExpressionChainingTest extends AAstTest
                 {"$a / $b / $c / $d", "(/ (/ (/ $a $b) $c) $d)"},
                 {"$a % $b % $c % $d", "(% (% (% $a $b) $c) $d)"},
 
-                //TODO rstoll TINS-108 - class, TINS-109 - interface
-                /*
+
                 //cannot chain up instanceof operator, thus it is missing here
 
-                {"(Type) (MyClass) $a", "(casting (type tMod Type) (casting (type tMod MyClass) $a))"},
+                {"(int) (float) $a", "(casting (type tMod int) (casting (type tMod float) $a))"},
                 {
-                        "(int) (Type) (MyClass) $a",
-                        "(casting (type tMod int) (casting (type tMod Type) (casting (type tMod MyClass) $a)))"
+                        "(int) (string) (array) $a",
+                        "(casting (type tMod int) (casting (type tMod string) (casting (type tMod array) $a)))"
                 },
                 {"@@$a", "(@ (@ $a))"},
                 {"~~$a", "(~ (~ $a))"},
@@ -144,14 +143,16 @@ public class ExpressionChainingTest extends AAstTest
                 {"+ + +$a", "(uPlus (uPlus (uPlus $a)))"},
                 {"- - -$a", "(uMinus (uMinus (uMinus $a)))"},
                 //chaining up different operators
-                {"- ~ - ~ $a","(uMinus (~ (uMinus (~ $a))))"},
-                {"(Type) @ ~ ! + -$a", "(casting (type tMod Type) (@ (~ (! (uPlus (uMinus $a))))))"},
+                {"- ~ - ~ $a", "(uMinus (~ (uMinus (~ $a))))"},
+                {"(bool) @ ~ ! + -$a", "(casting (type tMod bool) (@ (~ (! (uPlus (uMinus $a))))))"},
                 {
-                        "+ ~ (int) ! - @ (Type) @ ~ ! + -$a",
+                        "+ ~ (int) ! - @ (double) @ ~ ! + -$a",
                         "(uPlus (~ (casting (type tMod int) (! (uMinus (@ "
-                                + "(casting (type tMod Type) (@ (~ (! (uPlus (uMinus $a))))))))))))"
+                                + "(casting (type tMod double) (@ (~ (! (uPlus (uMinus $a))))))))))))"
                 },
 
+                //TODO rstoll TINS-108 - class, TINS-109 - interface
+                /*
                 {"clone clone $a", "(clone (clone $a))"},
                 {"clone clone clone $a", "(clone (clone (clone $a)))"},
 

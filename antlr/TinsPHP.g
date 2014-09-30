@@ -477,12 +477,35 @@ factor
     ;
 
 instanceOf
-    :    atom ('instanceof'^ (classInterfaceTypeWithoutMixed|VariableId))?
+    :    unary ('instanceof'^ (classInterfaceTypeWithoutMixed|VariableId))?
+    ;
+
+unary
+    :    cast='(' scalarTypesInclArrayWithModifier ')' unary -> ^(CAST[$cast,"casting"] scalarTypesInclArrayWithModifier unary)
+    |    plus='++' unary  -> ^(PRE_INCREMENT[$plus,"preIncr"] unary)
+    |    minus='--' unary -> ^(PRE_DECREMENT[$minus,"preDecr"] unary)
+    |    ('@'|'~'|'!')^ unary
+    |    uplus = '+' unary -> ^(UNARY_PLUS[uplus,"uPlus"] unary)
+    |    uminus = '-' unary -> ^(UNARY_MINUS[$uminus,"uMinus"] unary)
+    |    atom
+    ;
+
+scalarTypesInclArrayWithModifier
+    :    (    t='bool'
+         |    t='boolean'
+         |    t='int'
+         |    t='integer'
+         |    t='float'
+         |    t='double'
+         |    t='string'
+         |    t='array'
+         )
+         -> ^(TYPE[$t,"type"] TYPE_MODIFIER[$t,"tMod"] $t)
     ;
 
 atom    
     :    VariableId
-    |    unaryPrimitiveAtom
+    |    primitiveAtomWithConstant
     |    '(' expression ')' -> expression
     ;   
 

@@ -163,16 +163,11 @@ public class ExpressionHelper
                 //$a * ($b instanceof $c)
                 {"$a * $b instanceof $c", "(* $a (instanceof $b $c))"},
 
-                //TODO rstoll TINS-108 - class, TINS-109 - interface
-                /*
                 {"(bool) $a", "(casting (type tMod bool) $a)"},
                 {"(int) $a", "(casting (type tMod int) $a)"},
                 {"(float) $a", "(casting (type tMod float) $a)"},
                 {"(string) $a", "(casting (type tMod string) $a)"},
                 {"(array) $a", "(casting (type tMod array) $a)"},
-                {"(resource) $a", "(casting (type tMod resource) $a)"},
-                {"(Type) $a", "(casting (type tMod Type) $a)"},
-                {"(cast Type) $a", "(casting (type (tMod cast) Type) $a)"},
                 {"++$a", "(preIncr $a)"},
                 {"--$a", "(preDecr $a)"},
                 {"@$a", "(@ $a)"},
@@ -192,6 +187,8 @@ public class ExpressionHelper
                 {"~$a / $b", "(/ (~ $a) $b)"},
                 {"!$a % $b ", "(% (! $a) $b)"},
 
+                //TODO rstoll TINS-106 parser procedural - expressions
+                /*
                 {"clone $a", "(clone $a)"},
                 {"new Type", "(new Type args)"},
                 //precedence test
@@ -263,8 +260,6 @@ public class ExpressionHelper
                 "$b <<= 1",
                 "$b >>= 1",
                 "$b >>= 1",
-                //TODO rstoll TINS-108 - class, TINS-109 - interface
-                /*
                 "true ? 1:2",
                 "true ? $a<$b ? 1:2:2",
                 "true ? $a<$b ? 1:2:2+3-4",
@@ -304,8 +299,6 @@ public class ExpressionHelper
                 "(float) $a",
                 "(string) $a",
                 "(array) $a",
-                "(Foo) $a",
-                "(cast Foo) $a",
                 "(int) ((bool) $a && $b) + 1",
                 "++$a",
                 "--$a",
@@ -316,6 +309,8 @@ public class ExpressionHelper
                 "!!$a",
                 "+1",
                 "-1",
+                //TODO rstoll TINS-106 parser procedural - expressions
+                /*
                 "new a",
                 "new a()",
                 "clone $a",
