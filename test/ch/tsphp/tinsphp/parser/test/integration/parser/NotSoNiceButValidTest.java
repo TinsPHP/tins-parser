@@ -107,6 +107,7 @@ public class NotSoNiceButValidTest extends AParserTest
                 {"namespace {}"},
         }));
 
+        //lot of statements do not make sense on its own for instance $a < $b (assignment is missing)
         String[] expressions = ExpressionHelper.getParserExpressions();
         for (String expression : expressions) {
             collection.add(new Object[]{expression + ";"});

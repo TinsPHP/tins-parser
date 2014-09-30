@@ -20,8 +20,6 @@ public class ExpressionHelper
 
     public static List<String[]> getAstExpressions() {
         return Arrays.asList(new String[][]{
-                //TODO rstoll TINS-108 - class, TINS-109 - interface
-                /*
                 {"$a or $b", "(or $a $b)"},
                 {"$a xor $b", "(xor $a $b)"},
                 {"$a and $b", "(and $a $b)"},
@@ -30,7 +28,8 @@ public class ExpressionHelper
                 {"$a and $b or $c xor $d", "(or (and $a $b) (xor $c $d))"},
                 //($a or (($b and $c) xor $d)
                 {"$a or $b and $c xor $d", "(or $a (xor (and $b $c) $d))"},
-
+                //TODO rstoll TINS-108 - class, TINS-109 - interface
+                /*
                 {"$a = $b", "(= $a $b)"},
                 {"$a += $b", "(= $a (+ $a $b))"},
                 {"$a -= $b", "(= $a (- $a $b))"},
@@ -232,12 +231,12 @@ public class ExpressionHelper
 
     public static String[] getParserExpressions() {
         return new String[]{
-                //TODO rstoll TINS-108 - class, TINS-109 - interface
-                /*
                 "true or false",
                 "true xor false",
                 "true and false",
                 "true or false xor true and false",
+                //TODO rstoll TINS-108 - class, TINS-109 - interface
+                /*
                 "$b = 1",
                 "$b += 1",
                 "$b -= 1",

@@ -393,7 +393,19 @@ variableDeclaration
     ;
 
 expression
-    :    atom
+    :   logicOrWeak 
+    ;
+
+logicOrWeak
+    :    logicXorWeak ('or'^ logicXorWeak)*
+    ; 
+
+logicXorWeak
+    :    logicAndWeak ('xor'^ logicAndWeak)*
+    ; 
+	
+logicAndWeak
+    :    atom ('and'^ atom)*
     ;
     
 atom    
