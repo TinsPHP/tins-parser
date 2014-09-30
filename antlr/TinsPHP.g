@@ -89,6 +89,7 @@ tokens{
     Namespace = 'namespace';
     New = 'new';
     NotEqual = '!=';
+    NotEqualAlternative = '<>';
     NotIdentical = '!==';
     Null = 'null';
     ObjectOperator = '->';
@@ -448,11 +449,31 @@ bitwiseAnd
     ;
     
 equality
-    :    comparison ( ('=='|'==='|'!='|'!==')^ comparison)?
+    :    comparison (equalityOperator^ comparison)?
+    ;
+
+equalityOperator
+    :    '=='
+    |	 '==='
+    |    '!='
+    |    o='<>' -> NotEqual[$o,"!="]
+    |    '!=='
     ;
     
 comparison
-    :    atom ( ('<'|'<='|'>'|'>=')^ atom)?
+    :    bitwiseShift ( ('<'|'<='|'>'|'>=')^ bitwiseShift)?
+    ;
+     
+bitwiseShift	
+    :    termOrStringConcatenation (('<<'|'>>')^ termOrStringConcatenation)*
+    ;
+
+termOrStringConcatenation	
+    :    factor (('+'|'-'|'.')^ factor)*
+    ;
+
+factor	
+    :    atom (('*'|'/'|'%')^ atom)*
     ;
 
 atom    

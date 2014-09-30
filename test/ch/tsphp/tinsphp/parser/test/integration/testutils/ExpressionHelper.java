@@ -110,6 +110,7 @@ public class ExpressionHelper
                 {"$a == $b", "(== $a $b)"},
                 {"$a === $b", "(=== $a $b)"},
                 {"$a != $b", "(!= $a $b)"},
+                {"$a <> $b", "(!= $a $b)"},
                 {"$a !== $b", "(!== $a $b)"},
                 //precedence tests
                 //($a == $b) & $c
@@ -126,8 +127,6 @@ public class ExpressionHelper
                         "(? (| (== $a $b) (& (< $c $d) $e)) (!= $f $g) (=== $h $i))"
                 },
 
-                //TODO rstoll TINS-108 - class, TINS-109 - interface
-                /*
                 {"1 << 2", "(<< 1 2)"},
                 {"1 >> 2", "(>> 1 2)"},
                 //check that both have the same precedence
@@ -158,6 +157,8 @@ public class ExpressionHelper
                 //$a + ($b * $c) - ($d % $f).($g / 2)
                 {"$a + $b * $c - $d % $f.$g / 2", "(. (- (+ $a (* $b $c)) (% $d $f)) (/ $g 2))"},
 
+                //TODO rstoll TINS-108 - class, TINS-109 - interface
+                /*
                 {"$a instanceof MyClass", "(instanceof $a MyClass)"},
                 {"$a instanceof $b", "(instanceof $a $b)"},
                 //precedence test

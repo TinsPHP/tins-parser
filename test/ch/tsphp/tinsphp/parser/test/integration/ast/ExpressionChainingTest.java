@@ -105,8 +105,6 @@ public class ExpressionChainingTest extends AAstTest
 
                 //cannot chain equality and comparison operators, hence there are missing here
 
-                //TODO rstoll TINS-108 - class, TINS-109 - interface
-                /*
                 {"1 << 2 << 3", "(<< (<< 1 2) 3)"},
                 {"1 >> 2 >> 3", "(>> (>> 1 2) 3)"},
                 {"1 << 2 << 3 << 4", "(<< (<< (<< 1 2) 3) 4)"},
@@ -125,6 +123,10 @@ public class ExpressionChainingTest extends AAstTest
                 {"$a * $b * $c * $d", "(* (* (* $a $b) $c) $d)"},
                 {"$a / $b / $c / $d", "(/ (/ (/ $a $b) $c) $d)"},
                 {"$a % $b % $c % $d", "(% (% (% $a $b) $c) $d)"},
+
+                //TODO rstoll TINS-108 - class, TINS-109 - interface
+                /*
+                //cannot chain up instanceof operator, thus it is missing here
 
                 {"(Type) (MyClass) $a", "(casting (type tMod Type) (casting (type tMod MyClass) $a))"},
                 {
