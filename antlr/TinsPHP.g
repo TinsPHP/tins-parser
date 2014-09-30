@@ -311,7 +311,7 @@ constDefinitionList
                      Static[$constAssign.start,"static"] 
                      Final[$constAssign.start,"final"] 
                  )
-               	 QuestionMark[$constAssign.start, "?"]
+                 QuestionMark[$constAssign.start, "?"]
              )
              constantAssignment+
          )
