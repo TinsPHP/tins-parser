@@ -473,7 +473,11 @@ termOrStringConcatenation
     ;
 
 factor	
-    :    atom (('*'|'/'|'%')^ atom)*
+    :    instanceOf (('*'|'/'|'%')^ instanceOf)*
+    ;
+
+instanceOf
+    :    atom ('instanceof'^ (classInterfaceTypeWithoutMixed|VariableId))?
     ;
 
 atom    

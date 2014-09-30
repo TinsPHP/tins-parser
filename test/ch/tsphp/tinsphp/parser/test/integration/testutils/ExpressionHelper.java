@@ -157,14 +157,14 @@ public class ExpressionHelper
                 //$a + ($b * $c) - ($d % $f).($g / 2)
                 {"$a + $b * $c - $d % $f.$g / 2", "(. (- (+ $a (* $b $c)) (% $d $f)) (/ $g 2))"},
 
-                //TODO rstoll TINS-108 - class, TINS-109 - interface
-                /*
                 {"$a instanceof MyClass", "(instanceof $a MyClass)"},
                 {"$a instanceof $b", "(instanceof $a $b)"},
                 //precedence test
                 //$a * ($b instanceof $c)
                 {"$a * $b instanceof $c", "(* $a (instanceof $b $c))"},
 
+                //TODO rstoll TINS-108 - class, TINS-109 - interface
+                /*
                 {"(bool) $a", "(casting (type tMod bool) $a)"},
                 {"(int) $a", "(casting (type tMod int) $a)"},
                 {"(float) $a", "(casting (type tMod float) $a)"},

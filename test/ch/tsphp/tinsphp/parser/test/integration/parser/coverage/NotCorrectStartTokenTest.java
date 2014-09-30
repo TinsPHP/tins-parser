@@ -75,6 +75,7 @@ public class NotCorrectStartTokenTest extends AParserParserExceptionTest
                 {"formalParameters", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
                 {"functionDefinition", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
                 {"globalConstant", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
+                {"instanceOf", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"instruction", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"logicAnd", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"logicAndWeak", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
