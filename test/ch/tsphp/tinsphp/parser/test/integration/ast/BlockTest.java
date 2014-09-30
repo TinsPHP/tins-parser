@@ -39,17 +39,16 @@ public class BlockTest extends AAstTest
     @Parameterized.Parameters
     public static Collection<Object[]> testStrings() {
         List<Object[]> collection = new ArrayList<>();
-        //TODO rstoll TINS-108 - class, TINS-109 - interface
-//        addToCollection(collection, ArrayAccessTest.testStrings());
+        addToCollection(collection, ArrayAccessTest.testStrings());
         addToCollection(collection, ArrayDeclarationTest.testStrings());
 //        addToCollection(collection, BreakContinueTest.testStrings());
-//        addToCollection(collection, CloneTest.testStrings());
+        addToCollection(collection, CloneTest.testStrings());
         addToCollection(collection, ConstantAccessTest.testStrings());
 //        addToCollection(collection, EchoTest.testStrings());
-//        addToCollection(collection, ExitTest.testStrings());
+        addToCollection(collection, ExitTest.testStrings());
 //        addToCollection(collection, ForTest.testStrings());
 //        addToCollection(collection, ForeachTest.testStrings());
-//        addToCollection(collection, FunctionCallTest.testStrings());
+        addToCollection(collection, FunctionCallTest.testStrings());
 //        addToCollection(collection, IfTest.testStrings());
 //        addToCollection(collection, MethodCallTest.testStrings());
 //        addToCollection(collection, NewClassTest.testStrings());
@@ -57,7 +56,7 @@ public class BlockTest extends AAstTest
 //        addToCollection(collection, SwitchTest.testStrings());
 //        addToCollection(collection, ThrowTest.testStrings());
 //        addToCollection(collection, TryCatchTest.testStrings());
-        addToCollection(collection, VariableDeclarationTest.testStrings());
+        addToCollection(collection, VariableAssignmentTest.testStrings());
 //        addToCollection(collection, WhileTest.testStrings());
         collection.addAll(Arrays.asList(new Object[][]{
                 {"{; { ; { ;}}}", "expr expr expr"},

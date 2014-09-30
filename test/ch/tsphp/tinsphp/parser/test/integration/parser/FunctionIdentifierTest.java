@@ -6,22 +6,19 @@
 
 package ch.tsphp.tinsphp.parser.test.integration.parser;
 
-import ch.tsphp.tinsphp.parser.test.integration.lexer.TokenTest;
 import ch.tsphp.tinsphp.parser.test.integration.testutils.AParserTest;
 import org.antlr.runtime.RecognitionException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @RunWith(Parameterized.class)
-public class NamespaceIdTest extends AParserTest
+public class FunctionIdentifierTest extends AParserTest
 {
 
-    public NamespaceIdTest(String testString) {
+    public FunctionIdentifierTest(String testString) {
         super(testString);
     }
 
@@ -32,18 +29,11 @@ public class NamespaceIdTest extends AParserTest
 
     @Override
     protected void run() throws RecognitionException {
-        result = parser.namespaceId();
+        result = parser.functionIdentifier();
     }
 
     @Parameterized.Parameters
     public static Collection<Object[]> testStrings() {
-        List<Object[]> collection = new ArrayList<>();
-        Collection<Object[]> idTestStrings = TokenTest.getIDTestStrings();
-        for (Object[] obj : idTestStrings) {
-            collection.add(new String[]{obj[1] + ""});
-            collection.add(new String[]{obj[1] + "\\" + obj[1]});
-            collection.add(new String[]{obj[1] + "\\" + obj[1] + "\\" + obj[1]});
-        }
-        return collection;
+        return ClassInterfaceTypeWithoutMixedTest.testStrings();
     }
 }

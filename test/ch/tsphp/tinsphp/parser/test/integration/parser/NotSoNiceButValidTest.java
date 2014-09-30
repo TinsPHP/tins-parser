@@ -47,14 +47,16 @@ public class NotSoNiceButValidTest extends AParserTest
                 {"{}"},
                 {"{{}}"},
                 {"{;;}"},
-                //TODO rstoll TINS-68
-                /*
                 //clone without assignment
                 {"clone $foo;"},
                 //clone new instance
-                {"clone new Foo();"},
+                //TODO rstoll TINS-108 - class, TINS-109 - interface
+//                {"clone new Foo();"},
                 //multiple clones new instance
-                {"clone clone clone new Foo();"},
+                //TODO rstoll TINS-108 - class, TINS-109 - interface
+//                {"clone clone clone new Foo();"},
+                //TODO rstoll TINS-68 parser procedural - control structures
+                /*
                 //empty if or else blocks
                 {"if($a){}"},
                 {"if($a);"},

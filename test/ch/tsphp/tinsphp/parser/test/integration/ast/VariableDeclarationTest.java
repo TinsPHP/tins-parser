@@ -12,42 +12,12 @@
 
 package ch.tsphp.tinsphp.parser.test.integration.ast;
 
-import ch.tsphp.tinsphp.parser.test.integration.testutils.AAstTest;
-import ch.tsphp.tinsphp.parser.test.integration.testutils.ExpressionHelper;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.Ignore;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-@RunWith(Parameterized.class)
-public class VariableDeclarationTest extends AAstTest
+@Ignore
+public class VariableDeclarationTest
 {
-
-    public VariableDeclarationTest(String testString, String expectedResult) {
-        super(testString, expectedResult);
-    }
-
-    @Test
-    public void test() throws Exception {
-        compareAst();
-    }
-
-    @Parameterized.Parameters
-    public static Collection<Object[]> testStrings() {
-        //Variable declaration as they are known in TSPHP do not exist in PHP.
-        //Therefore the following code creates an expr AST and not a vars AST as one might expect.
-
-        Collection<Object[]> collection = new ArrayList<>();
-        List<String[]> expressions = ExpressionHelper.getAstExpressionWithoutWeakOperators();
-        for (Object[] expression : expressions) {
-            collection.add(new Object[]{
-                    "$a = " + expression[0] + ";",
-                    "(expr (= $a " + expression[1] + "))"
-            });
-        }
-        return collection;
-    }
+    //Variable declaration as they are known in TSPHP do not exist in PHP.
+    //Therefore there aren't any test for variable declarations in this phase of the compilation process
+    //implicit variable declarations are always treated as variable assignments (see VariableAssignmentTest)
 }

@@ -15,6 +15,7 @@ package ch.tsphp.tinsphp.parser.test.integration.parser.coverage;
 import ch.tsphp.tinsphp.parser.antlr.TinsPHPParser;
 import ch.tsphp.tinsphp.parser.test.integration.testutils.AParserParserExceptionTest;
 import org.antlr.runtime.MismatchedTokenException;
+import org.antlr.runtime.MissingTokenException;
 import org.antlr.runtime.NoViableAltException;
 import org.antlr.runtime.RecognitionException;
 import org.junit.Test;
@@ -53,6 +54,7 @@ public class NotCorrectStartTokenTest extends AParserParserExceptionTest
     public static Collection<Object[]> testStrings() {
 
         return Arrays.asList(new Object[][]{
+                {"actualParameters", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
                 {"array", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"arrayContent", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"arrayKeyValue", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
@@ -72,9 +74,12 @@ public class NotCorrectStartTokenTest extends AParserParserExceptionTest
                 {"equality", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"equalityOperator", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"expression", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
+                {"expressionList", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"factor", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"formalParameters", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
+                {"functionCall", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"functionDefinition", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
+                {"functionIdentifier", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"globalConstant", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"instanceOf", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"instruction", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
@@ -90,6 +95,8 @@ public class NotCorrectStartTokenTest extends AParserParserExceptionTest
                 {"namespaceSemicolon", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
                 {"paramDeclaration", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"paramList", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
+                {"postFixCall", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
+                {"postFixVariableWithoutCallAtTheEnd", "else", TinsPHPParser.Else, 0, MissingTokenException.class},
                 {"primary", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"primitiveAtomWithConstant", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"scalarTypesInclArrayWithModifier", "else", TinsPHPParser.Else, 0, NoViableAltException.class},

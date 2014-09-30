@@ -155,14 +155,12 @@ public class ExpressionChainingTest extends AAstTest
                 {"clone clone clone $a", "(clone (clone (clone $a)))"},
 
                 //TODO rstoll TINS-108 - class, TINS-109 - interface
-                /*
-                {"$a->a->b", "(fieAccess (fieAccess $a a) b)"},
-                {"$a->a->b->c", "(fieAccess (fieAccess (fieAccess $a a) b) c)"},
-                {"$a->a()->b()", "(mpCall (mCall $a a() args) b() args)"},
-                {"$a->a()->b()->c()", "(mpCall (mpCall (mCall $a a() args) b() args) c() args)"},
+//                {"$a->a->b", "(fieAccess (fieAccess $a a) b)"},
+//                {"$a->a->b->c", "(fieAccess (fieAccess (fieAccess $a a) b) c)"},
+//                {"$a->a()->b()", "(mpCall (mCall $a a() args) b() args)"},
+//                {"$a->a()->b()->c()", "(mpCall (mpCall (mCall $a a() args) b() args) c() args)"},
                 {"$a[0][1]", "(arrAccess (arrAccess $a 0) 1)"},
                 {"$a[0][1][2]", "(arrAccess (arrAccess (arrAccess $a 0) 1) 2)"},
-                */
         });
     }
 }

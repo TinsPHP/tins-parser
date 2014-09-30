@@ -42,7 +42,6 @@ public class PHPValidButNotInTSPHPTest extends AParserParserExceptionTest
                 //switch with multiple default blocks
                 //TODO rstoll TINS-68 parser procedural - control structures
 //            {"switch($a){case 1: default: ; break; case 2: default: ; break;}", TinsPHPParser.Default, 49},
-//            {"$a <> $b", TinsPHPParser.GreaterThan, 4},
                 //use outside of semicolon namespace
                 {"use a\\a; namespace a;", TinsPHPParser.Namespace, 9},
 

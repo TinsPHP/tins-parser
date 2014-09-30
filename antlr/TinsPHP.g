@@ -482,12 +482,25 @@ instanceOf
 
 unary
     :    cast='(' scalarTypesInclArrayWithModifier ')' unary -> ^(CAST[$cast,"casting"] scalarTypesInclArrayWithModifier unary)
-    |    plus='++' unary  -> ^(PRE_INCREMENT[$plus,"preIncr"] unary)
-    |    minus='--' unary -> ^(PRE_DECREMENT[$minus,"preDecr"] unary)
+    |    plus='++' postFixVariableWithoutCallAtTheEnd  -> ^(PRE_INCREMENT[$plus,"preIncr"] postFixVariableWithoutCallAtTheEnd)
+    |    minus='--' postFixVariableWithoutCallAtTheEnd -> ^(PRE_DECREMENT[$minus,"preDecr"] postFixVariableWithoutCallAtTheEnd)
     |    ('@'|'~'|'!')^ unary
     |    uplus = '+' unary -> ^(UNARY_PLUS[uplus,"uPlus"] unary)
     |    uminus = '-' unary -> ^(UNARY_MINUS[$uminus,"uMinus"] unary)
     |    cloneOrNew
+    ;
+    
+scalarTypesInclArrayWithModifier
+    :    (    t='bool'
+         |    t='boolean'
+         |    t='int'
+         |    t='integer'
+         |    t='float'
+         |    t='double'
+         |    t='string'
+         |    t='array'
+         )
+         -> ^(TYPE[$t,"type"] TYPE_MODIFIER[$t,"tMod"] $t)
     ;
    
 cloneOrNew
@@ -501,28 +514,67 @@ cloneOrNew
 primary
     :    'exit'^ ('('! expression ')'!)?
 //
-//    |    postFixCall
-//    |    postIncrementDecrement
-//    |    postFixVariableInclCallAtTheEnd
+    |    postFixCall
+    |    (VariableId -> VariableId)
+         (    (//TODO rstoll TINS-108 - class, TINS-109 - interface
+              //(call* -> ^(METHOD_CALL_POSTFIX[$call.start,"mpCall"] VariableId call*) )	
+              //(    fieldAccess = '->' Identifier -> ^(FIELD_ACCESS[$fieldAccess,"fieAccess"] $postFixVariableWithoutCallAtTheEnd Identifie
+              /*|*/    arrayAccess = '[' expression ']' 
+                      -> ^(ARRAY_ACCESS[$arrayAccess,"arrAccess"] $primary expression)
+              //)
+              )*	 
+              (    o='++' -> ^(POST_INCREMENT[$o, "postIncr"] $primary)
+              |    o='--' -> ^(POST_DECREMENT[$o, "postDecr"] $primary)
+              )?
+         )
     |    atom
     ;	
 
-scalarTypesInclArrayWithModifier
-    :    (    t='bool'
-         |    t='boolean'
-         |    t='int'
-         |    t='integer'
-         |    t='float'
-         |    t='double'
-         |    t='string'
-         |    t='array'
+postFixCall
+    :    (	functionCall -> functionCall
+         //|	methodCall -> methodCall
+         //|	methodCallSelfOrParent -> methodCallSelfOrParent
+         //|	methodCallStatic -> methodCallStatic 
          )
-         -> ^(TYPE[$t,"type"] TYPE_MODIFIER[$t,"tMod"] $t)
+         (//TODO rstoll TINS-108 - class, TINS-109 - interface
+         /*	fieldAccess = '->' Identifier -> ^(FIELD_ACCESS[$fieldAccess,"fieAccess"] $postFixCall Identifier)
+         |*/	arrayAccess = '[' expression ']' -> ^(ARRAY_ACCESS[$arrayAccess,"arrAccess"] $postFixCall expression)
+         //|	call -> ^(METHOD_CALL_POSTFIX[$call.start,"mpCall"] $postFixCall call)
+         )*
+    ;
+       
+functionCall
+    :    functionIdentifier actualParameters
+         -> ^(FUNCTION_CALL[$functionIdentifier.start,"fCall"] functionIdentifier actualParameters)
+    ;
+   
+functionIdentifier
+    :    classInterfaceTypeWithoutMixed 
+         -> TYPE_NAME[$classInterfaceTypeWithoutMixed.start,$classInterfaceTypeWithoutMixed.text+"()"]
     ;
 
+actualParameters
+    :    list='(' expressionList? ')' -> ^(ACTUAL_PARAMETERS[$list,"args"] expressionList?)
+    ;
+   
+expressionList
+    :    expression (','! expression)*
+    ;
+
+postFixVariableWithoutCallAtTheEnd
+    :    (VariableId -> VariableId)
+         ( 
+              //TODO rstoll TINS-108 - class, TINS-109 - interface
+              //(call* -> ^(METHOD_CALL_POSTFIX[$call.start,"mpCall"] VariableId call*) )	
+              //(    fieldAccess = '->' Identifier -> ^(FIELD_ACCESS[$fieldAccess,"fieAccess"] $postFixVariableWithoutCallAtTheEnd Identifie
+              /*|*/    arrayAccess = '[' expression ']' 
+                      -> ^(ARRAY_ACCESS[$arrayAccess,"arrAccess"] $postFixVariableWithoutCallAtTheEnd expression)
+              //)	
+         )*
+    ;    
+
 atom    
-    :    VariableId
-    |    primitiveAtomWithConstant
+    :    primitiveAtomWithConstant
     |    '(' expression ')' -> expression
     ;   
 

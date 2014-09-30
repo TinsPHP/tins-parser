@@ -88,20 +88,19 @@ public class ExpressionErrorTest extends AParserParserExceptionTest
                 {"1 !== 2 <> 3;", TinsPHPParser.NotEqualAlternative, 8},
                 {"1 !== 2 !== 3;", TinsPHPParser.NotIdentical, 8},
 
-                //TODO rstoll TINS-106 parser procedural - expressions
                 //increment/decrement a primitive type
-//                {"++1;", TinsPHPParser.Int, 2},
-//                {"--1;", TinsPHPParser.Int, 2},
-//                {"1++;", TinsPHPParser.PlusPlus, 1},
-//                {"1--;", TinsPHPParser.MinusMinus, 1},
-//                {"++1.0;", TinsPHPParser.Float, 2},
-//                {"--1.0;", TinsPHPParser.Float, 2},
-//                {"1.1++;", TinsPHPParser.PlusPlus, 3},
-//                {"1.1--;", TinsPHPParser.MinusMinus, 3},
-//                {"++'a';", TinsPHPParser.String, 2},
-//                {"--'a';", TinsPHPParser.String, 2},
-//                {"'a'++;", TinsPHPParser.PlusPlus, 3},
-//                {"'a'--;", TinsPHPParser.MinusMinus, 3},
+                {"++1;", TinsPHPParser.Int, 2},
+                {"--1;", TinsPHPParser.Int, 2},
+                {"1++;", TinsPHPParser.PlusPlus, 1},
+                {"1--;", TinsPHPParser.MinusMinus, 1},
+                {"++1.0;", TinsPHPParser.Float, 2},
+                {"--1.0;", TinsPHPParser.Float, 2},
+                {"1.1++;", TinsPHPParser.PlusPlus, 3},
+                {"1.1--;", TinsPHPParser.MinusMinus, 3},
+                {"++'a';", TinsPHPParser.String, 2},
+                {"--'a';", TinsPHPParser.String, 2},
+                {"'a'++;", TinsPHPParser.PlusPlus, 3},
+                {"'a'--;", TinsPHPParser.MinusMinus, 3},
                 //TODO rstoll TINS-108 - class, TINS-109 - interface
                 //semicolon is expected because the parser thinks its a sMemAccess
 //                {"++E_ALL;", TinsPHPParser.Semicolon, 7},
@@ -109,7 +108,10 @@ public class ExpressionErrorTest extends AParserParserExceptionTest
 //                {"E_ALL++;", TinsPHPParser.PlusPlus, 5},
 //                {"E_ALL--;", TinsPHPParser.MinusMinus, 5},
                 //not allowed casts
+                {"(resource) $a;", TinsPHPParser.TypeResource, 1},
                 {"(mixed) $a;", TinsPHPParser.TypeMixed, 1},
+                //believes it is a constant: (const) and hence $a is the wrong token
+                {"(Exception) $a;", TinsPHPParser.VariableId, 12},
                 //misuse instanceof operator - does not work with primitive types
                 {"$a instanceof bool;", TinsPHPParser.TypeBool, 14},
                 {"$a instanceof int;", TinsPHPParser.TypeInt, 14},
