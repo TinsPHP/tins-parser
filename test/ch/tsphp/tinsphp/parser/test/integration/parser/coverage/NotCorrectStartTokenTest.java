@@ -63,6 +63,7 @@ public class NotCorrectStartTokenTest extends AParserParserExceptionTest
                 {"bitwiseShift", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"bitwiseXor", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"classInterfaceTypeWithoutMixed", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
+                {"cloneOrNew", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"comparison", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"compilationUnit", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"constDefinitionList", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},

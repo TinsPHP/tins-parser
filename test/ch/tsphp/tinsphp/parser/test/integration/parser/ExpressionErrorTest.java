@@ -88,7 +88,7 @@ public class ExpressionErrorTest extends AParserParserExceptionTest
                 {"1 !== 2 <> 3;", TinsPHPParser.NotEqualAlternative, 8},
                 {"1 !== 2 !== 3;", TinsPHPParser.NotIdentical, 8},
 
-                //TODO rstoll TINS-108 - class, TINS-109 - interface
+                //TODO rstoll TINS-106 parser procedural - expressions
                 //increment/decrement a primitive type
 //                {"++1;", TinsPHPParser.Int, 2},
 //                {"--1;", TinsPHPParser.Int, 2},

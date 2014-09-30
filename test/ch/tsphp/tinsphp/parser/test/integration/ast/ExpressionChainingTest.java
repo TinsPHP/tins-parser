@@ -151,12 +151,11 @@ public class ExpressionChainingTest extends AAstTest
                                 + "(casting (type tMod double) (@ (~ (! (uPlus (uMinus $a))))))))))))"
                 },
 
-                //TODO rstoll TINS-108 - class, TINS-109 - interface
-                /*
                 {"clone clone $a", "(clone (clone $a))"},
                 {"clone clone clone $a", "(clone (clone (clone $a)))"},
 
-
+                //TODO rstoll TINS-108 - class, TINS-109 - interface
+                /*
                 {"$a->a->b", "(fieAccess (fieAccess $a a) b)"},
                 {"$a->a->b->c", "(fieAccess (fieAccess (fieAccess $a a) b) c)"},
                 {"$a->a()->b()", "(mpCall (mCall $a a() args) b() args)"},

@@ -487,6 +487,14 @@ unary
     |    ('@'|'~'|'!')^ unary
     |    uplus = '+' unary -> ^(UNARY_PLUS[uplus,"uPlus"] unary)
     |    uminus = '-' unary -> ^(UNARY_MINUS[$uminus,"uMinus"] unary)
+    |    cloneOrNew
+    ;
+   
+cloneOrNew
+		//reference back to unary necessary, since clone unary $b; is valid e.g. clone @$b;
+    :    'clone'^ unary
+//TODO rstoll TINS-108 - class, TINS-109 - interface
+//    |    newObject
     |    atom
     ;
 

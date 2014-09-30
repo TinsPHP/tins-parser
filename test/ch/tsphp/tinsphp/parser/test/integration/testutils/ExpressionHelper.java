@@ -187,18 +187,21 @@ public class ExpressionHelper
                 {"~$a / $b", "(/ (~ $a) $b)"},
                 {"!$a % $b ", "(% (! $a) $b)"},
 
-                //TODO rstoll TINS-106 parser procedural - expressions
-                /*
+
                 {"clone $a", "(clone $a)"},
-                {"new Type", "(new Type args)"},
+                //TODO rstoll TINS-108 - class, TINS-109 - interface
+//                {"new Type", "(new Type args)"},
                 //precedence test
                 //(clone $a) + $b
                 {"clone $a + $b", "(+ (clone $a) $b)"},
                 //(new A) + $b
-                {"new A + $b", "(+ (new A args) $b)"},
+                //TODO rstoll TINS-108 - class, TINS-109 - interface
+//                {"new A + $b", "(+ (new A args) $b)"},
                 //((int) (clone $a)) * $b
                 {"(int) clone $a * $b", "(* (casting (type tMod int) (clone $a)) $b)"},
 
+                //TODO rstoll TINS-106 parser procedural - expressions
+                /*
                 {"$a++", "(postIncr $a)"},
                 {"$a--", "(postDecr $a)"},
                 {"exit", "exit"},

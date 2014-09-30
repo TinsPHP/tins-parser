@@ -30,7 +30,6 @@ public class KeywordErrorTest extends AParserParserExceptionTest
 
     public KeywordErrorTest(String testString, int token, int position) {
         super(testString, token, position, RecognitionException.class);
-
     }
 
     @Test
@@ -54,7 +53,7 @@ public class KeywordErrorTest extends AParserParserExceptionTest
     public static Object[][] getKeywords() {
         return new Object[][]{
 //                {"abstract", TinsPHPParser.Abstract},
-//                {"and", TinsPHPParser.LogicAndWeak},
+                {"and", TinsPHPParser.LogicAndWeak},
                 {"array", TinsPHPParser.TypeArray},
 //                {"as", TinsPHPParser.As},
                 {"bool", TinsPHPParser.TypeBool},
