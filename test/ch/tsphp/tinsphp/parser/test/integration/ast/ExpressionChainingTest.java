@@ -92,8 +92,6 @@ public class ExpressionChainingTest extends AAstTest
                 {"true ? $a : $b ? $c ? $d : $e : $f", "(? (? true $a $b) (? $c $d $e) $f)"},
                 {"true ? $a : $b ? $c : $d ? $e : $f", "(? (? (? true $a $b) $c $d) $e $f)"},
 
-                //TODO rstoll TINS-108 - class, TINS-109 - interface
-                /*
                 {"$a || $b || $c", "(|| (|| $a $b) $c)"},
                 {"$a && $b && $c", "(&& (&& $a $b) $c)"},
                 {"$a || $b || $c || $d", "(|| (|| (|| $a $b) $c) $d)"},
@@ -105,6 +103,8 @@ public class ExpressionChainingTest extends AAstTest
                 {"$a ^ $b ^ $c ^ $d", "(^ (^ (^ $a $b) $c) $d)"},
                 {"$a & $b & $c & $d", "(& (& (& $a $b) $c) $d)"},
 
+                //TODO rstoll TINS-108 - class, TINS-109 - interface
+                /*
                 {"1 << 2 << 3", "(<< (<< 1 2) 3)"},
                 {"1 >> 2 >> 3", "(>> (>> 1 2) 3)"},
                 {"1 << 2 << 3 << 4", "(<< (<< (<< 1 2) 3) 4)"},

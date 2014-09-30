@@ -425,9 +425,29 @@ assignment
     ;
 
 ternary	
-    :    atom ('?'^ expression ':'! atom)*
+    :    logicOr ('?'^ expression ':'! logicOr)*
     ;
-    
+
+logicOr	
+    :    logicAnd ('||'^ logicAnd)*
+    ;
+
+logicAnd
+    :    bitwiseOr ('&&'^ bitwiseOr)*
+    ;	
+
+bitwiseOr
+    :    bitwiseXor ('|'^ bitwiseXor)*
+    ;
+
+bitwiseXor
+    :    bitwiseAnd ('^'^ bitwiseAnd)*
+    ;
+
+bitwiseAnd
+    :    atom ('&'^ atom)*
+    ;
+   
 atom    
     :    VariableId
     |    unaryPrimitiveAtom

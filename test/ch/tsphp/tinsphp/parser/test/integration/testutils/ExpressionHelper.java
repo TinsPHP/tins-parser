@@ -38,9 +38,14 @@ public class ExpressionHelper
                 //($a -= $b) or (($c = $d) and $e)
                 {"$a -= $b or $c = $d and $e", "(or (-= $a $b) (and (= $c $d) $e))"},
 
-                //precedence test for ternary
+                //precedence tests for ternary
                 //($a and ($b = (false ? 1 or 2 : 3)) or 4
                 {"$a and $b = false ? 1 or 2 : 3 or 4", "(or (and $a (= $b (? false (or 1 2) 3))) 4)"},
+                {
+                        //($a *= true ? ($c /= ($d ? $e &= $f : $g) = $h) : $i) or $j
+                        "$a *= true ? $c /= $d ? $e &= $f : $g = $h : $i or $j",
+                        "(or (*= $a (? true (/= $c (= (? $d (&= $e $f) $g) $h)) $i)) $j)",
+                },
         }));
         collection.addAll(getAstExpressionWithoutWeakOperators());
 
@@ -76,14 +81,7 @@ public class ExpressionHelper
                 //precedence test in conjunction with weak operators can be found in method getAstExpressions
                 //$a = (true ? $c += $d : $e) = $f
                 {"$a = true ? $c += $d : $e = $f", "(= $a (= (? true (+= $c $d) $e) $f))"},
-                {
-                        //($a *= true ? ($c /= ($d ? $e &= $f : $g) = $h) : $i) or $j
-                        "$a *= true ? $c /= $d ? $e &= $f : $g = $h : $i or $j",
-                        "(or (*= $a (? true (/= $c (= (? $d (&= $e $f) $g) $h)) $i)) $j)",
-                },
 
-                //TODO rstoll TINS-108 - class, TINS-109 - interface
-                /*
                 {"$a || $b", "(|| $a $b)"},
                 {"$a && $b", "(&& $a $b)"},
                 //precedence tests
@@ -109,6 +107,8 @@ public class ExpressionHelper
                 //(($a | $b) && ($c ^ $d)) || ($e & $f)
                 {"$a | $b && $c ^ $d || $e & $f", "(|| (&& (| $a $b) (^ $c $d)) (& $e $f))"},
 
+                //TODO rstoll TINS-108 - class, TINS-109 - interface
+                /*
                 {"$a == $b", "(== $a $b)"},
                 {"$a === $b", "(=== $a $b)"},
                 {"$a != $b", "(!= $a $b)"},
