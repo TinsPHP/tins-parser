@@ -404,7 +404,7 @@ logicAndWeak
     ;
    
 assignment
-    :    (atom -> atom)
+    :    (ternary -> ternary)
          (
              (    op='=' 
              |    op='+='
@@ -420,8 +420,12 @@ assignment
              |    op='>>='
              )
              assignment
-             -> ^($op atom assignment)
+             -> ^($op ternary assignment)
          )?
+    ;
+
+ternary	
+    :    atom ('?'^ expression ':'! atom)*
     ;
     
 atom    

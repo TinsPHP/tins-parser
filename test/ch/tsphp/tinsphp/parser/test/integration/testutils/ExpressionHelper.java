@@ -30,13 +30,17 @@ public class ExpressionHelper
                 //($a or (($b and $c) xor $d)
                 {"$a or $b and $c xor $d", "(or $a (xor (and $b $c) $d))"},
 
-                //precedence tests
+                //precedence tests for assignment
                 //($a = $b) or $c
                 {"$a = $b or $c", "(or (= $a $b) $c)"},
                 //(($a += $b) and ($c -= $d)) xor $e
                 {"$a += $b and $c -= $d xor $e", "(xor (and (+= $a $b) (-= $c $d)) $e)"},
                 //($a -= $b) or (($c = $d) and $e)
                 {"$a -= $b or $c = $d and $e", "(or (-= $a $b) (and (= $c $d) $e))"},
+
+                //precedence test for ternary
+                //($a and ($b = (false ? 1 or 2 : 3)) or 4
+                {"$a and $b = false ? 1 or 2 : 3 or 4", "(or (and $a (= $b (? false (or 1 2) 3))) 4)"},
         }));
         collection.addAll(getAstExpressionWithoutWeakOperators());
 
@@ -64,23 +68,22 @@ public class ExpressionHelper
                         "$i %= $j .= $k <<= $l >>= $m = $n",
                         "(%= $i (.= $j (<<= $k (>>= $l (= $m $n)))))"
                 },
+                //precedence test for assignment here not possible since it would include weak operators
+                // (they are included in the method getAstExpressions though)
 
-                //precedence test not possible since it would include weak operators.
-
-                //TODO rstoll TINS-108 - class, TINS-109 - interface
-                /*
                 {"true ? $a : $b", "(? true $a $b)"},
                 //precedence tests
-                //($a and ($b = (false ? 1 or 2 : 3)) or 4
-                {"$a and $b = false ? 1 or 2 : 3 or 4", "(or (and $a (= $b (? false (or 1 2) 3))) 4)"},
+                //precedence test in conjunction with weak operators can be found in method getAstExpressions
                 //$a = (true ? $c += $d : $e) = $f
-                {"$a = true ? $c += $d : $e = $f", "(= $a (= (? true (= $c (+ $c $d)) $e) $f))"},
+                {"$a = true ? $c += $d : $e = $f", "(= $a (= (? true (+= $c $d) $e) $f))"},
                 {
                         //($a *= true ? ($c /= ($d ? $e &= $f : $g) = $h) : $i) or $j
                         "$a *= true ? $c /= $d ? $e &= $f : $g = $h : $i or $j",
-                        "(or (= $a (* $a (? true (= $c (/ $c (= (? $d (= $e (& $e $f)) $g) $h))) $i))) $j)",
+                        "(or (*= $a (? true (/= $c (= (? $d (&= $e $f) $g) $h)) $i)) $j)",
                 },
 
+                //TODO rstoll TINS-108 - class, TINS-109 - interface
+                /*
                 {"$a || $b", "(|| $a $b)"},
                 {"$a && $b", "(&& $a $b)"},
                 //precedence tests

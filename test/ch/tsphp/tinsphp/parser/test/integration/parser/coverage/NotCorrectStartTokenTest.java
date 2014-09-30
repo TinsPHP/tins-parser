@@ -80,6 +80,7 @@ public class NotCorrectStartTokenTest extends AParserParserExceptionTest
                 {"paramList", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"primitiveAtomWithConstant", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"statement", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
+                {"ternary", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"unaryPrimitiveAtom", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"useDefinitionList", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
                 {"useDefinition", "else", TinsPHPParser.Else, 0, NoViableAltException.class},

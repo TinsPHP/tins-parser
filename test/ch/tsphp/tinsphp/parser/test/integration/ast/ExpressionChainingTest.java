@@ -84,16 +84,16 @@ public class ExpressionChainingTest extends AAstTest
                                 + "))))))"
                 },
 
+                //ternary is left associative - different than TSPHP
+                {"true ? $a ? $b : $c : $d", "(? true (? $a $b $c) $d)"},
+                {"true ? $a : $b ? $c : $d", "(? (? true $a $b) $c $d)"},
+                {"true ? $a ? $b ? $c : $d : $e : $f", "(? true (? $a (? $b $c $d) $e) $f)"},
+                {"true ? $a ? $b : $c ? $d : $e : $f", "(? true (? (? $a $b $c) $d $e) $f)"},
+                {"true ? $a : $b ? $c ? $d : $e : $f", "(? (? true $a $b) (? $c $d $e) $f)"},
+                {"true ? $a : $b ? $c : $d ? $e : $f", "(? (? (? true $a $b) $c $d) $e $f)"},
+
                 //TODO rstoll TINS-108 - class, TINS-109 - interface
                 /*
-                //ternary is right associative - different than PHP
-                {"true ? $a ? $b : $c : $d", "(? true (? $a $b $c) $d)"},
-                {"true ? $a : $b ? $c : $d", "(? true $a (? $b $c $d))"},
-                {"true ? $a ? $b ? $c : $d : $e : $f", "(? true (? $a (? $b $c $d) $e) $f)"},
-                {"true ? $a ? $b : $c ? $d : $e : $f", "(? true (? $a $b (? $c $d $e)) $f)"},
-                {"true ? $a : $b ? $c ? $d : $e : $f", "(? true $a (? $b (? $c $d $e) $f))"},
-                {"true ? $a : $b ? $c : $d ? $e : $f", "(? true $a (? $b $c (? $d $e $f)))"},
-
                 {"$a || $b || $c", "(|| (|| $a $b) $c)"},
                 {"$a && $b && $c", "(&& (&& $a $b) $c)"},
                 {"$a || $b || $c || $d", "(|| (|| (|| $a $b) $c) $d)"},
