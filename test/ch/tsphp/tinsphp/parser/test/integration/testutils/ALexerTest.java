@@ -12,7 +12,7 @@
 
 package ch.tsphp.tinsphp.parser.test.integration.testutils;
 
-import ch.tsphp.tinsphp.parser.antlrmod.ANTLRNoCaseStringStream;
+import ch.tsphp.parser.common.ANTLRNoCaseStringStream;
 import ch.tsphp.tinsphp.parser.antlr.TinsPHPLexer;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.RecognitionException;
