@@ -5,7 +5,7 @@
  */
 
 /*
- * This class is based on the class VariableAssignmentTest from the TSPHP project.
+ * This class is based on the class BreakContinueTest from the TSPHP project.
  * TSPHP is also published under the Apache License 2.0
  * For more information see http://tsphp.ch/wiki/display/TSPHP/License
  */
@@ -13,20 +13,18 @@
 package ch.tsphp.tinsphp.parser.test.integration.ast;
 
 import ch.tsphp.tinsphp.parser.test.integration.testutils.AAstTest;
-import ch.tsphp.tinsphp.parser.test.integration.testutils.ExpressionHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 @RunWith(Parameterized.class)
-public class VariableAssignmentTest extends AAstTest
+public class BreakContinueTest extends AAstTest
 {
 
-    public VariableAssignmentTest(String testString, String expectedResult) {
+    public BreakContinueTest(String testString, String expectedResult) {
         super(testString, expectedResult);
     }
 
@@ -37,14 +35,11 @@ public class VariableAssignmentTest extends AAstTest
 
     @Parameterized.Parameters
     public static Collection<Object[]> testStrings() {
-        Collection<Object[]> collection = new ArrayList<>();
-        List<String[]> expressions = ExpressionHelper.getAstExpressionWithoutWeakOperators();
-        for (Object[] expression : expressions) {
-            collection.add(new Object[]{
-                    "$a = " + expression[0] + ";",
-                    "(expr (= $a " + expression[1] + "))"
-            });
-        }
-        return collection;
+        return Arrays.asList(new Object[][]{
+                {"break;", "break"},
+                {"break 1;", "(break 1)"},
+                {"continue;", "continue"},
+                {"continue 1;", "(continue 1)"}
+        });
     }
 }

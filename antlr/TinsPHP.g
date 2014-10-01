@@ -384,6 +384,11 @@ VariableId
 instruction
     :    expression ';' -> ^(EXPRESSION[$expression.start,"expr"] expression)
     |    expr=';' -> EXPRESSION[$expr,"expr"]
+    |    'return'^ expression? ';'!
+    |    'throw'^ expression ';'!
+    |    'echo'^ expressionList ';'!
+    |    'break'^ Int? ';'!
+    |    'continue'^ Int? ';'!
     |    block='{''}' -> EXPRESSION[$block,"expr"]
     |    '{'! instruction+ '}'!
     ;

@@ -5,7 +5,7 @@
  */
 
 /*
- * This class is based on the class VariableAssignmentTest from the TSPHP project.
+ * This class is based on the class ThrowTest from the TSPHP project.
  * TSPHP is also published under the Apache License 2.0
  * For more information see http://tsphp.ch/wiki/display/TSPHP/License
  */
@@ -23,10 +23,10 @@ import java.util.Collection;
 import java.util.List;
 
 @RunWith(Parameterized.class)
-public class VariableAssignmentTest extends AAstTest
+public class ThrowTest extends AAstTest
 {
 
-    public VariableAssignmentTest(String testString, String expectedResult) {
+    public ThrowTest(String testString, String expectedResult) {
         super(testString, expectedResult);
     }
 
@@ -37,13 +37,10 @@ public class VariableAssignmentTest extends AAstTest
 
     @Parameterized.Parameters
     public static Collection<Object[]> testStrings() {
-        Collection<Object[]> collection = new ArrayList<>();
-        List<String[]> expressions = ExpressionHelper.getAstExpressionWithoutWeakOperators();
+        List<Object[]> collection = new ArrayList<>();
+        List<String[]> expressions = ExpressionHelper.getAstExpressions();
         for (Object[] expression : expressions) {
-            collection.add(new Object[]{
-                    "$a = " + expression[0] + ";",
-                    "(expr (= $a " + expression[1] + "))"
-            });
+            collection.add(new Object[]{"throw " + expression[0] + ";", "(throw " + expression[1] + ")"});
         }
         return collection;
     }

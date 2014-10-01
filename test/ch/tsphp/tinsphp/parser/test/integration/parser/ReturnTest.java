@@ -5,46 +5,41 @@
  */
 
 /*
- * This class is based on the class VariableAssignmentTest from the TSPHP project.
+ * This class is based on the class ReturnTest from the TSPHP project.
  * TSPHP is also published under the Apache License 2.0
  * For more information see http://tsphp.ch/wiki/display/TSPHP/License
  */
 
-package ch.tsphp.tinsphp.parser.test.integration.ast;
+package ch.tsphp.tinsphp.parser.test.integration.parser;
 
-import ch.tsphp.tinsphp.parser.test.integration.testutils.AAstTest;
-import ch.tsphp.tinsphp.parser.test.integration.testutils.ExpressionHelper;
+import ch.tsphp.tinsphp.parser.test.integration.testutils.AParserTest;
+import ch.tsphp.tinsphp.parser.test.integration.testutils.InstructionHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @RunWith(Parameterized.class)
-public class VariableAssignmentTest extends AAstTest
+public class ReturnTest extends AParserTest
 {
 
-    public VariableAssignmentTest(String testString, String expectedResult) {
-        super(testString, expectedResult);
+    public ReturnTest(String testString) {
+        super(testString);
     }
 
     @Test
     public void test() throws Exception {
-        compareAst();
+        parseAndCheckForExceptions();
     }
 
     @Parameterized.Parameters
     public static Collection<Object[]> testStrings() {
         Collection<Object[]> collection = new ArrayList<>();
-        List<String[]> expressions = ExpressionHelper.getAstExpressionWithoutWeakOperators();
-        for (Object[] expression : expressions) {
-            collection.add(new Object[]{
-                    "$a = " + expression[0] + ";",
-                    "(expr (= $a " + expression[1] + "))"
-            });
-        }
+        collection.addAll(InstructionHelper.getControlStructuresInNamespaceFunctionAndMethod("return;"));
+        collection.addAll(InstructionHelper.getControlStructuresInNamespaceFunctionAndMethod("return 1;"));
         return collection;
     }
+
 }
