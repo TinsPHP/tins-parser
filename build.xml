@@ -44,6 +44,18 @@
         </java>
     </target>
 
-    <target name="cp.all" depends="cp.common"/>
+    <target name="cp.all" depends="cp.common, cp.parser"/>
+
+    <property name="parser" location="${basedir}/../tsphp-parser"/>
+    <property name="parser.tokens" location="${parser}/src/ch/tsphp/parser/antlr"/>
+
+    <target name="cp.parser" depends="" description="copy parser tokens file to /antlr">
+        <delete>
+            <fileset dir="${src.antlr}" includes="*.tokens"/>
+        </delete>
+        <copy todir="${src.antlr}">
+            <fileset dir="${parser.tokens}" includes="*.tokens"/>
+        </copy>
+    </target>
 
 </project>
