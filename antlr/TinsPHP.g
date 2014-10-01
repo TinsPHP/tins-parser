@@ -404,7 +404,7 @@ logicOrWeak
 logicXorWeak
     :    logicAndWeak ('xor'^ logicAndWeak)*
     ; 
-	
+
 logicAndWeak
     :    assignment ('and'^ assignment)*
     ;
@@ -429,17 +429,17 @@ assignment
          )?
     ;
 
-ternary	
+ternary
     :    logicOr ('?'^ expression ':'! logicOr)*
     ;
 
-logicOr	
+logicOr
     :    logicAnd ('||'^ logicAnd)*
     ;
 
 logicAnd
     :    bitwiseOr ('&&'^ bitwiseOr)*
-    ;	
+    ;
 
 bitwiseOr
     :    bitwiseXor ('|'^ bitwiseXor)*
@@ -459,7 +459,7 @@ equality
 
 equalityOperator
     :    '=='
-    |	 '==='
+    |    '==='
     |    '!='
     |    o='<>' -> NotEqual[$o,"!="]
     |    '!=='
@@ -469,15 +469,15 @@ comparison
     :    bitwiseShift ( ('<'|'<='|'>'|'>=')^ bitwiseShift)?
     ;
      
-bitwiseShift	
+bitwiseShift
     :    termOrStringConcatenation (('<<'|'>>')^ termOrStringConcatenation)*
     ;
 
-termOrStringConcatenation	
+termOrStringConcatenation
     :    factor (('+'|'-'|'.')^ factor)*
     ;
 
-factor	
+factor
     :    instanceOf (('*'|'/'|'%')^ instanceOf)*
     ;
 
@@ -509,7 +509,7 @@ scalarTypesInclArrayWithModifier
     ;
    
 cloneOrNew
-		//reference back to unary necessary, since clone unary $b; is valid e.g. clone @$b;
+         //reference back to unary necessary, since clone unary $b; is valid e.g. clone @$b;
     :    'clone'^ unary
 //TODO rstoll TINS-108 - class, TINS-109 - interface
 //    |    newObject
@@ -522,29 +522,29 @@ primary
     |    postFixCall
     |    (VariableId -> VariableId)
          (    (//TODO rstoll TINS-108 - class, TINS-109 - interface
-              //(call* -> ^(METHOD_CALL_POSTFIX[$call.start,"mpCall"] VariableId call*) )	
+              //(call* -> ^(METHOD_CALL_POSTFIX[$call.start,"mpCall"] VariableId call*) )
               //(    fieldAccess = '->' Identifier -> ^(FIELD_ACCESS[$fieldAccess,"fieAccess"] $postFixVariableWithoutCallAtTheEnd Identifie
               /*|*/    arrayAccess = '[' expression ']' 
                       -> ^(ARRAY_ACCESS[$arrayAccess,"arrAccess"] $primary expression)
               //)
-              )*	 
+              )* 
               (    o='++' -> ^(POST_INCREMENT[$o, "postIncr"] $primary)
               |    o='--' -> ^(POST_DECREMENT[$o, "postDecr"] $primary)
               )?
          )
     |    atom
-    ;	
+    ;
 
 postFixCall
-    :    (	functionCall -> functionCall
-         //|	methodCall -> methodCall
-         //|	methodCallSelfOrParent -> methodCallSelfOrParent
-         //|	methodCallStatic -> methodCallStatic 
+    :    (    functionCall -> functionCall
+         //|    methodCall -> methodCall
+         //|    methodCallSelfOrParent -> methodCallSelfOrParent
+         //|    methodCallStatic -> methodCallStatic 
          )
          (//TODO rstoll TINS-108 - class, TINS-109 - interface
-         /*	fieldAccess = '->' Identifier -> ^(FIELD_ACCESS[$fieldAccess,"fieAccess"] $postFixCall Identifier)
-         |*/	arrayAccess = '[' expression ']' -> ^(ARRAY_ACCESS[$arrayAccess,"arrAccess"] $postFixCall expression)
-         //|	call -> ^(METHOD_CALL_POSTFIX[$call.start,"mpCall"] $postFixCall call)
+         /*    fieldAccess = '->' Identifier -> ^(FIELD_ACCESS[$fieldAccess,"fieAccess"] $postFixCall Identifier)
+         |*/    arrayAccess = '[' expression ']' -> ^(ARRAY_ACCESS[$arrayAccess,"arrAccess"] $postFixCall expression)
+         //|    call -> ^(METHOD_CALL_POSTFIX[$call.start,"mpCall"] $postFixCall call)
          )*
     ;
        
@@ -570,11 +570,11 @@ postFixVariableWithoutCallAtTheEnd
     :    (VariableId -> VariableId)
          ( 
               //TODO rstoll TINS-108 - class, TINS-109 - interface
-              //(call* -> ^(METHOD_CALL_POSTFIX[$call.start,"mpCall"] VariableId call*) )	
+              //(call* -> ^(METHOD_CALL_POSTFIX[$call.start,"mpCall"] VariableId call*) )
               //(    fieldAccess = '->' Identifier -> ^(FIELD_ACCESS[$fieldAccess,"fieAccess"] $postFixVariableWithoutCallAtTheEnd Identifie
               /*|*/    arrayAccess = '[' expression ']' 
                       -> ^(ARRAY_ACCESS[$arrayAccess,"arrAccess"] $postFixVariableWithoutCallAtTheEnd expression)
-              //)	
+              //)
          )*
     ;    
 
