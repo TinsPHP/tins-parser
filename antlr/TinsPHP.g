@@ -118,6 +118,7 @@ tokens{
     TypeBool = 'bool';
     TypeAliasBool = 'boolean';
     TypeAliasFloat = 'double';
+    TypeAliasFloat2 = 'real';
     TypeInt = 'int';
     TypeAliasInt = 'integer';
     TypeFloat = 'float';
@@ -502,6 +503,7 @@ scalarTypesInclArrayWithModifier
          |    t='integer'
          |    t='float'
          |    t='double'
+         |    t='real'
          |    t='string'
          |    t='array'
          )

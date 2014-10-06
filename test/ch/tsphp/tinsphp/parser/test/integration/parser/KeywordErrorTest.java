@@ -96,6 +96,7 @@ public class KeywordErrorTest extends AParserParserExceptionTest
                 {"private", TinsPHPParser.Private},
                 {"protected", TinsPHPParser.Protected},
                 {"public", TinsPHPParser.Public},
+                {"real", TinsPHPParser.TypeAliasFloat2},
                 {"resource", TinsPHPParser.TypeResource},
                 {"return", TinsPHPParser.Return},
                 {"static", TinsPHPParser.Static},

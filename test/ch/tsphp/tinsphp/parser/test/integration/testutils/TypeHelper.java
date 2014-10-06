@@ -40,6 +40,7 @@ public class TypeHelper
                 "integer",
                 "float",
                 "double",
+                "real",
                 "string",
                 "array"
         };
