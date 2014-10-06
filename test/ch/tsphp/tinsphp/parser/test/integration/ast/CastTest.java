@@ -38,10 +38,10 @@ public class CastTest extends AAstTest
     @Parameterized.Parameters
     public static Collection<Object[]> testStrings() {
         List<Object[]> collection = new ArrayList<>();
-        String[] types = TypeHelper.getScalarTypesInclArray();
-        for (String type : types) {
+        String[][] types = TypeHelper.getScalarTypesInclArray();
+        for (String[] type : types) {
             collection.add(new Object[]{
-                    "(" + type + ") $a;", "(expr (casting (type tMod " + type + ") $a))"
+                    "(" + type[0] + ") $a;", "(expr (casting (type tMod " + type[1] + ") $a))"
             });
         }
 

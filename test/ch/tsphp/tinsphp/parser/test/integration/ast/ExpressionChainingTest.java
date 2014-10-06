@@ -148,7 +148,7 @@ public class ExpressionChainingTest extends AAstTest
                 {
                         "+ ~ (int) ! - @ (double) @ ~ ! + -$a",
                         "(uPlus (~ (casting (type tMod int) (! (uMinus (@ "
-                                + "(casting (type tMod double) (@ (~ (! (uPlus (uMinus $a))))))))))))"
+                                + "(casting (type tMod float) (@ (~ (! (uPlus (uMinus $a))))))))))))"
                 },
 
                 {"clone clone $a", "(clone (clone $a))"},

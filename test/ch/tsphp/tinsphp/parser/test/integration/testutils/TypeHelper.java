@@ -32,17 +32,17 @@ public class TypeHelper
         };
     }
 
-    public static String[] getScalarTypesInclArray() {
-        return new String[]{
-                "bool",
-                "boolean",
-                "int",
-                "integer",
-                "float",
-                "double",
-                "real",
-                "string",
-                "array"
+    public static String[][] getScalarTypesInclArray() {
+        return new String[][]{
+                {"bool", "bool"},
+                {"boolean", "bool"},
+                {"int", "int"},
+                {"integer", "int"},
+                {"float", "float"},
+                {"double", "float"},
+                {"real", "float"},
+                {"string", "string"},
+                {"array", "array"}
         };
     }
 

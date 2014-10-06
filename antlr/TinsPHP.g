@@ -498,12 +498,12 @@ unary
     
 scalarTypesInclArrayWithModifier
     :    (    t='bool'
-         |    t='boolean'
+         |    t='boolean' {t.setType(Bool); t.setText("bool");}
          |    t='int'
-         |    t='integer'
+         |    t='integer' {t.setType(Int); t.setText("int");}
          |    t='float'
-         |    t='double'
-         |    t='real'
+         |    t='double'  {t.setType(Float); t.setText("float");}
+         |    t='real'    {t.setType(Float); t.setText("float");}
          |    t='string'
          |    t='array'
          )
