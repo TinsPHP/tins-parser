@@ -105,7 +105,7 @@ tokens{
     QuestionMark = '?';
     Return = 'return';
     RightCurlyBrace = '}';
-    RightParenthesis =')';
+    RightParenthesis = ')';
     RightSquareBrace = ']';
     ShiftLeft = '<<';
     ShiftLeftAssign = '<<=';
@@ -616,7 +616,7 @@ arrayKeyValue
     ;
 
 Int     
-    :	DECIMAL
+    :   DECIMAL
     |   HEXADECIMAL
     |   OCTAL
     |   BINARY
