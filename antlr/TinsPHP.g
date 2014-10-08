@@ -226,172 +226,172 @@ package ch.tsphp.tinsphp.parser.antlr;
 }
 
 compilationUnit    
-    :    namespaceSemicolon+ EOF!
-    |    namespaceBracket+ EOF!
-    |    withoutNamespace EOF!
+    :   namespaceSemicolon+ EOF!
+    |   namespaceBracket+ EOF!
+    |   withoutNamespace EOF!
     ;
     
 namespaceSemicolon
-    :    'namespace' namespaceId namespaceBody=';' statement* 
-         -> ^('namespace' 
-             TYPE_NAME[$namespaceId.start,BACKSLASH + $namespaceId.text +BACKSLASH] 
-             ^(NAMESPACE_BODY[$namespaceBody,"nBody"] statement*)
-         )
+    :   'namespace' namespaceId namespaceBody=';' statement*
+        -> ^('namespace'
+            TYPE_NAME[$namespaceId.start,BACKSLASH + $namespaceId.text +BACKSLASH]
+            ^(NAMESPACE_BODY[$namespaceBody,"nBody"] statement*)
+        )
     ;
 
 namespaceBracket
-    :    'namespace' namespaceIdOrEmpty  namespaceBody='{' statement* '}' 
-         -> ^('namespace' 
-             namespaceIdOrEmpty
-             ^(NAMESPACE_BODY[$namespaceBody,"nBody"] statement*)
-         )
+    :   'namespace' namespaceIdOrEmpty  namespaceBody='{' statement* '}'
+        -> ^('namespace'
+            namespaceIdOrEmpty
+            ^(NAMESPACE_BODY[$namespaceBody,"nBody"] statement*)
+        )
     ;
 namespaceIdOrEmpty
-    :    namespaceId -> TYPE_NAME[$namespaceId.start, BACKSLASH + $namespaceId.text + BACKSLASH] 
-    |    /* empty */ -> DEFAULT_NAMESPACE[$namespaceIdOrEmpty.start, BACKSLASH]
+    :   namespaceId -> TYPE_NAME[$namespaceId.start, BACKSLASH + $namespaceId.text + BACKSLASH]
+    |   /* empty */ -> DEFAULT_NAMESPACE[$namespaceIdOrEmpty.start, BACKSLASH]
     ;
 
 //Must be before Identifier otherwise Identifier matches true and false
 Bool    
-    :    'true'|'false'
+    :   'true'|'false'
     ;
 
 namespaceId
-    :    Identifier ('\\' Identifier)* -> Identifier+
+    :   Identifier ('\\' Identifier)* -> Identifier+
     ;
 
 Identifier    
-    :    ('a'..'z'|'A'..'Z'|'_'|'\u007f'..'\u00ff') ('a'..'z'|'A'..'Z'|'0'..'9'|'_'|'\u007f'..'\u00ff')*
+    :   ('a'..'z'|'A'..'Z'|'_'|'\u007f'..'\u00ff') ('a'..'z'|'A'..'Z'|'0'..'9'|'_'|'\u007f'..'\u00ff')*
     ;
 
 withoutNamespace 
-    :    (statement*) 
-         -> ^(Namespace[$statement.start,"namespace"]
-             DEFAULT_NAMESPACE[$statement.start, BACKSLASH] 
-             ^(NAMESPACE_BODY[$statement.start,"nBody"] statement*)
-         ) 
+    :   (statement*)
+        -> ^(Namespace[$statement.start,"namespace"]
+            DEFAULT_NAMESPACE[$statement.start, BACKSLASH]
+            ^(NAMESPACE_BODY[$statement.start,"nBody"] statement*)
+        )
     ;
 
 statement    
-    :    useDefinitionList
-    |    definition
-    |    instruction
+    :   useDefinitionList
+    |   definition
+    |   instruction
     ;
     
 useDefinitionList
-    :    'use' firstUseDeclaration=useDefinition (',' otherDeclaration=useDefinition)* ';' 
-         -> ^('use' ^(USE_DECLARATION[$firstUseDeclaration.start, "uDecl"] useDefinition) (^(USE_DECLARATION[$otherDeclaration.start, "uDecl"] useDefinition))* )
+    :   'use' firstUseDeclaration=useDefinition (',' otherDeclaration=useDefinition)* ';'
+        -> ^('use' ^(USE_DECLARATION[$firstUseDeclaration.start, "uDecl"] useDefinition) (^(USE_DECLARATION[$otherDeclaration.start, "uDecl"] useDefinition))* )
     ;
     
 useDefinition
-    :    usingType 'as' Identifier 
-         -> usingType Identifier
+    :   usingType 'as' Identifier
+        -> usingType Identifier
     
-    |    type=Identifier 'as' alias=Identifier 
-         -> TYPE_NAME[$type, $type.text] $alias
+    |   type=Identifier 'as' alias=Identifier
+        -> TYPE_NAME[$type, $type.text] $alias
 
-    |    usingType
-         -> usingType Identifier[$usingType.start, $usingType.text.substring($usingType.text.lastIndexOf(BACKSLASH)+1)]
+    |   usingType
+        -> usingType Identifier[$usingType.start, $usingType.text.substring($usingType.text.lastIndexOf(BACKSLASH)+1)]
     ;
     
 usingType
-    :    Identifier '\\' namespaceId -> TYPE_NAME[$usingType.start, $usingType.text]
-    |    '\\' namespaceId -> TYPE_NAME[$usingType.start, $usingType.text]        
+    :   Identifier '\\' namespaceId -> TYPE_NAME[$usingType.start, $usingType.text]
+    |   '\\' namespaceId -> TYPE_NAME[$usingType.start, $usingType.text]
     ;
     
 definition
-    :    functionDefinition
-    |    constDefinitionList
+    :   functionDefinition
+    |   constDefinitionList
     ;
 
 constDefinitionList
-    :    begin='const' constAssign=constantAssignment (',' constantAssignment)* ';'
-         -> ^(CONSTANT_DECLARATION_LIST[$begin, "consts"] 
-             ^(TYPE[$constAssign.start,"type"] 
-                 ^(TYPE_MODIFIER[$constAssign.start,"tMod"] 
-                     Public[$constAssign.start,"public"]
-                     Static[$constAssign.start,"static"] 
-                     Final[$constAssign.start,"final"] 
-                 )
-                 QuestionMark[$constAssign.start, "?"]
-             )
-             constantAssignment+
-         )
+    :   begin='const' constAssign=constantAssignment (',' constantAssignment)* ';'
+        -> ^(CONSTANT_DECLARATION_LIST[$begin, "consts"]
+            ^(TYPE[$constAssign.start,"type"]
+                ^(TYPE_MODIFIER[$constAssign.start,"tMod"]
+                    Public[$constAssign.start,"public"]
+                    Static[$constAssign.start,"static"]
+                    Final[$constAssign.start,"final"]
+                )
+                QuestionMark[$constAssign.start, "?"]
+            )
+            constantAssignment+
+        )
     ;
     
 constantAssignment
-    :    id=Identifier '=' unaryPrimitiveAtom
-         ->^(Identifier[$id, $id.text+"#"] unaryPrimitiveAtom)
+    :   id=Identifier '=' unaryPrimitiveAtom
+        ->^(Identifier[$id, $id.text+"#"] unaryPrimitiveAtom)
     ;
 
 
 unaryPrimitiveAtom
-    :    uplus = '+' primitiveAtomWithConstant  -> ^(UNARY_PLUS[$uplus, "uPlus"] primitiveAtomWithConstant)
-    |    uminus = '-' primitiveAtomWithConstant -> ^(UNARY_MINUS[$uminus,"uMinus"] primitiveAtomWithConstant)
-    |    primitiveAtomWithConstant
+    :   uplus = '+' primitiveAtomWithConstant  -> ^(UNARY_PLUS[$uplus, "uPlus"] primitiveAtomWithConstant)
+    |   uminus = '-' primitiveAtomWithConstant -> ^(UNARY_MINUS[$uminus,"uMinus"] primitiveAtomWithConstant)
+    |   primitiveAtomWithConstant
     ;
 
 functionDefinition    
-    :    func='function' id=methodIdentifier formalParameters block='{' instruction* '}' 
-         -> ^($func 
-             FUNCTION_MODIFIER[$func,"fMod"] 
-             ^(TYPE[$id.start,"type"] TYPE_MODIFIER[$id.start,"tMod"] QuestionMark[$id.start, "?"])
-             methodIdentifier 
-             formalParameters
-             ^(BLOCK[$block,"block"] instruction*)
-         )
+    :   func='function' id=methodIdentifier formalParameters block='{' instruction* '}'
+        -> ^($func
+            FUNCTION_MODIFIER[$func,"fMod"]
+            ^(TYPE[$id.start,"type"] TYPE_MODIFIER[$id.start,"tMod"] QuestionMark[$id.start, "?"])
+            methodIdentifier
+            formalParameters
+            ^(BLOCK[$block,"block"] instruction*)
+        )
     ;
 
 methodIdentifier
-    :    id=Identifier -> Identifier[$id,$id.text+"()"]
+    :   id=Identifier -> Identifier[$id,$id.text+"()"]
     ;
     
 classInterfaceTypeWithoutMixed
-    :    root='\\' namespaceId -> TYPE_NAME[$root, BACKSLASH + $namespaceId.text]
-    |    namespaceId           -> TYPE_NAME[$namespaceId.start, $namespaceId.text]
+    :   root='\\' namespaceId -> TYPE_NAME[$root, BACKSLASH + $namespaceId.text]
+    |   namespaceId           -> TYPE_NAME[$namespaceId.start, $namespaceId.text]
     ;
 
 formalParameters
-    :    params='(' paramList? ')' -> ^(PARAMETER_LIST[$params,"params"] paramList?)
+    :   params='(' paramList? ')' -> ^(PARAMETER_LIST[$params,"params"] paramList?)
     ;
 
 paramList
-    :    paramDeclaration (','! paramDeclaration)* 
+    :   paramDeclaration (','! paramDeclaration)*
     ;
     
 paramDeclaration
-    :    parameterType VariableId ('=' unaryPrimitiveAtom)?
-         -> ^(PARAMETER_DECLARATION[$paramDeclaration.start,"pDecl"] parameterType ^(VariableId unaryPrimitiveAtom?))
+    :   parameterType VariableId ('=' unaryPrimitiveAtom)?
+        -> ^(PARAMETER_DECLARATION[$paramDeclaration.start,"pDecl"] parameterType ^(VariableId unaryPrimitiveAtom?))
     ;
     
 parameterType
-    :    a=TypeArray
-         -> ^(TYPE[$a, "type"] TYPE_MODIFIER[$a, "tMod"] $a)
+    :   a=TypeArray
+        -> ^(TYPE[$a, "type"] TYPE_MODIFIER[$a, "tMod"] $a)
 
-    |    t=classInterfaceTypeWithoutMixed
-         -> ^(TYPE[$t.start, "type"] TYPE_MODIFIER[$t.start, "tMod"] $t)
+    |   t=classInterfaceTypeWithoutMixed
+        -> ^(TYPE[$t.start, "type"] TYPE_MODIFIER[$t.start, "tMod"] $t)
 
-    |    /* empty */
-         -> ^(TYPE[$parameterType.start, "type"] 
-             TYPE_MODIFIER[$parameterType.start, "tMod"] 
-             QuestionMark[$parameterType.start, "?"]
-         )
+    |   /* empty */
+        -> ^(TYPE[$parameterType.start, "type"]
+            TYPE_MODIFIER[$parameterType.start, "tMod"]
+            QuestionMark[$parameterType.start, "?"]
+        )
     ;   
 
 VariableId    
-    :    '$' Identifier
+    :   '$' Identifier
     ;
 
 instruction
-    :    expression ';' -> ^(EXPRESSION[$expression.start,"expr"] expression)
-    |    expr=';' -> EXPRESSION[$expr,"expr"]
-    |    'return'^ expression? ';'!
-    |    'throw'^ expression ';'!
-    |    'echo'^ expressionList ';'!
-    |    'break'^ Int? ';'!
-    |    'continue'^ Int? ';'!
-    |    block='{''}' -> EXPRESSION[$block,"expr"]
-    |    '{'! instruction+ '}'!
+    :   expression ';' -> ^(EXPRESSION[$expression.start,"expr"] expression)
+    |   expr=';' -> EXPRESSION[$expr,"expr"]
+    |   'return'^ expression? ';'!
+    |   'throw'^ expression ';'!
+    |   'echo'^ expressionList ';'!
+    |   'break'^ Int? ';'!
+    |   'continue'^ Int? ';'!
+    |   block='{''}' -> EXPRESSION[$block,"expr"]
+    |   '{'! instruction+ '}'!
     ;
 
 expression
@@ -399,213 +399,213 @@ expression
     ;
 
 logicOrWeak
-    :    logicXorWeak ('or'^ logicXorWeak)*
+    :   logicXorWeak ('or'^ logicXorWeak)*
     ; 
 
 logicXorWeak
-    :    logicAndWeak ('xor'^ logicAndWeak)*
+    :   logicAndWeak ('xor'^ logicAndWeak)*
     ; 
 
 logicAndWeak
-    :    assignment ('and'^ assignment)*
+    :   assignment ('and'^ assignment)*
     ;
    
 assignment
-    :    ternary
-         (
-             (    '=' 
-             |    '+='
-             |    '-='
-             |    '*='
-             |    '/='
-             |    '&='
-             |    '|='
-             |    '^='
-             |    '%='
-             |    '.='
-             |    '<<='
-             |    '>>='
-             )^
-             assignment
-         )?
+    :   ternary
+        (
+            (   '='
+            |   '+='
+            |   '-='
+            |   '*='
+            |   '/='
+            |   '&='
+            |   '|='
+            |   '^='
+            |   '%='
+            |   '.='
+            |   '<<='
+            |   '>>='
+            )^
+            assignment
+        )?
     ;
 
 ternary
-    :    logicOr ('?'^ expression ':'! logicOr)*
+    :   logicOr ('?'^ expression ':'! logicOr)*
     ;
 
 logicOr
-    :    logicAnd ('||'^ logicAnd)*
+    :   logicAnd ('||'^ logicAnd)*
     ;
 
 logicAnd
-    :    bitwiseOr ('&&'^ bitwiseOr)*
+    :   bitwiseOr ('&&'^ bitwiseOr)*
     ;
 
 bitwiseOr
-    :    bitwiseXor ('|'^ bitwiseXor)*
+    :   bitwiseXor ('|'^ bitwiseXor)*
     ;
 
 bitwiseXor
-    :    bitwiseAnd ('^'^ bitwiseAnd)*
+    :   bitwiseAnd ('^'^ bitwiseAnd)*
     ;
 
 bitwiseAnd
-    :    equality ('&'^ equality)*
+    :   equality ('&'^ equality)*
     ;
     
 equality
-    :    comparison (equalityOperator^ comparison)?
+    :   comparison (equalityOperator^ comparison)?
     ;
 
 equalityOperator
-    :    '=='
-    |    '==='
-    |    '!='
-    |    o='<>' -> NotEqual[$o,"!="]
-    |    '!=='
+    :   '=='
+    |   '==='
+    |   '!='
+    |   o='<>' -> NotEqual[$o,"!="]
+    |   '!=='
     ;
     
 comparison
-    :    bitwiseShift ( ('<'|'<='|'>'|'>=')^ bitwiseShift)?
+    :   bitwiseShift ( ('<'|'<='|'>'|'>=')^ bitwiseShift)?
     ;
      
 bitwiseShift
-    :    termOrStringConcatenation (('<<'|'>>')^ termOrStringConcatenation)*
+    :   termOrStringConcatenation (('<<'|'>>')^ termOrStringConcatenation)*
     ;
 
 termOrStringConcatenation
-    :    factor (('+'|'-'|'.')^ factor)*
+    :   factor (('+'|'-'|'.')^ factor)*
     ;
 
 factor
-    :    instanceOf (('*'|'/'|'%')^ instanceOf)*
+    :   instanceOf (('*'|'/'|'%')^ instanceOf)*
     ;
 
 instanceOf
-    :    unary ('instanceof'^ (classInterfaceTypeWithoutMixed|VariableId))?
+    :   unary ('instanceof'^ (classInterfaceTypeWithoutMixed|VariableId))?
     ;
 
 unary
-    :    cast='(' scalarTypesInclArrayWithModifier ')' unary -> ^(CAST[$cast,"casting"] scalarTypesInclArrayWithModifier unary)
-    |    plus='++' postFixVariableWithoutCallAtTheEnd  -> ^(PRE_INCREMENT[$plus,"preIncr"] postFixVariableWithoutCallAtTheEnd)
-    |    minus='--' postFixVariableWithoutCallAtTheEnd -> ^(PRE_DECREMENT[$minus,"preDecr"] postFixVariableWithoutCallAtTheEnd)
-    |    ('@'|'~'|'!')^ unary
-    |    uplus = '+' unary -> ^(UNARY_PLUS[uplus,"uPlus"] unary)
-    |    uminus = '-' unary -> ^(UNARY_MINUS[$uminus,"uMinus"] unary)
-    |    cloneOrNew
+    :   cast='(' scalarTypesInclArrayWithModifier ')' unary -> ^(CAST[$cast,"casting"] scalarTypesInclArrayWithModifier unary)
+    |   plus='++' postFixVariableWithoutCallAtTheEnd  -> ^(PRE_INCREMENT[$plus,"preIncr"] postFixVariableWithoutCallAtTheEnd)
+    |   minus='--' postFixVariableWithoutCallAtTheEnd -> ^(PRE_DECREMENT[$minus,"preDecr"] postFixVariableWithoutCallAtTheEnd)
+    |   ('@'|'~'|'!')^ unary
+    |   uplus = '+' unary -> ^(UNARY_PLUS[uplus,"uPlus"] unary)
+    |   uminus = '-' unary -> ^(UNARY_MINUS[$uminus,"uMinus"] unary)
+    |   cloneOrNew
     ;
     
 scalarTypesInclArrayWithModifier
-    :    (    t='bool'
-         |    t='boolean' {t.setType(Bool); t.setText("bool");}
-         |    t='int'
-         |    t='integer' {t.setType(Int); t.setText("int");}
-         |    t='float'
-         |    t='double'  {t.setType(Float); t.setText("float");}
-         |    t='real'    {t.setType(Float); t.setText("float");}
-         |    t='string'
-         |    t='array'
-         )
-         -> ^(TYPE[$t,"type"] TYPE_MODIFIER[$t,"tMod"] $t)
+    :   (    t='bool'
+        |    t='boolean' {t.setType(Bool); t.setText("bool");}
+        |    t='int'
+        |    t='integer' {t.setType(Int); t.setText("int");}
+        |    t='float'
+        |    t='double'  {t.setType(Float); t.setText("float");}
+        |    t='real'    {t.setType(Float); t.setText("float");}
+        |    t='string'
+        |    t='array'
+        )
+        -> ^(TYPE[$t,"type"] TYPE_MODIFIER[$t,"tMod"] $t)
     ;
    
 cloneOrNew
-         //reference back to unary necessary, since clone unary $b; is valid e.g. clone @$b;
-    :    'clone'^ unary
+        //reference back to unary necessary, since clone unary $b; is valid e.g. clone @$b;
+    :   'clone'^ unary
 //TODO rstoll TINS-108 - class, TINS-109 - interface
-//    |    newObject
-    |    primary
+//    |   newObject
+    |   primary
     ;
 
 primary
-    :    'exit'^ ('('! expression ')'!)?
+    :   'exit'^ ('('! expression ')'!)?
 //
-    |    postFixCall
-    |    (VariableId -> VariableId)
-         (    (//TODO rstoll TINS-108 - class, TINS-109 - interface
-              //(call* -> ^(METHOD_CALL_POSTFIX[$call.start,"mpCall"] VariableId call*) )
-              //(    fieldAccess = '->' Identifier -> ^(FIELD_ACCESS[$fieldAccess,"fieAccess"] $postFixVariableWithoutCallAtTheEnd Identifie
-              /*|*/    arrayAccess = '[' expression ']' 
-                      -> ^(ARRAY_ACCESS[$arrayAccess,"arrAccess"] $primary expression)
-              //)
-              )* 
-              (    o='++' -> ^(POST_INCREMENT[$o, "postIncr"] $primary)
-              |    o='--' -> ^(POST_DECREMENT[$o, "postDecr"] $primary)
-              )?
-         )
-    |    atom
+    |   postFixCall
+    |   (VariableId -> VariableId)
+        (    (//TODO rstoll TINS-108 - class, TINS-109 - interface
+             //(call* -> ^(METHOD_CALL_POSTFIX[$call.start,"mpCall"] VariableId call*) )
+             //(    fieldAccess = '->' Identifier -> ^(FIELD_ACCESS[$fieldAccess,"fieAccess"] $postFixVariableWithoutCallAtTheEnd Identifie
+             /*|*/    arrayAccess = '[' expression ']'
+                     -> ^(ARRAY_ACCESS[$arrayAccess,"arrAccess"] $primary expression)
+             //)
+             )*
+             (    o='++' -> ^(POST_INCREMENT[$o, "postIncr"] $primary)
+             |    o='--' -> ^(POST_DECREMENT[$o, "postDecr"] $primary)
+             )?
+        )
+    |   atom
     ;
 
 postFixCall
-    :    (    functionCall -> functionCall
-         //|    methodCall -> methodCall
-         //|    methodCallSelfOrParent -> methodCallSelfOrParent
-         //|    methodCallStatic -> methodCallStatic 
-         )
-         (//TODO rstoll TINS-108 - class, TINS-109 - interface
-         /*    fieldAccess = '->' Identifier -> ^(FIELD_ACCESS[$fieldAccess,"fieAccess"] $postFixCall Identifier)
-         |*/    arrayAccess = '[' expression ']' -> ^(ARRAY_ACCESS[$arrayAccess,"arrAccess"] $postFixCall expression)
-         //|    call -> ^(METHOD_CALL_POSTFIX[$call.start,"mpCall"] $postFixCall call)
-         )*
+    :   (    functionCall -> functionCall
+        //|    methodCall -> methodCall
+        //|    methodCallSelfOrParent -> methodCallSelfOrParent
+        //|    methodCallStatic -> methodCallStatic
+        )
+        (//TODO rstoll TINS-108 - class, TINS-109 - interface
+        /*    fieldAccess = '->' Identifier -> ^(FIELD_ACCESS[$fieldAccess,"fieAccess"] $postFixCall Identifier)
+        |*/    arrayAccess = '[' expression ']' -> ^(ARRAY_ACCESS[$arrayAccess,"arrAccess"] $postFixCall expression)
+        //|    call -> ^(METHOD_CALL_POSTFIX[$call.start,"mpCall"] $postFixCall call)
+        )*
     ;
        
 functionCall
-    :    functionIdentifier actualParameters
-         -> ^(FUNCTION_CALL[$functionIdentifier.start,"fCall"] functionIdentifier actualParameters)
+    :   functionIdentifier actualParameters
+        -> ^(FUNCTION_CALL[$functionIdentifier.start,"fCall"] functionIdentifier actualParameters)
     ;
    
 functionIdentifier
-    :    classInterfaceTypeWithoutMixed 
-         -> TYPE_NAME[$classInterfaceTypeWithoutMixed.start,$classInterfaceTypeWithoutMixed.text+"()"]
+    :   classInterfaceTypeWithoutMixed
+        -> TYPE_NAME[$classInterfaceTypeWithoutMixed.start,$classInterfaceTypeWithoutMixed.text+"()"]
     ;
 
 actualParameters
-    :    list='(' expressionList? ')' -> ^(ACTUAL_PARAMETERS[$list,"args"] expressionList?)
+    :   list='(' expressionList? ')' -> ^(ACTUAL_PARAMETERS[$list,"args"] expressionList?)
     ;
    
 expressionList
-    :    expression (','! expression)*
+    :   expression (','! expression)*
     ;
 
 postFixVariableWithoutCallAtTheEnd
-    :    (VariableId -> VariableId)
-         ( 
-              //TODO rstoll TINS-108 - class, TINS-109 - interface
-              //(call* -> ^(METHOD_CALL_POSTFIX[$call.start,"mpCall"] VariableId call*) )
-              //(    fieldAccess = '->' Identifier -> ^(FIELD_ACCESS[$fieldAccess,"fieAccess"] $postFixVariableWithoutCallAtTheEnd Identifie
-              /*|*/    arrayAccess = '[' expression ']' 
-                      -> ^(ARRAY_ACCESS[$arrayAccess,"arrAccess"] $postFixVariableWithoutCallAtTheEnd expression)
-              //)
-         )*
+    :   (VariableId -> VariableId)
+        (
+             //TODO rstoll TINS-108 - class, TINS-109 - interface
+             //(call* -> ^(METHOD_CALL_POSTFIX[$call.start,"mpCall"] VariableId call*) )
+             //(    fieldAccess = '->' Identifier -> ^(FIELD_ACCESS[$fieldAccess,"fieAccess"] $postFixVariableWithoutCallAtTheEnd Identifie
+             /*|*/    arrayAccess = '[' expression ']'
+                     -> ^(ARRAY_ACCESS[$arrayAccess,"arrAccess"] $postFixVariableWithoutCallAtTheEnd expression)
+             //)
+        )*
     ;    
 
 atom    
-    :    primitiveAtomWithConstant
-    |    '(' expression ')' -> expression
+    :   primitiveAtomWithConstant
+    |   '(' expression ')' -> expression
     ;   
 
 primitiveAtomWithConstant
-    :    Bool
-    |    Int
-    |    Float
-    |    String
-    |    'null'
-    |    array
-    |    globalConstant
+    :   Bool
+    |   Int
+    |   Float
+    |   String
+    |   'null'
+    |   array
+    |   globalConstant
     ;
 
 globalConstant
-    :    identifier=classInterfaceTypeWithoutMixed -> CONSTANT[$identifier.start, $identifier.text+"#"]    
+    :   identifier=classInterfaceTypeWithoutMixed -> CONSTANT[$identifier.start, $identifier.text+"#"]
     ;     
     
 array    
-    :    arr='[' arrayContent? ']'  -> ^(TypeArray[$arr,"array"] arrayContent?)
-    |    arr='array' '(' arrayContent? ')' -> ^($arr arrayContent?)
+    :   arr='[' arrayContent? ']'  -> ^(TypeArray[$arr,"array"] arrayContent?)
+    |   arr='array' '(' arrayContent? ')' -> ^($arr arrayContent?)
     ;
     
 arrayContent
-    :    arrayKeyValue (','! arrayKeyValue)*
+    :   arrayKeyValue (','! arrayKeyValue)*
     ;
     
 arrayKeyValue
@@ -616,82 +616,82 @@ arrayKeyValue
     ;
 
 Int     
-    :     DECIMAL
-    |     HEXADECIMAL
-    |     OCTAL
-    |     BINARY
+    :	DECIMAL
+    |   HEXADECIMAL
+    |   OCTAL
+    |   BINARY
     ;
 
 fragment
 DECIMAL
-    :    ('1'..'9') ('0'..'9')*
-    |     '0'
+    :   ('1'..'9') ('0'..'9')*
+    |   '0'
     ;
         
 fragment          
 HEXADECIMAL 
-    :    '0' ('x'|'X') ('0'..'9'|'a'..'f'|'A'..'F')+
+    :   '0' ('x'|'X') ('0'..'9'|'a'..'f'|'A'..'F')+
     ;
 
 fragment
 OCTAL    
-    :    '0' ('0'..'7')+
+    :   '0' ('0'..'7')+
     ;
 
 fragment
 BINARY    
-    :    '0b'('0'|'1')+
+    :   '0b'('0'|'1')+
     ;
 
 Float
-    :    ('0'..'9')+ '.' ('0'..'9')* EXPONENT?
-    |    '.' ('0'..'9')+ EXPONENT?
-    |    ('0'..'9')+ EXPONENT
+    :   ('0'..'9')+ '.' ('0'..'9')* EXPONENT?
+    |   '.' ('0'..'9')+ EXPONENT?
+    |   ('0'..'9')+ EXPONENT
     ;
     
 fragment
 EXPONENT 
-    :    ('e'|'E') ('+'|'-')? ('0'..'9')+ 
+    :   ('e'|'E') ('+'|'-')? ('0'..'9')+ 
     ;
     
 String    
-    :    STRING_SINGLE_QUOTED 
-    |    STRING_DOUBLE_QUOTED 
+    :   STRING_SINGLE_QUOTED 
+    |   STRING_DOUBLE_QUOTED 
     ;
 
 fragment
 STRING_SINGLE_QUOTED
-    :    '\'' 
-         (    ('\\\\')=>'\\\\' 
-         |    ('\\\'')=>'\\\'' 
-         |    ~('\'')
-         )* 
-         '\''
+    :   '\'' 
+        (    ('\\\\')=>'\\\\' 
+        |    ('\\\'')=>'\\\'' 
+        |    ~('\'')
+        )* 
+        '\''
     ;
     
 fragment
 STRING_DOUBLE_QUOTED
-    :    '"' 
-         (    ('\\\\') => '\\\\'
-         |    ('\\"') => '\\"'
-         |    ('\\$') => '\\$'
-         |    ~('"' | '$')
-         )*
-         '"'
+    :   '"' 
+        (    ('\\\\') => '\\\\'
+        |    ('\\"') => '\\"'
+        |    ('\\$') => '\\$'
+        |    ~('"' | '$')
+        )*
+        '"'
     ;
 
 Comment
-    :    ('//'|'#') ~('\n'|'\r')* '\r'? '\n' {$channel=HIDDEN;}
-         //comment could be at the end of the file and thus no \n needed
-    |    ('//'|'#') ~('\n'|'\r')* {$channel=HIDDEN;}
-    |    '/*' ( options {greedy=false;} : . )* '*/' {$channel=HIDDEN;}
+    :   ('//'|'#') ~('\n'|'\r')* '\r'? '\n' {$channel = HIDDEN;}
+        //comment could be at the end of the file and thus no \n needed
+    |   ('//'|'#') ~('\n'|'\r')* {$channel = HIDDEN;}
+    |   '/*' ( options {greedy = false;} : . )* '*/' {$channel = HIDDEN;}
     ;
 
-Whitespace    
-    :    (    ' '
-         |    '\t'
-         |    '\r'
-         |    '\n'
-         ) 
-         {$channel=HIDDEN;}
+Whitespace
+    :   (    ' '
+        |    '\t'
+        |    '\r'
+        |    '\n'
+        )
+        {$channel = HIDDEN;}
     ;

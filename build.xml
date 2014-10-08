@@ -17,6 +17,7 @@
     <import file="${basedir}/ant/copyCommon.xml" as="cp"/>
     <import file="${basedir}/ant/copyParserCommon.xml" as="cp"/>
     <import file="${basedir}/ant/copyAntlr.xml" as="cp"/>
+    <import file="${basedir}/ant/copyQA.xml" as="copy"/>
 
     <property file="${basedir}/ant/antlr.properties"/>
 
@@ -27,6 +28,21 @@
             depends="antlr, common.dist"
             description="create distributions">
     </target>
+
+    <!-- ================================================================== -->
+    <!-- Specialised Target: cp.QA don't copy header.txt -->
+    <!-- ================================================================== -->
+    <target name="cp.QA" depends="cp.QA.saveHeaderTxt, copy.cp.QA, cp.QA.restoreHeaderTxt"/>
+    <target name="cp.QA.saveHeaderTxt">
+        <copy file="${libdev}/checkstyle/cfg/header.txt" tofile="${libdev}/b_header.txt"/>
+    </target>
+
+    <target name="cp.QA.restoreHeaderTxt">
+        <copy overwrite="true"
+              file="${libdev}/b_header.txt" tofile="${libdev}/checkstyle/cfg/header.txt"/>
+        <delete file="${libdev}/b_header.txt"/>
+    </target>
+
 
     <target name="antlr">
         <copy todir="${antlr.copyLocation}" overwrite="true">
