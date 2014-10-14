@@ -383,7 +383,8 @@ VariableId
     ;
 
 instruction
-    :   expression ';' -> ^(EXPRESSION[$expression.start,"expr"] expression)
+    :   ifCondition
+    |    expression ';' -> ^(EXPRESSION[$expression.start,"expr"] expression)
     |   expr=';' -> EXPRESSION[$expr,"expr"]
     |   'return'^ expression? ';'!
     |   'throw'^ expression ';'!
@@ -393,6 +394,15 @@ instruction
     |   block='{''}' -> EXPRESSION[$block,"expr"]
     |   '{'! instruction+ '}'!
     ;
+
+ifCondition
+    :   'if' '(' expression ')' instructionThen=instruction ( 'else' instructionElse =instruction )?
+        -> ^('if'
+            expression
+            ^(BLOCK_CONDITIONAL[$instructionThen.start,"cBlock"] $instructionThen)
+            ^(BLOCK_CONDITIONAL[$instructionElse.start,"cBlock"] $instructionElse)?
+        )
+    ;    
 
 expression
     :   logicOrWeak 
