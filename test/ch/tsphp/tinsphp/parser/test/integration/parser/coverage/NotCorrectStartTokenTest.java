@@ -14,6 +14,7 @@ package ch.tsphp.tinsphp.parser.test.integration.parser.coverage;
 
 import ch.tsphp.tinsphp.parser.antlr.TinsPHPParser;
 import ch.tsphp.tinsphp.parser.test.integration.testutils.AParserParserExceptionTest;
+import org.antlr.runtime.EarlyExitException;
 import org.antlr.runtime.MismatchedTokenException;
 import org.antlr.runtime.MissingTokenException;
 import org.antlr.runtime.NoViableAltException;
@@ -81,6 +82,7 @@ public class NotCorrectStartTokenTest extends AParserParserExceptionTest
                 {"functionDefinition", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
                 {"functionIdentifier", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"globalConstant", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
+                {"ifCondition", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
                 {"instanceOf", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"instruction", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"logicAnd", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
@@ -101,6 +103,9 @@ public class NotCorrectStartTokenTest extends AParserParserExceptionTest
                 {"primitiveAtomWithConstant", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"scalarTypesInclArrayWithModifier", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"statement", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
+                {"switchCondition", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
+                {"switchContent", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
+                {"switchContentWithoutDefault", "else", TinsPHPParser.Else, 0, EarlyExitException.class},
                 {"termOrStringConcatenation", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"ternary", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"unary", "else", TinsPHPParser.Else, 0, NoViableAltException.class},

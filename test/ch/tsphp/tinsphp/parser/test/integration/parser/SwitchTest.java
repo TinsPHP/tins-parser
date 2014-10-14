@@ -5,7 +5,7 @@
  */
 
 /*
- * This class is based on the class ThrowTest from the TSPHP project.
+ * This class is based on the class SwitchTest from the TSPHP project.
  * TSPHP is also published under the Apache License 2.0
  * For more information see http://tsphp.ch/wiki/display/TSPHP/License
  */
@@ -18,15 +18,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @RunWith(Parameterized.class)
-public class ThrowTest extends AParserTest
+public class SwitchTest extends AParserTest
 {
 
-    public ThrowTest(String testString) {
+    public SwitchTest(String testString) {
         super(testString);
     }
 
@@ -37,8 +35,6 @@ public class ThrowTest extends AParserTest
 
     @Parameterized.Parameters
     public static Collection<Object[]> testStrings() {
-        List<Object[]> collection = new ArrayList<>();
-        collection.addAll(InstructionHelper.getControlStructuresInNamespaceFunctionAndMethod("throw $a;"));
-        return collection;
+        return InstructionHelper.getControlStructuresInNamespaceFunctionAndMethod("switch($a){ case 1: $a=1; }");
     }
 }

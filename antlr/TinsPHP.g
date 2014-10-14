@@ -384,7 +384,8 @@ VariableId
 
 instruction
     :   ifCondition
-    |    expression ';' -> ^(EXPRESSION[$expression.start,"expr"] expression)
+    |   switchCondition
+    |   expression ';' -> ^(EXPRESSION[$expression.start,"expr"] expression)
     |   expr=';' -> EXPRESSION[$expr,"expr"]
     |   'return'^ expression? ';'!
     |   'throw'^ expression ';'!
@@ -403,6 +404,57 @@ ifCondition
             ^(BLOCK_CONDITIONAL[$instructionElse.start,"cBlock"] $instructionElse)?
         )
     ;    
+   
+switchCondition
+    :   'switch' '(' expression ')' '{' switchContent? '}'  -> ^('switch' expression switchContent?)
+    ;
+
+switchContent
+    :
+    (    label=caseLabel+ 
+         (   defaultLabel 
+             (   caseLabel+
+                 (   instr=instruction+ content=switchContentWithoutDefault?
+                 |   /* empty */
+                 )
+             |   instr=instruction+ content=switchContentWithoutDefault?
+             |   /* empty */
+             )                 
+         |   instr=instruction+ content=switchContent?             
+         |   /* empty */
+         )
+         
+    |    label=defaultLabel 
+         (   caseLabel+
+             (   instr=instruction+ content=switchContentWithoutDefault?
+             |   /* empty */
+             )
+         |   instr=instruction+ content=switchContentWithoutDefault?
+         |    /* empty */
+         )
+    )
+    ->  ^(SWITCH_CASES[$label.start,"cases"] caseLabel* defaultLabel?)
+        ^(BLOCK_CONDITIONAL[$instr.start,"cBlock"] instruction*)
+        $content?
+    ;
+
+switchContentWithoutDefault
+    :   caseLabel+
+        (   instruction+ content=switchContentWithoutDefault?
+        |   /* empty */
+        )
+        ->  ^(SWITCH_CASES[$caseLabel.start,"cases"] caseLabel+)
+            ^(BLOCK_CONDITIONAL[$instruction.start,"cBlock"] instruction*)
+            $content?
+    ;
+
+caseLabel
+    :   'case'! expression ':'!
+    ;
+
+defaultLabel
+    :   'default' ':'!
+    ;
 
 expression
     :   logicOrWeak 

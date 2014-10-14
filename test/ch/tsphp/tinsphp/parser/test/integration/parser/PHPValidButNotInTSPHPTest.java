@@ -40,8 +40,7 @@ public class PHPValidButNotInTSPHPTest extends AParserParserExceptionTest
     public static Collection<Object[]> testStrings() {
         return Arrays.asList(new Object[][]{
                 //switch with multiple default blocks
-                //TODO rstoll TINS-68 parser procedural - control structures
-//            {"switch($a){case 1: default: ; break; case 2: default: ; break;}", TinsPHPParser.Default, 49},
+                {"switch($a){case 1: default: ; break; case 2: default: ; break;}", TinsPHPParser.Default, 45},
                 //use outside of semicolon namespace
                 {"use a\\a; namespace a;", TinsPHPParser.Namespace, 9},
 
