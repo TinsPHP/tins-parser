@@ -72,6 +72,7 @@ public class NotCorrectStartTokenTest extends AParserParserExceptionTest
                 {"constDefinitionList", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
                 {"constantAssignment", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
                 {"definition", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
+                {"doWhileLoop", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
                 {"equality", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"equalityOperator", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"expression", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
@@ -81,6 +82,7 @@ public class NotCorrectStartTokenTest extends AParserParserExceptionTest
                 {"forInit", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
                 {"forLoop", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
                 {"forUpdate", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
+                {"foreachLoop", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
                 {"formalParameters", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
                 {"functionCall", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"functionDefinition", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
@@ -117,6 +119,7 @@ public class NotCorrectStartTokenTest extends AParserParserExceptionTest
                 {"useDefinitionList", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
                 {"useDefinition", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"usingType", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
+                {"whileLoop", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
                 // withoutNamespace can be empty and since compilationUnit checks if next token is EOF,
                 // this test does not fail
                 //{"withoutNamespace", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},

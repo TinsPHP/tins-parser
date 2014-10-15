@@ -387,6 +387,8 @@ instruction
     |   switchCondition
     |	forLoop
     |   foreachLoop
+    |   whileLoop
+    |	doWhileLoop
     |   expression ';' -> ^(EXPRESSION[$expression.start,"expr"] expression)
     |   expr=';' -> EXPRESSION[$expr,"expr"]
     |   'return'^ expression? ';'!
@@ -464,20 +466,20 @@ forLoop
             forInit
             forCondition
             forUpdate
-            ^(BLOCK_CONDITIONAL[$instruction.start,"cBlock"] instruction)
+            ^(BLOCK_CONDITIONAL[$instruction.start, "cBlock"] instruction)
         )
     ;
 
 forInit
-    :   init='(' expressionList? -> ^(EXPRESSION_LIST[$init,"exprs"] expressionList?)
+    :   init='(' expressionList? -> ^(EXPRESSION_LIST[$init, "exprs"] expressionList?)
     ;
 
 forCondition
-    :   condition=';' expressionList? -> ^(EXPRESSION_LIST[$condition,"exprs"] expressionList?)
+    :   condition=';' expressionList? -> ^(EXPRESSION_LIST[$condition, "exprs"] expressionList?)
     ;
 
 forUpdate
-    :   update=';' expressionList? ')' -> ^(EXPRESSION_LIST[$update,"exprs"] expressionList?)
+    :   update=';' expressionList? ')' -> ^(EXPRESSION_LIST[$update, "exprs"] expressionList?)
     ;
 
 foreachLoop
@@ -489,7 +491,7 @@ foreachLoop
             (
                 ^(VARIABLE_DECLARATION_LIST[$keyVarId,"vars"]
                     ^(TYPE[$keyVarId,"type"] 
-                        TYPE_MODIFIER[$keyVarId,"tMod"] 
+                        TYPE_MODIFIER[$keyVarId, "tMod"] 
                         QuestionMark[$keyVarId, "?"]
                     )
                     $keyVarId
@@ -498,13 +500,23 @@ foreachLoop
 
             ^(VARIABLE_DECLARATION_LIST[$valueVarId,"vars"] 
                 ^(TYPE[$valueVarId,"type"] 
-                    TYPE_MODIFIER[$valueVarId,"tMod"] 
+                    TYPE_MODIFIER[$valueVarId, "tMod"] 
                     QuestionMark[$valueVarId, "?"]
                 )
                 $valueVarId
             )
-            ^(BLOCK_CONDITIONAL[$instruction.start,"cBlock"] instruction)
+            ^(BLOCK_CONDITIONAL[$instruction.start, "cBlock"] instruction)
         )
+    ;
+
+whileLoop
+    :   'while' '(' expression ')' instruction
+        -> ^('while' expression ^(BLOCK_CONDITIONAL[$instruction.start, "cBlock"] instruction))
+    ;
+
+doWhileLoop
+    :   'do' instruction 'while' '(' expression ')' ';'
+        -> ^('do' ^(BLOCK[$instruction.start, "block"] instruction) expression)
     ;
 
 expression

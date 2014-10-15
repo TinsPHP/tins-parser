@@ -60,19 +60,23 @@ public class InstructionHelper
                 {prefix + "if($a){" + instruction + "}" + appendix},
                 {prefix + "if($a){$a=1;}else{" + instruction + "}" + appendix},
                 {prefix + "switch($a){case 1: " + instruction + "}" + appendix},
-                {prefix + "switch($a){case 1: $a=1; " + instruction + " default: $a=2; " + instruction + "}" +
-                        appendix},
-                {prefix + "switch($a){case 1:{ $a=1; " + instruction + "} default: $a=2; { " + instruction + "} }" +
-                        appendix},
+                {
+                        prefix + "switch($a){case 1: $a=1; " + instruction
+                                + " default: $a=2; " + instruction + "}" + appendix
+                },
+                {
+                        prefix + "switch($a){case 1:{ $a=1; " + instruction + "}"
+                                + "default: $a=2; { " + instruction + "} }" + appendix
+                },
                 {prefix + "for(;;) " + instruction + appendix},
                 {prefix + "for(;;){ " + instruction + "}" + appendix},
                 {prefix + "foreach([] as $v)" + instruction + appendix},
                 {prefix + "foreach([] as $v){" + instruction + "}" + appendix},
+                {prefix + "while(true)" + instruction + appendix},
+                {prefix + "while(true){" + instruction + "}" + appendix},
+                {prefix + "do " + instruction + " while(true);" + appendix},
+                {prefix + "do{ " + instruction + "}while(true);" + appendix},
                 //TODO rstoll TINS-68 parser procedural - control structures
-//                {prefix + "while(true)" + instruction + appendix},
-//                {prefix + "while(true){" + instruction + "}" + appendix},
-//                {prefix + "do " + instruction + " while(true);" + appendix},
-//                {prefix + "do{ " + instruction + "}while(true);" + appendix},
 //                {prefix + "try{" + instruction + "}catch(\\Exception $e){}" + appendix},
 //                {prefix + "try{$a=1;}catch(\\Exception $e){" + instruction + "}" + appendix}
         });
