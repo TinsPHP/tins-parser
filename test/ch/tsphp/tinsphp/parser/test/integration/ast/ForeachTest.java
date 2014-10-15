@@ -5,7 +5,7 @@
  */
 
 /*
- * This class is based on the class EchoTest from the TSPHP project.
+ * This class is based on the class ForeachTest from the TSPHP project.
  * TSPHP is also published under the Apache License 2.0
  * For more information see http://tsphp.ch/wiki/display/TSPHP/License
  */
@@ -19,14 +19,15 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 @RunWith(Parameterized.class)
-public class EchoTest extends AAstTest
+public class ForeachTest extends AAstTest
 {
 
-    public EchoTest(String testString, String expectedResult) {
+    public ForeachTest(String testString, String expectedResult) {
         super(testString, expectedResult);
     }
 
@@ -39,14 +40,25 @@ public class EchoTest extends AAstTest
     public static Collection<Object[]> testStrings() {
         List<Object[]> collection = new ArrayList<>();
         List<String[]> expressions = ExpressionHelper.getAstExpressions();
-
         for (Object[] expression : expressions) {
-            collection.add(new Object[]{"echo " + expression[0] + ";", "(echo " + expression[1] + ")"});
             collection.add(new Object[]{
-                    "echo " + expression[0] + "," + expression[0] + ";",
-                    "(echo " + expression[1] + " " + expression[1] + ")"
+                    "foreach(" + expression[0] + " as $v);",
+                    "(foreach " + expression[1] + " (vars (type tMod ?) $v) (cBlock expr))"
             });
         }
+        collection.addAll(Arrays.asList(new Object[][]{
+                {
+                        "foreach($a as $v){}",
+                        "(foreach $a (vars (type tMod ?) $v) (cBlock expr))"
+                },
+                {
+                        "foreach($a as $k => $v)$a=1;",
+                        "(foreach $a (vars (type tMod ?) $k) (vars (type tMod ?) $v) (cBlock (expr (= $a 1))))"
+                },
+
+        }));
+
+
         return collection;
     }
 }

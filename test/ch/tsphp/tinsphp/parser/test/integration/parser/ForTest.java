@@ -13,12 +13,15 @@
 package ch.tsphp.tinsphp.parser.test.integration.parser;
 
 import ch.tsphp.tinsphp.parser.test.integration.testutils.AParserTest;
+import ch.tsphp.tinsphp.parser.test.integration.testutils.InstructionHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 @RunWith(Parameterized.class)
 public class ForTest extends AParserTest
@@ -35,7 +38,9 @@ public class ForTest extends AParserTest
 
     @Parameterized.Parameters
     public static Collection<Object[]> testStrings() {
-        return Arrays.asList(new Object[][]{
+        List<Object[]> collection = new ArrayList<>();
+        collection.addAll(InstructionHelper.getControlStructuresInNamespaceFunctionAndMethod("for($i=0;$i<1;++$i){}"));
+        collection.addAll(Arrays.asList(new Object[][]{
                 //for with init without assignment
                 {"for($a;;){$a=1;}"},
                 {"for($a=1,$b;;){$a=1;}"},
@@ -70,6 +75,7 @@ public class ForTest extends AParserTest
                 {"for($a=1           ; ++$a,$a < 1    ; ++$a,$b-- ) {$a=1;}"},
                 {"for($a=1           ; ++$a,$a < 1    ; ++$a,$b-- ) {$a=1;}"},
                 {"for($a=1,$b=1      ; $a < 1         ; ++$a ) {$a=1;}"}
-        });
+        }));
+        return collection;
     }
 }

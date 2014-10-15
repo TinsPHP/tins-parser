@@ -386,6 +386,7 @@ instruction
     :   ifCondition
     |   switchCondition
     |	forLoop
+    |   foreachLoop
     |   expression ';' -> ^(EXPRESSION[$expression.start,"expr"] expression)
     |   expr=';' -> EXPRESSION[$expr,"expr"]
     |   'return'^ expression? ';'!
@@ -477,6 +478,33 @@ forCondition
 
 forUpdate
     :   update=';' expressionList? ')' -> ^(EXPRESSION_LIST[$update,"exprs"] expressionList?)
+    ;
+
+foreachLoop
+    :   'foreach' '(' expression 'as' (keyVarId=VariableId '=>')? valueVarId=VariableId ')' instruction
+        -> ^('foreach'
+            expression
+
+            //key
+            (
+                ^(VARIABLE_DECLARATION_LIST[$keyVarId,"vars"]
+                    ^(TYPE[$keyVarId,"type"] 
+                        TYPE_MODIFIER[$keyVarId,"tMod"] 
+                        QuestionMark[$keyVarId, "?"]
+                    )
+                    $keyVarId
+                )
+            )?
+
+            ^(VARIABLE_DECLARATION_LIST[$valueVarId,"vars"] 
+                ^(TYPE[$valueVarId,"type"] 
+                    TYPE_MODIFIER[$valueVarId,"tMod"] 
+                    QuestionMark[$valueVarId, "?"]
+                )
+                $valueVarId
+            )
+            ^(BLOCK_CONDITIONAL[$instruction.start,"cBlock"] instruction)
+        )
     ;
 
 expression
