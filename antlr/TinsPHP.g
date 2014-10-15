@@ -385,6 +385,7 @@ VariableId
 instruction
     :   ifCondition
     |   switchCondition
+    |	forLoop
     |   expression ';' -> ^(EXPRESSION[$expression.start,"expr"] expression)
     |   expr=';' -> EXPRESSION[$expr,"expr"]
     |   'return'^ expression? ';'!
@@ -454,6 +455,28 @@ caseLabel
 
 defaultLabel
     :   'default' ':'!
+    ;
+
+forLoop
+    :   'for' forInit forCondition forUpdate instruction
+        -> ^('for'
+            forInit
+            forCondition
+            forUpdate
+            ^(BLOCK_CONDITIONAL[$instruction.start,"cBlock"] instruction)
+        )
+    ;
+
+forInit
+    :   init='(' expressionList? -> ^(EXPRESSION_LIST[$init,"exprs"] expressionList?)
+    ;
+
+forCondition
+    :   condition=';' expressionList? -> ^(EXPRESSION_LIST[$condition,"exprs"] expressionList?)
+    ;
+
+forUpdate
+    :   update=';' expressionList? ')' -> ^(EXPRESSION_LIST[$update,"exprs"] expressionList?)
     ;
 
 expression
