@@ -5,7 +5,7 @@
  */
 
 /*
- * This class is based on the class ForeachTest from the TSPHP project.
+ * This class is based on the class TryCatchTest from the TSPHP project.
  * TSPHP is also published under the Apache License 2.0
  * For more information see http://tsphp.ch/wiki/display/TSPHP/License
  */
@@ -18,16 +18,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 @RunWith(Parameterized.class)
-public class ForeachTest extends AParserTest
+public class TryCatchTest extends AParserTest
 {
 
-    public ForeachTest(String testString) {
+    public TryCatchTest(String testString) {
         super(testString);
     }
 
@@ -38,21 +35,6 @@ public class ForeachTest extends AParserTest
 
     @Parameterized.Parameters
     public static Collection<Object[]> testStrings() {
-        List<Object[]> collection = new ArrayList<>();
-        collection.addAll(InstructionHelper.getControlStructuresInNamespaceFunctionAndMethod("foreach($a as $v){}"));
-
-        String[] arrayTestStrings = ArrayDeclarationTest.getArrayTestStrings();
-        for (String string : arrayTestStrings) {
-            collection.add(new Object[]{"foreach(" + string + " as $v) $a=1;"});
-        }
-
-        collection.addAll(Arrays.asList(new Object[][]{
-                {"foreach($a as $v) $a = 1;"},
-                {"foreach($a as $v){ $a = 1; }"},
-                {"foreach($a as $k => $v) $a = 1;"},
-                {"foreach($a as $k => $v){ $a = 1; }"},
-        }));
-
-        return collection;
+        return InstructionHelper.getControlStructuresInNamespaceFunctionAndMethod("try{$a=1;}catch(Exception $e){}");
     }
 }

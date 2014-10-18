@@ -385,10 +385,11 @@ VariableId
 instruction
     :   ifCondition
     |   switchCondition
-    |	forLoop
+    |   forLoop
     |   foreachLoop
     |   whileLoop
-    |	doWhileLoop
+    |   doWhileLoop
+    |   tryCatch
     |   expression ';' -> ^(EXPRESSION[$expression.start,"expr"] expression)
     |   expr=';' -> EXPRESSION[$expr,"expr"]
     |   'return'^ expression? ';'!
@@ -517,6 +518,25 @@ whileLoop
 doWhileLoop
     :   'do' instruction 'while' '(' expression ')' ';'
         -> ^('do' ^(BLOCK[$instruction.start, "block"] instruction) expression)
+    ;
+
+tryCatch
+    :   'try' tryBegin='{' instruction* '}' catchBlock+
+        -> ^('try' ^(BLOCK_CONDITIONAL[$instruction.start,"cBlock"] instruction*) catchBlock+)
+    ;
+
+catchBlock
+    :   catchBegin='catch' '(' classInterfaceTypeWithoutMixed VariableId ')' block='{' instruction* '}'
+        -> ^($catchBegin
+            ^(VARIABLE_DECLARATION_LIST[$classInterfaceTypeWithoutMixed.start,"vars"]
+                ^(TYPE[$classInterfaceTypeWithoutMixed.start,"type"] 
+                    TYPE_MODIFIER[$classInterfaceTypeWithoutMixed.start,"tMod"] 
+                    classInterfaceTypeWithoutMixed
+                )
+                VariableId
+            )
+            ^(BLOCK_CONDITIONAL[$instruction.start,"cBlock"] instruction*)
+        )
     ;
 
 expression

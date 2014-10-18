@@ -114,6 +114,7 @@ public class NotCorrectStartTokenTest extends AParserParserExceptionTest
                 {"switchContentWithoutDefault", "else", TinsPHPParser.Else, 0, EarlyExitException.class},
                 {"termOrStringConcatenation", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"ternary", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
+                {"tryCatch", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},
                 {"unary", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"unaryPrimitiveAtom", "else", TinsPHPParser.Else, 0, NoViableAltException.class},
                 {"useDefinitionList", "else", TinsPHPParser.Else, 0, MismatchedTokenException.class},

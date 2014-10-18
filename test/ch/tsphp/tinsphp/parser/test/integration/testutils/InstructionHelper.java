@@ -76,9 +76,8 @@ public class InstructionHelper
                 {prefix + "while(true){" + instruction + "}" + appendix},
                 {prefix + "do " + instruction + " while(true);" + appendix},
                 {prefix + "do{ " + instruction + "}while(true);" + appendix},
-                //TODO rstoll TINS-68 parser procedural - control structures
-//                {prefix + "try{" + instruction + "}catch(\\Exception $e){}" + appendix},
-//                {prefix + "try{$a=1;}catch(\\Exception $e){" + instruction + "}" + appendix}
+                {prefix + "try{" + instruction + "}catch(\\Exception $e){}" + appendix},
+                {prefix + "try{$a=1;}catch(\\Exception $e){" + instruction + "}" + appendix}
         });
     }
 }
