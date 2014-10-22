@@ -41,23 +41,24 @@ public class BlockTest extends AAstTest
         List<Object[]> collection = new ArrayList<>();
         addToCollection(collection, ArrayAccessTest.testStrings());
         addToCollection(collection, ArrayDeclarationTest.testStrings());
-//        addToCollection(collection, BreakContinueTest.testStrings());
+        addToCollection(collection, BreakContinueTest.testStrings());
         addToCollection(collection, CloneTest.testStrings());
         addToCollection(collection, ConstantAccessTest.testStrings());
-//        addToCollection(collection, EchoTest.testStrings());
+        addToCollection(collection, EchoTest.testStrings());
         addToCollection(collection, ExitTest.testStrings());
-//        addToCollection(collection, ForTest.testStrings());
-//        addToCollection(collection, ForeachTest.testStrings());
+        addToCollection(collection, ForTest.testStrings());
+        addToCollection(collection, ForeachTest.testStrings());
         addToCollection(collection, FunctionCallTest.testStrings());
-//        addToCollection(collection, IfTest.testStrings());
+        addToCollection(collection, IfTest.testStrings());
+        //TODO rstoll TINS-108 - class
 //        addToCollection(collection, MethodCallTest.testStrings());
 //        addToCollection(collection, NewClassTest.testStrings());
-//        addToCollection(collection, ReturnTest.testStrings());
-//        addToCollection(collection, SwitchTest.testStrings());
-//        addToCollection(collection, ThrowTest.testStrings());
-//        addToCollection(collection, TryCatchTest.testStrings());
+        addToCollection(collection, ReturnTest.testStrings());
+        addToCollection(collection, SwitchTest.testStrings());
+        addToCollection(collection, ThrowTest.testStrings());
+        addToCollection(collection, TryCatchTest.testStrings());
         addToCollection(collection, VariableAssignmentTest.testStrings());
-//        addToCollection(collection, WhileTest.testStrings());
+        addToCollection(collection, WhileTest.testStrings());
         collection.addAll(Arrays.asList(new Object[][]{
                 {"{; { ; { ;}}}", "expr expr expr"},
                 {"{; { ; {;} ;}}", "expr expr expr expr"},
