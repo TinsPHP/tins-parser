@@ -45,7 +45,7 @@ public class TryCatchTest extends AAstTest
                     "try{$a=1;}catch(" + type + " $e){}",
                     "(try "
                             + "(cBlock (expr (= $a 1))) "
-                            + "(catch (vars (type tMod " + type + ") $e) cBlock)"
+                            + "(catch " + type + " $e cBlock)"
                             + ")"
             });
         }
@@ -54,8 +54,8 @@ public class TryCatchTest extends AAstTest
                         "try{$a=1;}catch(\\Exception $e){} catch(\\a\\MyException $e){$a=1;$b=2;}",
                         "(try "
                                 + "(cBlock (expr (= $a 1))) "
-                                + "(catch (vars (type tMod \\Exception) $e) cBlock) "
-                                + "(catch (vars (type tMod \\a\\MyException) $e) (cBlock (expr (= $a 1)) (expr (= $b " +
+                                + "(catch \\Exception $e cBlock) "
+                                + "(catch \\a\\MyException $e (cBlock (expr (= $a 1)) (expr (= $b " +
                                 "2))))"
                                 + ")"
                 },
@@ -63,9 +63,9 @@ public class TryCatchTest extends AAstTest
                         "try{$a=1;}catch(a $e){} catch(b $e){$a=1;$b=2;}catch(c $e){}",
                         "(try "
                                 + "(cBlock (expr (= $a 1))) "
-                                + "(catch (vars (type tMod a) $e) cBlock) "
-                                + "(catch (vars (type tMod b) $e) (cBlock (expr (= $a 1)) (expr (= $b 2)))) "
-                                + "(catch (vars (type tMod c) $e) cBlock)"
+                                + "(catch a $e cBlock) "
+                                + "(catch b $e (cBlock (expr (= $a 1)) (expr (= $b 2)))) "
+                                + "(catch c $e cBlock)"
                                 + ")"
                 }
         }));

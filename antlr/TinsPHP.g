@@ -485,27 +485,10 @@ forUpdate
 
 foreachLoop
     :   'foreach' '(' expression 'as' (keyVarId=VariableId '=>')? valueVarId=VariableId ')' instruction
-        -> ^('foreach'
-            expression
-
-            //key
-            (
-                ^(VARIABLE_DECLARATION_LIST[$keyVarId,"vars"]
-                    ^(TYPE[$keyVarId,"type"] 
-                        TYPE_MODIFIER[$keyVarId, "tMod"] 
-                        QuestionMark[$keyVarId, "?"]
-                    )
-                    $keyVarId
-                )
-            )?
-
-            ^(VARIABLE_DECLARATION_LIST[$valueVarId,"vars"] 
-                ^(TYPE[$valueVarId,"type"] 
-                    TYPE_MODIFIER[$valueVarId, "tMod"] 
-                    QuestionMark[$valueVarId, "?"]
-                )
-                $valueVarId
-            )
+        -> ^('foreach' 
+            expression 
+            $keyVarId? 
+            $valueVarId 
             ^(BLOCK_CONDITIONAL[$instruction.start, "cBlock"] instruction)
         )
     ;
@@ -528,13 +511,8 @@ tryCatch
 catchBlock
     :   catchBegin='catch' '(' classInterfaceTypeWithoutMixed VariableId ')' block='{' instruction* '}'
         -> ^($catchBegin
-            ^(VARIABLE_DECLARATION_LIST[$classInterfaceTypeWithoutMixed.start,"vars"]
-                ^(TYPE[$classInterfaceTypeWithoutMixed.start,"type"] 
-                    TYPE_MODIFIER[$classInterfaceTypeWithoutMixed.start,"tMod"] 
-                    classInterfaceTypeWithoutMixed
-                )
-                VariableId
-            )
+            classInterfaceTypeWithoutMixed
+            VariableId
             ^(BLOCK_CONDITIONAL[$instruction.start,"cBlock"] instruction*)
         )
     ;

@@ -43,21 +43,20 @@ public class ForeachTest extends AAstTest
         for (Object[] expression : expressions) {
             collection.add(new Object[]{
                     "foreach(" + expression[0] + " as $v);",
-                    "(foreach " + expression[1] + " (vars (type tMod ?) $v) (cBlock expr))"
+                    "(foreach " + expression[1] + " $v (cBlock expr))"
             });
         }
         collection.addAll(Arrays.asList(new Object[][]{
                 {
                         "foreach($a as $v){}",
-                        "(foreach $a (vars (type tMod ?) $v) (cBlock expr))"
+                        "(foreach $a $v (cBlock expr))"
                 },
                 {
                         "foreach($a as $k => $v)$a=1;",
-                        "(foreach $a (vars (type tMod ?) $k) (vars (type tMod ?) $v) (cBlock (expr (= $a 1))))"
+                        "(foreach $a $k $v (cBlock (expr (= $a 1))))"
                 },
 
         }));
-
 
         return collection;
     }
