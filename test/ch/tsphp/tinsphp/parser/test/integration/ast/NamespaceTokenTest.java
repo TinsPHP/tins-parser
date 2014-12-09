@@ -51,16 +51,18 @@ public class NamespaceTokenTest extends AAstTokenTest
     @Parameterized.Parameters
     public static Collection<Object[]> testStrings() {
         return Arrays.asList(new Object[][]{
-                {"namespace a; ", Arrays.asList(AstHelper.DOWN, Namespace, TYPE_NAME, NAMESPACE_BODY, AstHelper.UP)},
-                {"namespace a {}", Arrays.asList(AstHelper.DOWN, Namespace, TYPE_NAME, NAMESPACE_BODY, AstHelper.UP)},
+                {"<?php namespace a; ?>", Arrays.asList(AstHelper.DOWN, Namespace, TYPE_NAME, NAMESPACE_BODY,
+                        AstHelper.UP)},
+                {"<?php namespace a {} ?>", Arrays.asList(AstHelper.DOWN, Namespace, TYPE_NAME, NAMESPACE_BODY,
+                        AstHelper.UP)},
                 //default
                 {
-                        "namespace{}",
+                        "<?php namespace{} ?>",
                         Arrays.asList(AstHelper.DOWN, Namespace, DEFAULT_NAMESPACE, NAMESPACE_BODY, AstHelper.UP)
                 },
                 //without namespace
                 {
-                        ";",
+                        "<?php ; ?>",
                         Arrays.asList(AstHelper.DOWN, Namespace, DEFAULT_NAMESPACE, AstHelper.DOWN, NAMESPACE_BODY,
                                 EXPRESSION,
                                 AstHelper.UP, AstHelper.UP)

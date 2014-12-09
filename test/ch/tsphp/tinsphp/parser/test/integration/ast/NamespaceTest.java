@@ -42,24 +42,30 @@ public class NamespaceTest extends AAstTest
     @Parameterized.Parameters
     public static Collection<Object[]> testStrings() {
         return Arrays.asList(new Object[][]{
-                {"namespace a; \n ;", "(namespace \\a\\ (nBody expr))"},
-                {"namespace a { \n ;}", "(namespace \\a\\ (nBody expr))"},
-                {"namespace a; ; namespace b; ;", "(namespace \\a\\ (nBody expr)) (namespace \\b\\ (nBody expr))"},
-                {"namespace a {;} namespace b{;}", "(namespace \\a\\ (nBody expr)) (namespace \\b\\ (nBody expr))"},
-                {"namespace a\\b; \n ; ;", "(namespace \\a\\b\\ (nBody expr expr))"},
-                {"namespace a\\b\\c { \n ;}", "(namespace \\a\\b\\c\\ (nBody expr))"},
+                {"<?php namespace a; \n ; ?>", "(namespace \\a\\ (nBody expr))"},
+                {"<?php namespace a { \n ;} ?>", "(namespace \\a\\ (nBody expr))"},
+                {"<?php namespace a; ; namespace b; ; ?>", "(namespace \\a\\ (nBody expr)) (namespace \\b\\ (nBody " +
+                        "expr))"},
+                {"<?php namespace a {;} namespace b{;} ?>", "(namespace \\a\\ (nBody expr)) (namespace \\b\\ (nBody " +
+                        "expr))"},
+                {"<?php namespace a\\b; \n ; ; ?>", "(namespace \\a\\b\\ (nBody expr expr))"},
+                {"<?php namespace a\\b\\c { \n ;} ?>", "(namespace \\a\\b\\c\\ (nBody expr))"},
                 {
-                        "namespace a\\b\\c; ; namespace d\\e; ;",
+                        "<?php namespace a\\b\\c; ; namespace d\\e; ; ?>",
                         "(namespace \\a\\b\\c\\ (nBody expr)) (namespace \\d\\e\\ (nBody expr))"
                 },
                 {
-                        "namespace a\\b {;} namespace c\\d\\e{;}",
+                        "<?php namespace a\\b {;} namespace c\\d\\e{;} ?>",
                         "(namespace \\a\\b\\ (nBody expr)) (namespace \\c\\d\\e\\ (nBody expr))"
                 },
                 //default
-                {"namespace{ ; }", "(namespace \\ (nBody expr))"},
+                {"<?php namespace{ ; } ?>", "(namespace \\ (nBody expr))"},
                 //without namespace
-                {";", "(namespace \\ (nBody expr))"}
+                {"<?php ; ?>", "(namespace \\ (nBody expr))"},
+                //without namespace, without statement
+                {"<?php ?>", "(namespace \\ nBody)"},
+                //without ?> at the end
+                {"<?php ;", "(namespace \\ (nBody expr))"},
         });
     }
 }

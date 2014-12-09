@@ -40,12 +40,12 @@ public class NamespaceErrorTest extends AParserParserExceptionTest
     public static Collection<Object[]> vars() {
         return Arrays.asList(new Object[][]{
                 //namespace afterwards
-                {"$a; namespace a;", TinsPHPParser.Namespace, 4},
+                {"<?php $a; namespace a; ?>", TinsPHPParser.Namespace, 4},
                 //namespace semicolon mixed with curly brace namespace
-                {"namespace a; $a=1; namespace b{$a=1;}", TinsPHPParser.LeftCurlyBrace, 30},
-                {"namespace a{ $a=1;} namespace b; $a=1;", TinsPHPParser.Semicolon, 31},
+                {"<?php namespace a; $a=1; namespace b{$a=1;} ?>", TinsPHPParser.LeftCurlyBrace, 30},
+                {"<?php namespace a{ $a=1;} namespace b; $a=1; ?>", TinsPHPParser.Semicolon, 31},
                 //statements outside of curly brace namespace
-                {"namespace a{ $a=1;} $a=1; namespace b{ $a=1;}", TinsPHPParser.VariableId, 20},
+                {"<?php namespace a{ $a=1;} $a=1; namespace b{ $a=1;} ?>", TinsPHPParser.VariableId, 20},
 
         });
     }
