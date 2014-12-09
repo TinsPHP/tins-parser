@@ -23,6 +23,12 @@ public class TokensFileIntegrityTest
         Set<String> exceptions = new HashSet<>();
         exceptions.add("'\\\\'");
 
+        Set<String> additions = new HashSet<>();
+        additions.add("PhpStart");
+        additions.add("PhpEnd");
+        additions.add("'<?php'");
+        additions.add("'?>'");
+
         String path = "src/ch/tsphp/tinsphp/parser/antlr/";
         BufferedReader bufferedReaderTinsPHP = null;
         BufferedReader bufferedReaderTSPHP = null;
@@ -33,11 +39,15 @@ public class TokensFileIntegrityTest
             String lineTinsPHP;
             String lineTSPHP;
             while ((lineTinsPHP = bufferedReaderTinsPHP.readLine()) != null) {
+                String token = lineTinsPHP.split("=")[0];
+                if (additions.contains(token)) {
+                    //ignore additions
+                    continue;
+                }
                 lineTSPHP = bufferedReaderTSPHP.readLine();
                 if (lineTSPHP == null) {
                     Assert.fail("TSPHP tokens file ended sooner at line " + count);
                 }
-                String token = lineTinsPHP.split("=")[0];
                 if (!exceptions.contains(token)) {
                     if (!lineTinsPHP.equals(lineTSPHP)) {
                         Assert.fail("line number " + count + " was different."

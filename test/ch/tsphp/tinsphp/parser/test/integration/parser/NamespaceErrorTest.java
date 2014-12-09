@@ -31,6 +31,11 @@ public class NamespaceErrorTest extends AParserParserExceptionTest
 
     }
 
+    @Override
+    protected void run() throws Exception {
+        result = parser.compilationUnit();
+    }
+
     @Test
     public void test() throws Exception {
         parseExpectingException();
@@ -40,12 +45,12 @@ public class NamespaceErrorTest extends AParserParserExceptionTest
     public static Collection<Object[]> vars() {
         return Arrays.asList(new Object[][]{
                 //namespace afterwards
-                {"<?php $a; namespace a; ?>", TinsPHPParser.Namespace, 4},
+                {"<?php $a; namespace a; ?>", TinsPHPParser.Namespace, 10},
                 //namespace semicolon mixed with curly brace namespace
-                {"<?php namespace a; $a=1; namespace b{$a=1;} ?>", TinsPHPParser.LeftCurlyBrace, 30},
-                {"<?php namespace a{ $a=1;} namespace b; $a=1; ?>", TinsPHPParser.Semicolon, 31},
+                {"<?php namespace a; $a=1; namespace b{$a=1;} ?>", TinsPHPParser.LeftCurlyBrace, 36},
+                {"<?php namespace a{ $a=1;} namespace b; $a=1; ?>", TinsPHPParser.Semicolon, 37},
                 //statements outside of curly brace namespace
-                {"<?php namespace a{ $a=1;} $a=1; namespace b{ $a=1;} ?>", TinsPHPParser.VariableId, 20},
+                {"<?php namespace a{ $a=1;} $a=1; namespace b{ $a=1;} ?>", TinsPHPParser.VariableId, 26},
 
         });
     }

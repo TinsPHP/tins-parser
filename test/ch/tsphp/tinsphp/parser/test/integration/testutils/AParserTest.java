@@ -70,6 +70,6 @@ public abstract class AParserTest extends ATest
     }
 
     protected void run() throws Exception {
-        result = parser.compilationUnit();
+        result = parser.phpCode();
     }
 }

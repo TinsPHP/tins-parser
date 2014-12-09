@@ -36,13 +36,18 @@ public class PHPValidButNotInTSPHPTest extends AParserParserExceptionTest
         parseExpectingException();
     }
 
+    @Override
+    protected void run() throws RecognitionException {
+        result = parser.compilationUnit();
+    }
+
     @Parameterized.Parameters
     public static Collection<Object[]> testStrings() {
         return Arrays.asList(new Object[][]{
                 //switch with multiple default blocks
-                {"switch($a){case 1: default: ; break; case 2: default: ; break;}", TinsPHPParser.Default, 45},
+                {"<?php switch($a){case 1: default: ; break; case 2: default: ; break;} ?>", TinsPHPParser.Default, 51},
                 //use outside of semicolon namespace
-                {"use a\\a; namespace a;", TinsPHPParser.Namespace, 9},
+                {"<?php use a\\a; namespace a; ?>", TinsPHPParser.Namespace, 15},
 
         });
         //See TokenExceptionTest for misuse of keywords

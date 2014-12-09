@@ -95,6 +95,10 @@ tokens{
     ObjectOperator = '->';
     Parent = 'parent';
     ParentColonColon = 'parent::';
+    //start aditional tokens
+    PhpStart = '<?php';
+    PhpEnd = '?>';
+    //end additional tokens
     Plus = '+';
     PlusAssign = '+=';
     PlusPlus = '++';
@@ -226,11 +230,15 @@ package ch.tsphp.tinsphp.parser.antlr;
 }
 
 compilationUnit    
-    :   namespaceSemicolon+ EOF!
-    |   namespaceBracket+ EOF!
-    |   withoutNamespace EOF!
+    :   '<?php'! phpCode ('?>'! EOF!|EOF!)
     ;
-    
+
+phpCode	
+    :   namespaceSemicolon+ 
+    |   namespaceBracket+ 
+    |   withoutNamespace
+    ;
+
 namespaceSemicolon
     :   'namespace' namespaceId namespaceBody=';' statement*
         -> ^('namespace'
