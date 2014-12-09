@@ -233,7 +233,7 @@ compilationUnit
     :   '<?php'! phpCode ('?>'! EOF!|EOF!)
     ;
 
-phpCode	
+phpCode
     :   namespaceSemicolon+ 
     |   namespaceBracket+ 
     |   withoutNamespace
