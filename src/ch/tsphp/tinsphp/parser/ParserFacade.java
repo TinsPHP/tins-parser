@@ -14,8 +14,6 @@ package ch.tsphp.tinsphp.parser;
 
 import ch.tsphp.common.AstHelper;
 import ch.tsphp.common.AstHelperRegistry;
-import ch.tsphp.common.IErrorLogger;
-import ch.tsphp.common.IParser;
 import ch.tsphp.common.ITSPHPAst;
 import ch.tsphp.common.ITSPHPAstAdaptor;
 import ch.tsphp.common.ParserUnitDto;
@@ -25,6 +23,9 @@ import ch.tsphp.common.exceptions.TSPHPException;
 import ch.tsphp.parser.common.ANTLRNoCaseFileStream;
 import ch.tsphp.parser.common.ANTLRNoCaseInputStream;
 import ch.tsphp.parser.common.ANTLRNoCaseStringStream;
+import ch.tsphp.tinsphp.common.IParser;
+import ch.tsphp.tinsphp.common.issues.EIssueSeverity;
+import ch.tsphp.tinsphp.common.issues.IIssueLogger;
 import ch.tsphp.tinsphp.parser.antlrmod.ErrorReportingTinsPHPLexer;
 import ch.tsphp.tinsphp.parser.antlrmod.ErrorReportingTinsPHPParser;
 import org.antlr.runtime.CharStream;
@@ -36,18 +37,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayDeque;
 import java.util.Collection;
+import java.util.EnumSet;
 
 //TODO rstoll TINS-176 Use ParserFacade from tsphp-parser-common
 
 /**
  * Represents the TSPHP Parser providing different methods to parse some input and generating a ParserUnitDto.
  */
-public class ParserFacade implements IParser, IErrorLogger
+public class ParserFacade implements IParser, IIssueLogger
 {
-
     private final ITSPHPAstAdaptor astAdaptor;
-    private final Collection<IErrorLogger> errorLoggers = new ArrayDeque<>();
-    private boolean hasFoundError;
+    private final Collection<IIssueLogger> issueLoggers = new ArrayDeque<>();
+    private EnumSet<EIssueSeverity> foundIssues = EnumSet.noneOf(EIssueSeverity.class);
 
     public ParserFacade() {
         this(new TSPHPAstAdaptor());
@@ -106,9 +107,17 @@ public class ParserFacade implements IParser, IErrorLogger
         return getAstOrErrorAst(new ANTLRNoCaseFileStream(fileName, encoding));
     }
 
+
     @Override
-    public boolean hasFoundError() {
-        return hasFoundError;
+    public boolean hasFound(EnumSet<EIssueSeverity> severities) {
+        boolean hasFound = false;
+        for (EIssueSeverity severity : severities) {
+            hasFound = foundIssues.contains(severity);
+            if (hasFound) {
+                break;
+            }
+        }
+        return hasFound;
     }
 
     private ParserUnitDto getAstOrErrorAst(CharStream input) {
@@ -125,17 +134,17 @@ public class ParserFacade implements IParser, IErrorLogger
 
     private ParserUnitDto getAst(CharStream input) throws RecognitionException {
         ErrorReportingTinsPHPLexer lexer = new ErrorReportingTinsPHPLexer(input);
-        for (IErrorLogger logger : errorLoggers) {
-            lexer.registerErrorLogger(logger);
+        for (IIssueLogger logger : issueLoggers) {
+            lexer.registerIssueLogger(logger);
         }
-        lexer.registerErrorLogger(this);
+        lexer.registerIssueLogger(this);
         TokenStream tokenStream = new CommonTokenStream(lexer);
 
         ErrorReportingTinsPHPParser parser = new ErrorReportingTinsPHPParser(tokenStream);
-        for (IErrorLogger logger : errorLoggers) {
-            parser.registerErrorLogger(logger);
+        for (IIssueLogger logger : issueLoggers) {
+            parser.registerIssueLogger(logger);
         }
-        parser.registerErrorLogger(this);
+        parser.registerIssueLogger(this);
 
         parser.setTreeAdaptor(astAdaptor);
         ITSPHPAst ast = parser.compilationUnit().getTree();
@@ -144,24 +153,27 @@ public class ParserFacade implements IParser, IErrorLogger
     }
 
     @Override
-    public void registerErrorLogger(IErrorLogger errorLogger) {
-        errorLoggers.add(errorLogger);
+    public void registerIssueLogger(IIssueLogger iIssueLogger) {
+        issueLoggers.add(iIssueLogger);
     }
 
     @Override
     public void reset() {
-        hasFoundError = false;
+        foundIssues = EnumSet.noneOf(EIssueSeverity.class);
     }
 
     @Override
-    public void log(TSPHPException exception) {
-        hasFoundError = true;
+    public void log(TSPHPException exception, EIssueSeverity severity) {
+        EnumSet set = EnumSet.copyOf(foundIssues);
+        set.add(EIssueSeverity.FatalError);
+        foundIssues = set;
     }
 
-    private void informErrorLogger(Exception exception) {
-        hasFoundError = true;
-        for (IErrorLogger logger : errorLoggers) {
-            logger.log(new TSPHPException(exception));
+    private void informErrorLogger(RecognitionException exception) {
+        TSPHPException ex = new TSPHPException(exception);
+        log(ex, EIssueSeverity.FatalError);
+        for (IIssueLogger logger : issueLoggers) {
+            logger.log(ex, EIssueSeverity.FatalError);
         }
     }
 }

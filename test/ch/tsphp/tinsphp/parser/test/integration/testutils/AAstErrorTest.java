@@ -12,7 +12,10 @@
 
 package ch.tsphp.tinsphp.parser.test.integration.testutils;
 
+import ch.tsphp.tinsphp.common.issues.EIssueSeverity;
 import org.junit.Ignore;
+
+import java.util.EnumSet;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -29,8 +32,10 @@ public abstract class AAstErrorTest extends AAstTest
 
     @Override
     protected void checkForExceptions() {
-        assertFalse(testString + " failed, lexer threw exception(s) - see output", lexer.hasFoundError());
-        assertTrue(testString + " failed, parser exception expected but none occurred", parser.hasFoundError());
+        assertFalse(testString + " failed, lexer threw exception(s) - see output",
+                lexer.hasFound(EnumSet.allOf(EIssueSeverity.class)));
+        assertTrue(testString + " failed, parser exception expected but none occurred",
+                parser.hasFound(EnumSet.allOf(EIssueSeverity.class)));
         assertEquals(testString + " failed - more than one parser exception occurred", 1,
                 parser.getExceptions().size());
     }

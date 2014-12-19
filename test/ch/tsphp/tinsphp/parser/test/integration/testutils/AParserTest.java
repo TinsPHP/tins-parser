@@ -16,11 +16,14 @@ import ch.tsphp.common.AstHelperRegistry;
 import ch.tsphp.common.ITSPHPAstAdaptor;
 import ch.tsphp.common.TSPHPAstAdaptor;
 import ch.tsphp.parser.common.ANTLRNoCaseStringStream;
+import ch.tsphp.tinsphp.common.issues.EIssueSeverity;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.ParserRuleReturnScope;
 import org.junit.Assert;
 import org.junit.Ignore;
+
+import java.util.EnumSet;
 
 
 @Ignore
@@ -44,8 +47,10 @@ public abstract class AParserTest extends ATest
     }
 
     protected void checkForExceptions() {
-        Assert.assertFalse(testString + " failed, lexer threw exception(s) - see output", lexer.hasFoundError());
-        Assert.assertFalse(testString + " failed, parser threw exception(s) - see output", parser.hasFoundError());
+        Assert.assertFalse(testString + " failed, lexer threw exception(s) - see output",
+                lexer.hasFound(EnumSet.allOf(EIssueSeverity.class)));
+        Assert.assertFalse(testString + " failed, parser threw exception(s) - see output",
+                parser.hasFound(EnumSet.allOf(EIssueSeverity.class)));
     }
 
     protected void modifyParser() {

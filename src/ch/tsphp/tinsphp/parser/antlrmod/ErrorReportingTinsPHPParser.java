@@ -12,52 +12,45 @@
 
 package ch.tsphp.tinsphp.parser.antlrmod;
 
-import ch.tsphp.common.ErrorReporterHelper;
-import ch.tsphp.common.IErrorLogger;
-import ch.tsphp.common.IErrorReporter;
+import ch.tsphp.tinsphp.common.issues.EIssueSeverity;
+import ch.tsphp.tinsphp.common.issues.IIssueLogger;
+import ch.tsphp.tinsphp.common.issues.IIssueReporter;
+import ch.tsphp.tinsphp.common.issues.IssueReporterHelper;
 import ch.tsphp.tinsphp.parser.antlr.TinsPHPParser;
 import org.antlr.runtime.RecognitionException;
-import org.antlr.runtime.RecognizerSharedState;
 import org.antlr.runtime.TokenStream;
 
 import java.util.ArrayDeque;
 import java.util.Collection;
+import java.util.EnumSet;
 
 /**
  * Extends the generated TinsPHPParser by implementing IErrorReporter.
  */
-public class ErrorReportingTinsPHPParser extends TinsPHPParser implements IErrorReporter
+public class ErrorReportingTinsPHPParser extends TinsPHPParser implements IIssueReporter
 {
 
-    private final Collection<IErrorLogger> errorLoggers = new ArrayDeque<>();
-    private boolean hasFoundError = false;
+    private final Collection<IIssueLogger> issueLoggers = new ArrayDeque<>();
+    private boolean hasFoundFatalError = false;
 
     public ErrorReportingTinsPHPParser(TokenStream input) {
         super(input);
     }
 
-    public ErrorReportingTinsPHPParser(TokenStream input, RecognizerSharedState state) {
-        super(input, state);
-    }
-
-    @Override
-    public boolean hasFoundError() {
-        return hasFoundError;
-    }
-
     @Override
     public void reportError(RecognitionException exception) {
-        hasFoundError = true;
-        ErrorReporterHelper.reportError(errorLoggers, exception, "parsing");
+        hasFoundFatalError = true;
+        IssueReporterHelper.reportIssue(issueLoggers, exception, "parsing");
     }
 
     @Override
-    public void registerErrorLogger(IErrorLogger errorLogger) {
-        errorLoggers.add(errorLogger);
+    public boolean hasFound(EnumSet<EIssueSeverity> severity) {
+        return hasFoundFatalError && severity.contains(EIssueSeverity.FatalError);
     }
 
     @Override
-    public void reset() {
-        hasFoundError = false;
+    public void registerIssueLogger(IIssueLogger issueLogger) {
+        issueLoggers.add(issueLogger);
     }
+
 }

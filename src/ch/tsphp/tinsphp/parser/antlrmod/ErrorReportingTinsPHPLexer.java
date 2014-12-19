@@ -12,9 +12,10 @@
 
 package ch.tsphp.tinsphp.parser.antlrmod;
 
-import ch.tsphp.common.ErrorReporterHelper;
-import ch.tsphp.common.IErrorLogger;
-import ch.tsphp.common.IErrorReporter;
+import ch.tsphp.tinsphp.common.issues.EIssueSeverity;
+import ch.tsphp.tinsphp.common.issues.IIssueLogger;
+import ch.tsphp.tinsphp.common.issues.IIssueReporter;
+import ch.tsphp.tinsphp.common.issues.IssueReporterHelper;
 import ch.tsphp.tinsphp.parser.antlr.TinsPHPLexer;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.RecognitionException;
@@ -22,15 +23,16 @@ import org.antlr.runtime.RecognizerSharedState;
 
 import java.util.ArrayDeque;
 import java.util.Collection;
+import java.util.EnumSet;
 
 /**
  * Extends the generated TinsPHPLexer by implementing IErrorReporter.
  */
-public class ErrorReportingTinsPHPLexer extends TinsPHPLexer implements IErrorReporter
+public class ErrorReportingTinsPHPLexer extends TinsPHPLexer implements IIssueReporter
 {
 
-    private final Collection<IErrorLogger> errorLoggers = new ArrayDeque<>();
-    private boolean hasFoundError = false;
+    private final Collection<IIssueLogger> issueLoggers = new ArrayDeque<>();
+    private boolean hasFoundFatalError = false;
 
     public ErrorReportingTinsPHPLexer() {
     }
@@ -44,23 +46,18 @@ public class ErrorReportingTinsPHPLexer extends TinsPHPLexer implements IErrorRe
     }
 
     @Override
-    public boolean hasFoundError() {
-        return hasFoundError;
-    }
-
-    @Override
     public void reportError(RecognitionException exception) {
-        hasFoundError = true;
-        ErrorReporterHelper.reportError(errorLoggers, exception, "parsing");
+        hasFoundFatalError = true;
+        IssueReporterHelper.reportIssue(issueLoggers, exception, "parsing");
     }
 
     @Override
-    public void registerErrorLogger(IErrorLogger errorLogger) {
-        errorLoggers.add(errorLogger);
+    public boolean hasFound(EnumSet<EIssueSeverity> severity) {
+        return hasFoundFatalError && severity.contains(EIssueSeverity.FatalError);
     }
 
     @Override
-    public void reset() {
-        hasFoundError = false;
+    public void registerIssueLogger(IIssueLogger issueLogger) {
+        issueLoggers.add(issueLogger);
     }
 }

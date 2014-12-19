@@ -15,6 +15,7 @@
     <property environment="env"/>
     <import file="${basedir}/ant/build-common.xml" as="common"/>
     <import file="${basedir}/ant/copyCommon.xml" as="cp"/>
+    <import file="${basedir}/ant/copyTinsCommon.xml" as="cpt"/>
     <import file="${basedir}/ant/copyParserCommon.xml" as="cp"/>
     <import file="${basedir}/ant/copyAntlr.xml" as="cp"/>
     <import file="${basedir}/ant/copyQA.xml" as="copy"/>
@@ -61,7 +62,7 @@
         </java>
     </target>
 
-    <target name="cp.all" depends="cp.common, cp.parser-common, cp.parser"/>
+    <target name="cp.all" depends="cp.common, cpt.common, cp.parser-common, cp.parser"/>
 
     <property name="parser" location="${basedir}/../tsphp-parser"/>
     <property name="parser.tokens" location="${parser}/src/ch/tsphp/parser/antlr"/>

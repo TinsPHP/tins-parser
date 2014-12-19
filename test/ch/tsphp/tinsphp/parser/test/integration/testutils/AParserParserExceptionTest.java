@@ -12,9 +12,11 @@
 
 package ch.tsphp.tinsphp.parser.test.integration.testutils;
 
+import ch.tsphp.tinsphp.common.issues.EIssueSeverity;
 import org.antlr.runtime.RecognitionException;
 import org.junit.Ignore;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -34,9 +36,11 @@ public abstract class AParserParserExceptionTest extends AParserExceptionTest
     public void parseExpectingException() throws Exception {
         parse();
 
-        assertFalse(testString + " failed - lexer.exceptions is not empty ", lexer.hasFoundError());
+        assertFalse(testString + " failed - lexer.exceptions is not empty ",
+                lexer.hasFound(EnumSet.allOf(EIssueSeverity.class)));
 
-        assertTrue(testString + " failed - exceptions is empty ", parser.hasFoundError());
+        assertTrue(testString + " failed - exceptions is empty ",
+                parser.hasFound(EnumSet.allOf(EIssueSeverity.class)));
         List<Exception> exceptions = parser.getExceptions();
         RecognitionException ex = (RecognitionException) exceptions.get(0);
         assertTrue(testString + " failed - wrong type, expected " + exceptionType.getName()
