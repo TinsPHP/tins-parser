@@ -26,6 +26,7 @@ import ch.tsphp.parser.common.ANTLRNoCaseStringStream;
 import ch.tsphp.tinsphp.common.IParser;
 import ch.tsphp.tinsphp.common.issues.EIssueSeverity;
 import ch.tsphp.tinsphp.common.issues.IIssueLogger;
+import ch.tsphp.tinsphp.common.issues.IssueReporterHelper;
 import ch.tsphp.tinsphp.parser.antlrmod.ErrorReportingTinsPHPLexer;
 import ch.tsphp.tinsphp.parser.antlrmod.ErrorReportingTinsPHPParser;
 import org.antlr.runtime.CharStream;
@@ -110,14 +111,7 @@ public class ParserFacade implements IParser, IIssueLogger
 
     @Override
     public boolean hasFound(EnumSet<EIssueSeverity> severities) {
-        boolean hasFound = false;
-        for (EIssueSeverity severity : severities) {
-            hasFound = foundIssues.contains(severity);
-            if (hasFound) {
-                break;
-            }
-        }
-        return hasFound;
+        return IssueReporterHelper.hasFound(foundIssues, severities);
     }
 
     private ParserUnitDto getAstOrErrorAst(CharStream input) {
@@ -164,9 +158,7 @@ public class ParserFacade implements IParser, IIssueLogger
 
     @Override
     public void log(TSPHPException exception, EIssueSeverity severity) {
-        EnumSet set = EnumSet.copyOf(foundIssues);
-        set.add(EIssueSeverity.FatalError);
-        foundIssues = set;
+        foundIssues.add(severity);
     }
 
     private void informErrorLogger(RecognitionException exception) {
