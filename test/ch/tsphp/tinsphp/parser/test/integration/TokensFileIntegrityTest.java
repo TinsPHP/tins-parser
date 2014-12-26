@@ -28,6 +28,10 @@ public class TokensFileIntegrityTest
         additions.add("PhpEnd");
         additions.add("'<?php'");
         additions.add("'?>'");
+        additions.add("True");
+        additions.add("False");
+        additions.add("'true'");
+        additions.add("'false'");
 
         String path = "src/ch/tsphp/tinsphp/parser/antlr/";
         BufferedReader bufferedReaderTinsPHP = null;

@@ -57,6 +57,7 @@ tokens{
     Equal = '==';    
     Exit = 'exit';
     Extends = 'extends';
+    False = 'false';
     Final = 'final';
     For = 'for';
     Foreach = 'foreach';
@@ -118,6 +119,7 @@ tokens{
     Static = 'static';
     This = '$this';
     Throw = 'throw';
+    True = 'true';
     Try = 'try';
     TypeBool = 'bool';
     TypeAliasBool = 'boolean';
@@ -257,11 +259,6 @@ namespaceBracket
 namespaceIdOrEmpty
     :   namespaceId -> TYPE_NAME[$namespaceId.start, BACKSLASH + $namespaceId.text + BACKSLASH]
     |   /* empty */ -> DEFAULT_NAMESPACE[$namespaceIdOrEmpty.start, BACKSLASH]
-    ;
-
-//Must be before Identifier otherwise Identifier matches true and false
-Bool    
-    :   'true'|'false'
     ;
 
 namespaceId
@@ -717,11 +714,12 @@ atom
     ;   
 
 primitiveAtomWithConstant
-    :   Bool
+    :   'null'
+    |   'true'
+    |   'false'
     |   Int
     |   Float
     |   String
-    |   'null'
     |   array
     |   globalConstant
     ;

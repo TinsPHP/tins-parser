@@ -55,8 +55,6 @@ public class TokenTest extends ALexerTest
                 {"mBitwiseOrAssign", "|=", TinsPHPLexer.BitwiseOrAssign},
                 {"mBitwiseXor", "^", TinsPHPLexer.BitwiseXor},
                 {"mBitwiseXorAssign", "^=", TinsPHPLexer.BitwiseXorAssign},
-                {"mBool", "true", TinsPHPLexer.Bool},
-                {"mBool", "false", TinsPHPLexer.Bool},
                 {"mBreak", "break", TinsPHPLexer.Break},
                 {"mCase", "case", TinsPHPLexer.Case},
                 {"mCast", "cast", TinsPHPLexer.Cast},
@@ -82,6 +80,7 @@ public class TokenTest extends ALexerTest
                 {"mEqual", "==", TinsPHPLexer.Equal},
                 {"mExtends", "extends", TinsPHPLexer.Extends},
                 {"mExit", "exit", TinsPHPLexer.Exit},
+                {"mFalse", "false", TinsPHPLexer.False},
                 {"mFinal", "final", TinsPHPLexer.Final},
                 {"mFunction", "function", TinsPHPLexer.Function},
                 {"mFor", "for", TinsPHPLexer.For},
@@ -140,6 +139,7 @@ public class TokenTest extends ALexerTest
                 {"mShiftRightAssign", ">>=", TinsPHPLexer.ShiftRightAssign},
                 {"mStatic", "static", TinsPHPLexer.Static},
                 {"mSwitch", "switch", TinsPHPLexer.Switch},
+                {"mTrue", "true", TinsPHPLexer.True},
                 {"mThis", "$this", TinsPHPLexer.This},
                 {"mThrow", "throw", TinsPHPLexer.Throw},
                 {"mTry", "try", TinsPHPLexer.Try},
@@ -270,12 +270,12 @@ public class TokenTest extends ALexerTest
 
         String[] trueCombinations = VariationHelper.getUppercaseCombinations("true");
         for (String combination : trueCombinations) {
-            collection.add(new Object[]{"mBool", combination, TinsPHPLexer.Bool});
+            collection.add(new Object[]{"mTrue", combination, TinsPHPLexer.True});
         }
 
         String[] falseCombinations = VariationHelper.getUppercaseCombinations("false");
         for (String combination : falseCombinations) {
-            collection.add(new Object[]{"mBool", combination, TinsPHPLexer.Bool});
+            collection.add(new Object[]{"mFalse", combination, TinsPHPLexer.False});
         }
 
         //add all tokens again this time with mTokens as method

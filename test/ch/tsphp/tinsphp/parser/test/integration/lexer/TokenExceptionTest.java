@@ -51,17 +51,15 @@ public class TokenExceptionTest extends ALexerTest
     @Parameterized.Parameters
     public static Collection<Object[]> testStrings() {
         return Arrays.asList(new Object[][]{
-            {"mBool","t#"},
-            {"mBool","f#"},
-            {"mIdentifier", IdentifierHelper.asciiToString('A' - 1)},
-            {"mIdentifier",IdentifierHelper.asciiToString('Z'+1)},
-            {"mIdentifier",IdentifierHelper.asciiToString('a'-1)},
-            {"mIdentifier",IdentifierHelper.asciiToString('z'+1)},
-            {"mIdentifier",IdentifierHelper.asciiToString('_'-1)},
-            {"mIdentifier",IdentifierHelper.asciiToString('_'+1)},
-            {"mIdentifier",IdentifierHelper.asciiToString(126)},
-            {"mIdentifier",IdentifierHelper.asciiToString(256)},          
-            {"mVariableId","$"+IdentifierHelper.asciiToString('A'-1)},
+                {"mIdentifier", IdentifierHelper.asciiToString('A' - 1)},
+                {"mIdentifier", IdentifierHelper.asciiToString('Z' + 1)},
+                {"mIdentifier", IdentifierHelper.asciiToString('a' - 1)},
+                {"mIdentifier", IdentifierHelper.asciiToString('z' + 1)},
+                {"mIdentifier", IdentifierHelper.asciiToString('_' - 1)},
+                {"mIdentifier", IdentifierHelper.asciiToString('_' + 1)},
+                {"mIdentifier", IdentifierHelper.asciiToString(126)},
+                {"mIdentifier", IdentifierHelper.asciiToString(256)},
+                {"mVariableId", "$" + IdentifierHelper.asciiToString('A' - 1)},
         });
     }
 }
