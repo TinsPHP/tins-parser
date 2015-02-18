@@ -59,7 +59,8 @@ public class InstructionHelper
                 {prefix + "if($a) $a=1; else " + instruction + appendix},
                 {prefix + "if($a){" + instruction + "}" + appendix},
                 {prefix + "if($a){$a=1;}else{" + instruction + "}" + appendix},
-                {prefix + "switch($a){case 1: " + instruction + "}" + appendix},
+                //see TINS-300 semicolon in switch case
+                {prefix + "switch($a){case 1; " + instruction + "}" + appendix},
                 {
                         prefix + "switch($a){case 1: $a=1; " + instruction
                                 + " default: $a=2; " + instruction + "}" + appendix

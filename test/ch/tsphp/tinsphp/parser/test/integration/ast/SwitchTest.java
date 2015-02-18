@@ -47,7 +47,18 @@ public class SwitchTest extends AAstTest
             });
         }
 
-        collection.add(new Object[]{"switch(true){}", "(switch true)"});
+        collection.addAll(Arrays.asList(new Object[][]{
+                {"switch(true){}", "(switch true)"},
+                //see TINS-300 semicolon in switch case
+                {"switch(true){ case 1; case 2; default;}", "(switch true (cases 1 2 default) cBlock)"},
+                {
+                        "switch(true){ case 1; $a = 1; case 2; default; break;}",
+                        "(switch true"
+                                + " (cases 1) (cBlock (expr (= $a 1)))"
+                                + " (cases 2 default) (cBlock break)"
+                                + ")"
+                }
+        }));
 
         String[][] caseLabels = new String[][]{
                 {"case 1", "case 2", "case 3", "case 4"},

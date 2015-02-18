@@ -459,11 +459,11 @@ switchContentWithoutDefault
     ;
 
 caseLabel
-    :   'case'! expression ':'!
+    :   'case'! expression (':'|';')!
     ;
 
 defaultLabel
-    :   'default' ':'!
+    :   'default' (':'|';')!
     ;
 
 forLoop
