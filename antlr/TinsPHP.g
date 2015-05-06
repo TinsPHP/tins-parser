@@ -491,9 +491,9 @@ forUpdate
 foreachLoop
     :   'foreach' '(' expression 'as' (keyVarId=VariableId '=>')? valueVarId=VariableId ')' instruction
         -> ^('foreach' 
-            expression 
-            $keyVarId? 
-            $valueVarId 
+            expression
+            $valueVarId
+            $keyVarId?
             ^(BLOCK_CONDITIONAL[$instruction.start, "cBlock"] instruction)
         )
     ;
