@@ -53,7 +53,7 @@ public class ForeachTest extends AAstTest
                 },
                 {
                         "foreach($a as $k => $v)$a=1;",
-                        "(foreach $a $k $v (cBlock (expr (= $a 1))))"
+                        "(foreach $a $v $k (cBlock (expr (= $a 1))))"
                 },
 
         }));
