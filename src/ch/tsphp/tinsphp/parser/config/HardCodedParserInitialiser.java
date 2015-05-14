@@ -26,6 +26,6 @@ public class HardCodedParserInitialiser implements IParserInitialiser
 
     @Override
     public void reset() {
-        //nothing to reset in the parser
+        parser.reset();
     }
 }

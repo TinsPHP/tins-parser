@@ -7,10 +7,14 @@
 package ch.tsphp.tinsphp.parser.test.unit.config;
 
 import ch.tsphp.common.ITSPHPAstAdaptor;
+import ch.tsphp.common.TSPHPAstAdaptor;
 import ch.tsphp.tinsphp.common.IParser;
 import ch.tsphp.tinsphp.common.config.IParserInitialiser;
+import ch.tsphp.tinsphp.common.issues.EIssueSeverity;
 import ch.tsphp.tinsphp.parser.config.HardCodedParserInitialiser;
 import org.junit.Test;
+
+import java.util.EnumSet;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -38,6 +42,18 @@ public class HardCodedParserInitialiserTest
         IParser result = parserInitialiser.getParser();
 
         assertThat(result, is(firstCall));
+    }
+
+    @Test
+    public void reset_Standard_CallsResetOnParser() {
+        IParserInitialiser parserInitialiser = createParserInitialiser(new TSPHPAstAdaptor());
+        IParser parser = parserInitialiser.getParser();
+        parser.parse("!erroneousCode!");
+        assertThat(parser.hasFound(EnumSet.allOf(EIssueSeverity.class)), is(true));
+
+        parserInitialiser.reset();
+
+        assertThat(parser.hasFound(EnumSet.allOf(EIssueSeverity.class)), is(false));
     }
 
     private IParserInitialiser createParserInitialiser() {
