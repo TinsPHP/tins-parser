@@ -17,7 +17,6 @@ import ch.tsphp.common.AstHelperRegistry;
 import ch.tsphp.common.ITSPHPAst;
 import ch.tsphp.common.ITSPHPAstAdaptor;
 import ch.tsphp.common.ParserUnitDto;
-import ch.tsphp.common.TSPHPAstAdaptor;
 import ch.tsphp.common.TSPHPErrorAst;
 import ch.tsphp.common.exceptions.TSPHPException;
 import ch.tsphp.parser.common.ANTLRNoCaseFileStream;
@@ -50,10 +49,6 @@ public class ParserFacade implements IParser, IIssueLogger
     private final ITSPHPAstAdaptor astAdaptor;
     private final Collection<IIssueLogger> issueLoggers = new ArrayDeque<>();
     private EnumSet<EIssueSeverity> foundIssues = EnumSet.noneOf(EIssueSeverity.class);
-
-    public ParserFacade() {
-        this(new TSPHPAstAdaptor());
-    }
 
     public ParserFacade(ITSPHPAstAdaptor anAstAdaptor) {
         astAdaptor = anAstAdaptor;
