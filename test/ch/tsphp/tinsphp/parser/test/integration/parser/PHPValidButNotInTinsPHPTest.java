@@ -23,10 +23,10 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @RunWith(Parameterized.class)
-public class PHPValidButNotInTSPHPTest extends AParserParserExceptionTest
+public class PHPValidButNotInTinsPHPTest extends AParserParserExceptionTest
 {
 
-    public PHPValidButNotInTSPHPTest(String testString, int character, int position) {
+    public PHPValidButNotInTinsPHPTest(String testString, int character, int position) {
         super(testString, character, position, RecognitionException.class);
 
     }
