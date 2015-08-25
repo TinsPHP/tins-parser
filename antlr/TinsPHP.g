@@ -117,6 +117,7 @@ tokens{
     ShiftRight = '>>';
     ShiftRightAssign = '>>=';
     Static = 'static';
+    Subtype = '<:';
     This = '$this';
     Throw = 'throw';
     True = 'true';
@@ -611,7 +612,11 @@ factor
     ;
 
 instanceOf
-    :   unary ('instanceof'^ (classInterfaceTypeWithoutMixed|VariableId))?
+    :   unary   (   'instanceof'^ (classInterfaceTypeWithoutMixed|VariableId)
+                |   '<:'^   (   (scalarTypesInclArrayWithModifier|classInterfaceTypeWithoutMixed)
+                            |   '('! (scalarTypesInclArrayWithModifier|classInterfaceTypeWithoutMixed) ('&'! (scalarTypesInclArrayWithModifier|classInterfaceTypeWithoutMixed))* ')'
+                            )
+                )?
     ;
 
 unary
@@ -626,12 +631,12 @@ unary
     
 scalarTypesInclArrayWithModifier
     :   (    t='bool'
-        |    t='boolean' {t.setType(Bool); t.setText("bool");}
+        |    t='boolean' {t.setType(TypeBool); t.setText("bool");}
         |    t='int'
-        |    t='integer' {t.setType(Int); t.setText("int");}
+        |    t='integer' {t.setType(TypeInt); t.setText("int");}
         |    t='float'
-        |    t='double'  {t.setType(Float); t.setText("float");}
-        |    t='real'    {t.setType(Float); t.setText("float");}
+        |    t='double'  {t.setType(TypeFloat); t.setText("float");}
+        |    t='real'    {t.setType(TypeFloat); t.setText("float");}
         |    t='string'
         |    t='array'
         )
