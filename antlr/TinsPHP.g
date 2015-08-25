@@ -117,7 +117,6 @@ tokens{
     ShiftRight = '>>';
     ShiftRightAssign = '>>=';
     Static = 'static';
-    Subtype = '<:';
     This = '$this';
     Throw = 'throw';
     True = 'true';
@@ -612,11 +611,7 @@ factor
     ;
 
 instanceOf
-    :   unary   (   'instanceof'^ (classInterfaceTypeWithoutMixed|VariableId)
-                |   '<:'^   (   (scalarTypesInclArrayWithModifier|classInterfaceTypeWithoutMixed)
-                            |   '('! (scalarTypesInclArrayWithModifier|classInterfaceTypeWithoutMixed) ('&'! (scalarTypesInclArrayWithModifier|classInterfaceTypeWithoutMixed))* ')'
-                            )
-                )?
+    :   unary   (   'instanceof'^ (classInterfaceTypeWithoutMixed|VariableId))?
     ;
 
 unary
